@@ -35,7 +35,7 @@
                             <tbody>
                             {% for kunde in month.list %}
                             <tr>
-                                <td><a href="#" class="text-dark btn">{{ kunde.kunde }}</a></td>
+                                <td><a href="{% url 'detail' kunde.id %}" class="text-dark btn">{{ kunde.kunde }}</a></td>
                                 <td><a href="#" class="text-dark btn">{{ kunde.badresse }}</a></td>
                                 <td><a href="#" class="text-dark btn">{{ kunde.bpoststed }}</a></td>
                             </tr>
