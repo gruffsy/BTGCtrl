@@ -11,7 +11,7 @@ def index(request):
 
 def detail(request, pk):
     customer = Customer.objects.get(pk=pk)
-    objects = Object.objects.filter(customer=customer)
+    objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
     context = {
         "customer": customer,
         "objects": objects,

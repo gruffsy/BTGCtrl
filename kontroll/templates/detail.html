@@ -3,67 +3,54 @@
 <div class="container-fluid songs-container">
     <div class="row">
         <p>{{ customer.kunde }}</p>
-        <div class="col-sm-12">
-            <table class="table table-sm table-hover w3-tiny">
-                <thead>
-                <tr>
-                    <th>Ref. nr.</th>
-                    <th>Etg</th>
-                    <th>Lokasjon</th>
-                    <th>Plassering</th>
-                    <th>Type</th>
-                    <th>Slukkemiddel</th>
-                    <th>Prodår</th>
-                    <th>Service</th>
-                    <th>Kontroll</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for o in objects %}
-                <tr>
-                    <td>{{ o.refnr }}</td>
-                    <td>{{ o.etg }}</td>
-                    <td>{{ o.lokasjon }}</td>
-                    <td>{{ o.plassering }}</td>
-                    <td>{{ o.extinguishant.fabrikat }} {{ o.extinguishant.lengde }} {{ o.extinguishant.type }}</td>
-                    <td>{{ o.extinguishant.slukkemiddel }}</td>
-                    <td>{{ o.prodyear }}</td>
-                    <td>{{ o.sisteservice }}</td>
-                    <td>
-                        <div class="w3-dropdown-hover">
-                            <button class="btn">Kontrollere...</button>
-                            <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                                <table>
-                                    <tr>
-                                        <td><a href="#" class="w3-bar-item w3-button">Link 1</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="#" class="w3-bar-item w3-button">Link 2</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="#" class="w3-bar-item w3-button">Link 3</a></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 
-{% regroup objects by etg as etg_list %}
-{% for e in etg_list %}
-{{ e.grouper }}<br>
-{% regroup e.list by lokasjon as lokasjon_list %}
-{% for l in lokasjon_list %}
-{{ l.grouper }}<br>
-{% for obj in l.list %}
-{{ obj.plassering }}<br>
-{% endfor %}
-{% endfor %}
-{% endfor %}
+
+<div class="container">
+    <div id="accordion">
+        {% regroup objects by etg as etg_list %}
+        {% for e in etg_list %}
+        <div class="card-header" id="heading{{ forloop.counter }}">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}"
+                    aria-expanded="true"
+                    aria-controls="collapse{{ forloop.counter }}">
+                {{ e.grouper }}. etasje oldefar:{{ forloop.counter }}
+            </button>
+        </div>
+        {% regroup e.list by lokasjon as lokasjon_list %}
+        <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}"
+             data-parent="#accordion">
+            {% for l in lokasjon_list %}
+            <div class="card-body" id="child{{ forloop.counter }}">
+                <a href="#" data-toggle="collapse" data-target="#grandchild{{ forloop.counter }}"
+                   data-parent="#child{{ forloop.counter }}">Lokasjon: {{ l.grouper }} loop:{{ forloop.counter }}</a>
+                {%regroup l.list by plassering as plassering_list %}
+                {% for p in plassering_list %}
+                <div class="card-body" id="grandchild{{ forloop.counter }}">
+                    <a href="#" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}a"
+                       data-parent="#grandchild{{ forloop.counter }}">Plassering:
+                        {{ p.grouper }} </a>
+                    {% for obj in p.list %}
+
+                    <div class="card-body collapse" data-parent="#grandchild{{ forloop.counter }}"
+                         id="collapse{{ forloop.counter }}a">
+                        Objekt: {{ obj.refnr }} - {{ obj.extinguishant.fabrikat }} {{ obj.extinguishant.type }}
+                        {% if obj.extinguishant.lengde is not None %}
+                        {{ obj.extinguishant.lengde }}a
+                        {% endif %}
+                        {% if obj.extinguishant.slukkemiddel is not None %}
+                        {{ obj.extinguishant.slukkemiddel }}
+                        {% endif %}
+                    </div>
+
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
