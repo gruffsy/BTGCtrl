@@ -11,30 +11,48 @@
     <div id="accordion">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
-        <div class="card-header" id="heading{{ forloop.counter }}">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}"
-                    aria-expanded="true"
-                    aria-controls="collapse{{ forloop.counter }}">
+        <div class="card-header" id="overskrift{{ forloop.counter }}">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#oldefar{{ forloop.counter }}"
+                    aria-expanded="true">
                 {{ e.grouper }}. etasje oldefar:{{ forloop.counter }}
             </button>
         </div>
         {% regroup e.list by lokasjon as lokasjon_list %}
-        <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}"
+        <div id="oldefar{{ forloop.counter }}" class="collapse" aria-labelledby="overskrift{{ forloop.counter }}"
              data-parent="#accordion">
+
+
+
+
+
+
+
+
+
+
+
             {% for l in lokasjon_list %}
-            <div class="card-body" id="child{{ forloop.counter }}">
-                <a href="#" data-toggle="collapse" data-target="#grandchild{{ forloop.counter }}"
-                   data-parent="#child{{ forloop.counter }}">Lokasjon: {{ l.grouper }} loop:{{ forloop.counter }}</a>
+            <div class="card-body" id="bestefar{{ forloop.counter }}">
+                <a href="#" data-toggle="collapse" data-target="#far{{ forloop.counter }}"
+                   data-parent="#oldefar{{ forloop.counter }}">Lokasjon: {{ l.grouper }}
+                    oldefar:{{ forloop.parentloop.counter }}
+                    bestefar:{{ forloop.counter }}
+                </a>
                 {%regroup l.list by plassering as plassering_list %}
                 {% for p in plassering_list %}
-                <div class="card-body" id="grandchild{{ forloop.counter }}">
-                    <a href="#" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}a"
-                       data-parent="#grandchild{{ forloop.counter }}">Plassering:
-                        {{ p.grouper }} </a>
+                <div class="card-body" id="far{{ forloop.counter }}">
+                    <a href="#" data-toggle="collapse" data-target="#barn{{ forloop.counter }}"
+                       data-parent="#bestefar{{ forloop.counter }}">Plassering:
+                        {{ p.grouper }}
+                    oldefar:{{ forloop.parentloop.parentloop.counter }}
+                    bestefar:{{ forloop.parentloop.counter }}
+                        far:{{ forloop.counter }}
+
+                    </a>
                     {% for obj in p.list %}
 
-                    <div class="card-body collapse" data-parent="#grandchild{{ forloop.counter }}"
-                         id="collapse{{ forloop.counter }}a">
+                    <div class="card-body collapse" data-parent="#far{{ forloop.counter }}"
+                         id="barn{{ forloop.counter }}">
                         Objekt: {{ obj.refnr }} - {{ obj.extinguishant.fabrikat }} {{ obj.extinguishant.type }}
                         {% if obj.extinguishant.lengde is not None %}
                         {{ obj.extinguishant.lengde }}a
@@ -42,6 +60,10 @@
                         {% if obj.extinguishant.slukkemiddel is not None %}
                         {{ obj.extinguishant.slukkemiddel }}
                         {% endif %}
+                         oldefar:{{ forloop.parentloop.parentloop.parentloop.counter }}
+                    bestefar:{{ forloop.parentloop.parentloop.counter }}
+                        far:{{ forloop.parentloop.counter }}
+                        barn:{{ forloop.counter }}
                     </div>
 
                     {% endfor %}
