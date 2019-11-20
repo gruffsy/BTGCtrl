@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script
+            type="text/javascript"
+            src="/js/lib/dummy.js"
+
+    ></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <style id="compiled-css" type="text/css">
+      .just-padding {
+    padding: 15px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+    padding-left: 45px;
+}
+
+.list-group-item .glyphicon {
+    margin-right: 5px;
+}
+
+
+
+
+
+
+
+    </style>
+
+
+    <!-- TODO: Missing CoffeeScript 2 -->
+
+    <script type="text/javascript">//<![CDATA[
+
+    window.onload=function(){
+
+$(function() {
+
+  $('.list-group-item').on('click', function() {
+    $('.glyphicon', this)
+      .toggleClass('glyphicon-chevron-right')
+      .toggleClass('glyphicon-chevron-down');
+  });
+
+});
+
+    }
+
+  //]]>
+
+
+
+
+
+
+    </script>
+
+</head>
+<body>
+<div class="just-padding">
+    <div class="list-group list-group-root well">
+        {% for item in "x"|ljust:"5" %}
+        <a href="#item-{{ forloop.counter }}" class="list-group-item" data-toggle="collapse">
+            <i class="glyphicon glyphicon-chevron-right"></i>Item {{ forloop.counter }}
+        </a>
+        <div class="list-group collapse" id="item-{{ forloop.counter }}">
+            {% for ite in "x"|ljust:"1" %}
+            <a href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" class="list-group-item"
+               data-toggle="collapse">
+                <i class="glyphicon glyphicon-chevron-right"></i>Item {{ forloop.parentloop.counter }}-
+                {{forloop.counter }}
+            </a>
+            <div class="list-group collapse" id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                {% for i in "x"|ljust:"1" %}
+                <a href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                   class="list-group-item"
+                   data-toggle="collapse">
+                    <i class="glyphicon glyphicon-chevron-right"></i>Item {{ forloop.parentloop.parentloop.counter }}-
+                    {{ forloop.parentloop.counter }}-
+                    {{ forloop.counter }}
+                </a>
+                <div class="list-group collapse"
+                     id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                    {% for it in "x"|ljust:"1" %}
+                    <a href="#" class="list-group-item">Item {{ forloop.parentloop.parentloop.parentloop.counter }}-
+                        {{ forloop.parentloop.parentloop.counter }}-
+                        {{ forloop.parentloop.counter }}-{{ forloop.counter }}</a>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent){
+      window.parent.parent.postMessage(["resultsFrame", {
+        height: document.body.getBoundingClientRect().height,
+        slug: "ann7tctp"
+      }], "*")
+    }
+
+    // always overwrite window.name, in case users try to set it manually
+    window.name = "result"
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

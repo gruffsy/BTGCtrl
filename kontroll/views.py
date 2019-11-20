@@ -18,3 +18,7 @@ def detail(request, pk):
     }
 
     return render(request, "detail.html", context)
+
+
+def test(request):
+    return render(request, 'test.html', {})
