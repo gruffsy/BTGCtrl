@@ -140,7 +140,7 @@ $(function() {
                     {{ customer.kunde }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Kontrollrapporter</a>
+                    <a class="dropdown-item" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
                     <a class="dropdown-item" href="#">Avviksrapporter</a>
                     <a class="dropdown-item" href="{% url 'detail' customer.id %}">Alle objekter</a>
                     <div class="dropdown-divider"></div>

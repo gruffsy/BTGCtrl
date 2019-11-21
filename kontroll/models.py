@@ -58,9 +58,16 @@ class Object(models.Model):
     nestekontroll = models.PositiveSmallIntegerField(blank=True)
 
     def __str__(self):
-        return self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg
+        return self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg + ' | ' + self.extinguishant.fabrikat
 
 
+class ObjTr(models.Model):
+    object = models.ForeignKey(Object, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    kontrolldato = models.DateField(null=True, blank=True)
+    servicedato = models.DateField(null=True, blank=True)
 
+    def __str__(self):
+        return str(self.object.refnr) + ' | ' + self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
 
 

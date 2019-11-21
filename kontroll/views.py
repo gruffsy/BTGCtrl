@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Customer, Object
+from .models import Customer, Object, ObjTr
 from django.db.models import Q
 
 
@@ -42,6 +42,16 @@ def obj_detail(request, pk):
     }
 
     return render(request, "obj_detail.html", context)
+
+
+def objtr(request, pk):
+    customer = Customer.objects.get(pk=pk)
+    objs = customer.objtr_set.all()
+    context = {
+        "customer": customer,
+        "objs": objs,
+    }
+    return render(request, "objtr.html", context)
 
 
 def test(request):
