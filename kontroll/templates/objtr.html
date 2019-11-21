@@ -14,6 +14,7 @@
             <th>Etasje</th>
             <th>Fabrikat</th>
             <th>Type</th>
+            <th>Prod.år</th>
             <th>Kontrollør</th>
 
 
@@ -22,15 +23,15 @@
         <tbody>
         {% for obj in objs %}
         <tr>
-            <td><a class="text-dark btn" href="#">{{ obj.kontrolldato }}</a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.servicedato }}</a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.extinguishant.slokketype.navn }}</a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.refnr }}</a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.lokasjon }}</a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.plassering }} </a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.etg }} </a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.extinguishant.fabrikat }} </a></td>
-            <td><a class="text-dark btn" href="#">
+            <td class="text-dark">{{ obj.kontrolldato }}</td>
+            <td class="text-dark">{{ obj.servicedato }}</td>
+            <td class="text-dark">{{ obj.object.extinguishant.slokketype.navn }}</td>
+            <td class="text-dark">{{ obj.object.refnr }}</td>
+            <td class="text-dark">{{ obj.object.lokasjon }}</td>
+            <td class="text-dark">{{ obj.object.plassering }}</td>
+            <td class="text-dark">{{ obj.object.etg }}</td>
+            <td class="text-dark">{{ obj.object.extinguishant.fabrikat }}</td>
+            <td class="text-dark">
                 {{ obj.object.extinguishant.type }}
                 {% if obj.object.extinguishant.slukkemiddel %}
                 {{ obj.object.extinguishant.slukkemiddel }}
@@ -39,8 +40,8 @@
                 {{ obj.object.extinguishant.lengde }}
                 {% endif %}
             </a></td>
-            <td><a class="text-dark btn" href="#">{{ obj.object.prodyear }}</a></td>
-            <td><a class="text-dark btn" href="#">user</a></td>
+            <td class="text-dark">{{ obj.object.prodyear }}</td>
+            <td class="text-dark">user</td>
         </tr>
         {% endfor %}
         </tbody>

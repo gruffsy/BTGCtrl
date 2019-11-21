@@ -12,9 +12,10 @@
     <div class="list-group list-group-root well col-sm-6">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
+
         <a class="list-group-item" data-toggle="collapse" href="#item-{{ forloop.counter }}">
             <i class="glyphicon glyphicon-chevron-right"></i>{{ e.grouper }}. etasje</a>
-        <div class="list-group collapse" id="item-{{ forloop.counter }}">
+        <div class="list-group collapse in" id="item-{{ forloop.counter }}">
             {% regroup e.list by lokasjon as lokasjon_list %}
             {% for l in lokasjon_list %}
             <a class="list-group-item" data-toggle="collapse"
