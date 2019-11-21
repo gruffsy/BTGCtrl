@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="just-padding">
+    <div class="container-fluid">
+        <h5><a class="text-dark" href="#">{{obj.customer.month}} > <a class="text-dark"
+                                                                      href="#">{{obj.customer.kunde}}</a> > <a
+                class="text-dark" href="#">{{obj.etg}}.
+            etg</a> > <a class="text-dark" href="#">{{obj.lokasjon}}</a> > <a class="text-dark" href="#">{{obj.plassering}}</a>
+            >
+        </h5>
+        <h1>Refnr. {{obj.refnr }}-{{obj.extinguishant.fabrikat}}
+            {{obj.extinguishant.type}}
+            {% if obj.extinguishant.lengde is not None %}
+            {{obj.extinguishant.lengde}}a
+            {% endif %}
+            {% if obj.extinguishant.slukkemiddel is not None %}
+            {{obj.extinguishant.slukkemiddel}}
+            {% endif %}</h1>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,71 +1,44 @@
 {% extends 'base.html' %}
 {% block body %}
-<div class="container-fluid songs-container">
-    <div class="row">
-        <p>{{ customer.kunde }}</p>
+<div class="just-padding">
+    <div class="container-fluid">
+        <h5><a class="text-dark" href="{% url 'index' %}">{{customer.month}} > <a class="text-dark" href="#">{{customer.kunde}}</a>
+            >
+        </h5>
     </div>
 </div>
-
-
-<div class="container">
-    <div id="accordion">
+{% if objects %}
+<div class="just-padding">
+    <div class="list-group list-group-root well col-sm-6">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
-        <div class="card-header" id="overskrift{{ forloop.counter }}">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#oldefar{{ forloop.counter }}"
-                    aria-expanded="true">
-                {{ e.grouper }}. etasje oldefar:{{ forloop.counter }}
-            </button>
-        </div>
-        {% regroup e.list by lokasjon as lokasjon_list %}
-        <div id="oldefar{{ forloop.counter }}" class="collapse" aria-labelledby="overskrift{{ forloop.counter }}"
-             data-parent="#accordion">
-
-
-
-
-
-
-
-
-
-
-
+        <a class="list-group-item" data-toggle="collapse" href="#item-{{ forloop.counter }}">
+            <i class="glyphicon glyphicon-chevron-right"></i>{{ e.grouper }}. etasje</a>
+        <div class="list-group collapse" id="item-{{ forloop.counter }}">
+            {% regroup e.list by lokasjon as lokasjon_list %}
             {% for l in lokasjon_list %}
-            <div class="card-body" id="bestefar{{ forloop.counter }}">
-                <a href="#" data-toggle="collapse" data-target="#far{{ forloop.counter }}"
-                   data-parent="#oldefar{{ forloop.counter }}">Lokasjon: {{ l.grouper }}
-                    oldefar:{{ forloop.parentloop.counter }}
-                    bestefar:{{ forloop.counter }}
-                </a>
+            <a class="list-group-item" data-toggle="collapse"
+               href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                <i class="glyphicon glyphicon-chevron-right"></i>Lokasjon: {{ l.grouper }}</a>
+            <div class="list-group collapse" id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                 {%regroup l.list by plassering as plassering_list %}
                 {% for p in plassering_list %}
-                <div class="card-body" id="far{{ forloop.counter }}">
-                    <a href="#" data-toggle="collapse" data-target="#barn{{ forloop.counter }}"
-                       data-parent="#bestefar{{ forloop.counter }}">Plassering:
-                        {{ p.grouper }}
-                    oldefar:{{ forloop.parentloop.parentloop.counter }}
-                    bestefar:{{ forloop.parentloop.counter }}
-                        far:{{ forloop.counter }}
-
-                    </a>
+                <a class="list-group-item"
+                   data-toggle="collapse"
+                   href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                    <i class="glyphicon glyphicon-chevron-right"></i>Plassering: {{ p.grouper }}</a>
+                <div class="list-group collapse"
+                     id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                     {% for obj in p.list %}
-
-                    <div class="card-body collapse" data-parent="#far{{ forloop.counter }}"
-                         id="barn{{ forloop.counter }}">
-                        Objekt: {{ obj.refnr }} - {{ obj.extinguishant.fabrikat }} {{ obj.extinguishant.type }}
+                    <div class="row list-group-item"><a href="{% url 'obj_detail' obj.id %}">Objekt: Nr.
+                        {{obj.refnr}}-{{obj.extinguishant.fabrikat}}
+                        {{obj.extinguishant.type}}
                         {% if obj.extinguishant.lengde is not None %}
-                        {{ obj.extinguishant.lengde }}a
+                        {{obj.extinguishant.lengde}}a
                         {% endif %}
                         {% if obj.extinguishant.slukkemiddel is not None %}
-                        {{ obj.extinguishant.slukkemiddel }}
-                        {% endif %}
-                         oldefar:{{ forloop.parentloop.parentloop.parentloop.counter }}
-                    bestefar:{{ forloop.parentloop.parentloop.counter }}
-                        far:{{ forloop.parentloop.counter }}
-                        barn:{{ forloop.counter }}
-                    </div>
-
+                        {{obj.extinguishant.slukkemiddel}}
+                        {% endif %}</a></div>
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -74,5 +47,11 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="just-padding">
+        <div class="container-fluid">Kunden har ingen objekter som skal kontrolleres.
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
