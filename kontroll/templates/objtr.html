@@ -1,7 +1,50 @@
 {% extends 'base.html' %}
 {% block body %}
-{% for obj in objs %}
-{{ obj }}
-{% endfor %}
+<a href="{% url 'pdf' customer.id %}">Skriv til PDF</a>
+<div class="table-responsive-lg">
+    <table class="table w-auto table-hover">
+        <thead>
+        <tr>
+            <th>Kontrollert</th>
+            <th>Service</th>
+            <th>Slokkeutstyr</th>
+            <th>Objektnr</th>
+            <th>Lokasjon</th>
+            <th>Plassering</th>
+            <th>Etasje</th>
+            <th>Fabrikat</th>
+            <th>Type</th>
+            <th>Kontrollør</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in objs %}
+        <tr>
+            <td><a class="text-dark btn" href="#">{{ obj.kontrolldato }}</a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.servicedato }}</a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.extinguishant.slokketype.navn }}</a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.refnr }}</a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.lokasjon }}</a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.plassering }} </a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.etg }} </a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.extinguishant.fabrikat }} </a></td>
+            <td><a class="text-dark btn" href="#">
+                {{ obj.object.extinguishant.type }}
+                {% if obj.object.extinguishant.slukkemiddel %}
+                {{ obj.object.extinguishant.slukkemiddel }}
+                {% endif %}
+                {% if obj.object.extinguishant.lengde %}
+                {{ obj.object.extinguishant.lengde }}
+                {% endif %}
+            </a></td>
+            <td><a class="text-dark btn" href="#">{{ obj.object.prodyear }}</a></td>
+            <td><a class="text-dark btn" href="#">user</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

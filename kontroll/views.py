@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Customer, Object, ObjTr
 from django.db.models import Q
-
+from django.views.generic import View
+from django.utils import timezone
+from .render import Render
 
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
@@ -56,3 +58,17 @@ def objtr(request, pk):
 
 def test(request):
     return render(request, 'test.html', {})
+
+
+class Pdf(View):
+
+    def get(self, request, pk):
+        customer = Customer.objects.get(pk=pk)
+        objs = customer.objtr_set.all()
+        today = timezone.now()
+        context = {
+            "customer": customer,
+            "today": today,
+            "objs": objs
+        }
+        return Render.render('pdf.html', context)

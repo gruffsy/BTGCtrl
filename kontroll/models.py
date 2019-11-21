@@ -30,15 +30,19 @@ class Customer(models.Model):
     def __str__(self):
         return self.kunde + ' | ' + self.badresse + ' | ' + self.bpoststed
 
+
+class Slokketype(models.Model):
+    navn = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.navn
+
 class Extinguishant(models.Model):
     fabrikat = models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(max_length=255, null=True, blank=True)
     lengde = models.CharField(max_length=255, null=True, blank=True)
     slukkemiddel = models.CharField(max_length=255, null=True, blank=True)
-    handslokker = models.BooleanField(default=False)
-    brannpost = models.BooleanField(default=False)
-    slangevogn = models.BooleanField(default=False)
-
+    slokketype = models.ForeignKey(Slokketype, on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -66,6 +70,7 @@ class ObjTr(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     kontrolldato = models.DateField(null=True, blank=True)
     servicedato = models.DateField(null=True, blank=True)
+    avvik = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.object.refnr) + ' | ' + self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
