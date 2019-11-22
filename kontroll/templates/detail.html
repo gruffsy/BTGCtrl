@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="just-padding">
-    <div class="container-fluid">
-        <h5><a class="text-dark" href="{% url 'index' %}">{{customer.month}} > <a class="text-dark" href="#">{{customer.kunde}}</a>
-            >
-        </h5>
-    </div>
+
+    <h5><a class="text-dark" href="{% url 'index' %}">{{customer.month}} > </a>
+        <a class="text-dark" href="#">{{customer.kunde}}</a>
+        >
+    </h5>
+
 </div>
 {% if objects %}
 <div class="just-padding">
-    <div class="list-group list-group-root well col-sm-6">
+    <div class="list-group list-group-root well">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
 
-        <a class="list-group-item" data-toggle="collapse" href="#item-{{ forloop.counter }}">
-            <i class="glyphicon glyphicon-chevron-right"></i>{{ e.grouper }}. etasje</a>
-        <div class="list-group collapse in" id="item-{{ forloop.counter }}">
+        <a class="list-group-item" href="#">
+            {{ e.grouper }}. etasje</a>
+        <div class="list-group in" id="item-{{ forloop.counter }}">
             {% regroup e.list by lokasjon as lokasjon_list %}
             {% for l in lokasjon_list %}
             <a class="list-group-item" data-toggle="collapse"
@@ -31,15 +32,64 @@
                 <div class="list-group collapse"
                      id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                     {% for obj in p.list %}
-                    <div class="row list-group-item"><a href="{% url 'obj_detail' obj.id %}">Objekt: Nr.
-                        {{obj.refnr}}-{{obj.extinguishant.fabrikat}}
-                        {{obj.extinguishant.type}}
-                        {% if obj.extinguishant.lengde is not None %}
-                        {{obj.extinguishant.lengde}}a
-                        {% endif %}
-                        {% if obj.extinguishant.slukkemiddel is not None %}
-                        {{obj.extinguishant.slukkemiddel}}
-                        {% endif %}</a></div>
+                    <div class="row list-group-item d-flex justify-content-around">
+
+                        <!-- Button to Open the Modal -->
+                        <a class="btn btn-light float-right"
+                           data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                           data-toggle="modal">
+                            Objekt: Nr.
+                            {{obj.refnr}}-{{obj.extinguishant.fabrikat}}
+                            {{obj.extinguishant.type}}
+                            {% if obj.extinguishant.lengde is not None %}
+                            {{obj.extinguishant.lengde}}a
+                            {% endif %}
+                            {% if obj.extinguishant.slukkemiddel is not None %}
+                            {{obj.extinguishant.slukkemiddel}}
+                            {% endif %}</a></div>
+                    <!-- The Modal -->
+                    <div class="modal fade"
+                         id="myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header bg-light">
+                                    <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
+                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <h1> {{obj.extinguishant.fabrikat}}
+                                        {{obj.extinguishant.type}}<br></h1>
+                                    <h2>
+                                        {% if obj.extinguishant.lengde is not None %}
+                                        {{obj.extinguishant.lengde}}a
+                                        {% endif %}
+                                        {% if obj.extinguishant.slukkemiddel is not None %}
+                                        {{obj.extinguishant.slukkemiddel}}
+                                        {% endif %}</h2></p><br>
+                                    <table style="border">
+                                        <tr>
+                                            <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Siste service: [{{obj.sisteservice}}]</td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="modal-footer bg-light">
+                                    <a class="btn btn-info" href="{% url 'obj_detail' obj.pk %}">Endringer</a>
+                                    <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}">Kontroll</a>
+                                    <a class="btn btn-warning" href="{% url 'obj_detail' obj.pk %}">Service</a>
+                                    <a class="btn btn-danger" href="{% url 'obj_detail' obj.pk %}">Avvik</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -50,8 +100,8 @@
     </div>
     {% else %}
     <div class="just-padding">
-        <div class="container-fluid">Kunden har ingen objekter som skal kontrolleres.
-        </div>
+        Kunden har ingen objekter som skal kontrolleres.
+
     </div>
     {% endif %}
 </div>

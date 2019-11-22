@@ -4,77 +4,72 @@
 {% if not query and not all %}
 {% regroup customers by month as month_list %}
 <div class="just-padding">
-    <div class="container-fluid">
+
         <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a> >
         </h5>
-    </div>
+
 </div>
-<div class="just-padding">
-    <div class="row">
-        <div class="col-sm-6">
-            <div id="accordion">
-                {% for month in month_list %}
-                <div class="card">
-                    <div class="bg-white" id="heading{{ forloop.counter }}">
-                        <button aria-controls="collapse{{ forloop.counter }}" aria-expanded="false"
-                                class="btn btn-link collapsed text-dark"
-                                data-target="#collapse{{ forloop.counter }}"
-                                data-toggle="collapse"><i class="glyphicon glyphicon-chevron-right"></i>
-                            {{ month.grouper }}
-                        </button>
-                    </div>
-                    <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
-                         data-parent="#accordion"
-                         id="collapse{{ forloop.counter }}">
-                        <div class="card-body">
-                            <table class="table table-sm table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Kunde</th>
-                                    <th>Adresse</th>
-                                    <th>Sted</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for kunde in month.list %}
-                                <tr>
-                                    <td><a class="text-dark btn" href="{% url 'detail' kunde.id %}">{{kunde.kunde}}</a>
-                                    </td>
-                                    <td><a class="text-dark btn"
-                                           href="{% url 'detail' kunde.id %}">{{kunde.badresse}}</a></td>
-                                    <td><a class="text-dark btn"
-                                           href="{% url 'detail' kunde.id %}">{{kunde.bpoststed}}</a></td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+<div id="accordion">
+    {% for month in month_list %}
+    <div class="card">
+        <div class="bg-white" id="heading{{ forloop.counter }}">
+            <button aria-controls="collapse{{ forloop.counter }}" aria-expanded="false"
+                    class="btn btn-link collapsed text-dark"
+                    data-target="#collapse{{ forloop.counter }}"
+                    data-toggle="collapse"><i class="glyphicon glyphicon-chevron-right"></i>
+                {{ month.grouper }}
+            </button>
+        </div>
+        <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
+             data-parent="#accordion"
+             id="collapse{{ forloop.counter }}">
+            <div class="card-body">
+                <table class="table w-auto table-hover">
+                    <thead>
+                    <tr>
+                        <th>Kunde</th>
+                        <th>Adresse</th>
+                        <th>Sted</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for kunde in month.list %}
+                    <tr>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    {% endfor %}
+</div>
 </div>
 {% else %}
 {% if customers %}
 <div class="just-padding">
     <div class="row">
-        <div class="col-sm-6">
-            <table class="table table-sm table-hover">
+        <div class="col-md-6">
+            <table class="table w-auto table-hover">
                 <thead>
                 <tr>
                     <th>Kunde</th>
                     <th>Adresse</th>
                     <th>Sted</th>
+                    <th>Kontrollmnd</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 {% for kunde in customers %}
                 <tr>
-                    <td><a class="text-dark btn" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
-                    <td><a class="text-dark btn" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
-                    <td><a class="text-dark btn" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
+                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
+                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

@@ -4,6 +4,7 @@
 
 .navbar-brand {
     font-family: 'Satisfy', cursive;
+    font-size: large;
 }
 @page {
     size: a4 landscape;
