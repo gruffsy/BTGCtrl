@@ -5,8 +5,8 @@
 {% regroup customers by month as month_list %}
 <div class="just-padding">
 
-        <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a> >
-        </h5>
+    <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a> >
+    </h5>
 
 </div>
 <div id="accordion">
@@ -52,29 +52,29 @@
 {% if customers %}
 <div class="just-padding">
     <div class="row">
-        <div class="col-md-6">
-            <table class="table w-auto table-hover">
-                <thead>
-                <tr>
-                    <th>Kunde</th>
-                    <th>Adresse</th>
-                    <th>Sted</th>
-                    <th>Kontrollmnd</th>
+        <table class="table w-auto table-hover">
+            <thead>
+            <tr>
+                <th>Kundenummer</th>
+                <th>Kunde</th>
+                <th>Adresse</th>
+                <th>Sted</th>
+                <th>Kontrollmnd</th>
 
-                </tr>
-                </thead>
-                <tbody>
-                {% for kunde in customers %}
-                <tr>
-                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
-                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
-                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
-                    <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            </tr>
+            </thead>
+            <tbody>
+            {% for kunde in customers %}
+            <tr>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
     {% endif %}
     {% endif %}
@@ -82,9 +82,7 @@
 {% if not customers %}
 <div class="just-padding">
     <div class="row">
-        <div class="col-sm-6">
-            <h2>Dessverre ingen treff...</h2>
-        </div>
+        <h2>Dessverre ingen treff...</h2>
     </div>
 </div>
 {% endif %}
