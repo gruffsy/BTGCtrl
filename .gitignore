@@ -1,1 +1,6 @@
+# Folders #
+##################
 /venv/
+# Specific files #
+##################
+btgsite/settings.py
