@@ -40,16 +40,28 @@ def obj_detail(request, pk):
     obj = Object.objects.get(pk=pk)
     customer = obj.customer
     kontroll = request.GET.get("kontroll")
-
+    service = request.GET.get("service")
+    endring = request.GET.get("endring")
+    avvik = request.GET.get("avvik")
     if kontroll == "now":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now().year
         obj.save()
+
+    if service == "now":
+        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now())
+        objtr.save()
+        obj.sisteservice = timezone.now().year
+        obj.save()
+
     context = {
         "customer": customer,
         "obj": obj,
         "kontroll": kontroll,
+        "service": service,
+        "endring": endring,
+        "avvik": avvik,
     }
 
     return render(request, "obj_detail.html", context)
