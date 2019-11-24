@@ -68,14 +68,16 @@
                                         {% if obj.extinguishant.slukkemiddel is not None %}
                                         {{obj.extinguishant.slukkemiddel}}
                                         {% endif %}</h2></p><br>
-                                    <table style="border">
-                                        <tr>
-                                            <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Siste service: [{{obj.sisteservice}}]</td>
-                                        </tr>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table" style="border">
+                                            <tr>
+                                                <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Siste service: [{{obj.sisteservice}}]</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                     <br>
                                 </div>
                                 <!-- Modal footer -->
