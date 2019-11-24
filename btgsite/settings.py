@@ -25,7 +25,7 @@ SECRET_KEY = '0y9x_%65nlkk3a@u!z5ci2#2wh!e9(0+q77^8r+f(dqfo^811s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gruffsy.pythonanywhere.com']
 
 
 # Application definition
@@ -77,12 +77,11 @@ WSGI_APPLICATION = 'btgsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hjbfylux',
-        'USER': 'hjbfylux',
-        'PASSWORD': 'GAQGMmqPA36LFGqhfSU3ChqazeaZAM3f',
-        'HOST': 'balarama.db.elephantsql.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'gruffsy$FireCtrl',
+        'USER': 'gruffsy',
+        'PASSWORD': 'HLNcz5AL',
+        'HOST': 'gruffsy.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -125,3 +124,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/gruffsy/BTGCtrl/static'
