@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block body %}
-
+{% if kontroll == "now" %}
 <h1>Kontrollert</h1>
 Se rapport: <a class="" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
-
+{% endif %}
+{% if kontroll == "ask" %}
+<h1>Kontrollere???</h1>
+Trykk her hvis objektet er kontrollert: <a class="btn"
+                                           href="{% url 'obj_detail' obj.pk %}?kontroll=now"">Kontroller!</a>
+{% endif %}
 {% endblock %}

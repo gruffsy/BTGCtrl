@@ -41,7 +41,7 @@ def obj_detail(request, pk):
     customer = obj.customer
     kontroll = request.GET.get("kontroll")
 
-    if kontroll:
+    if kontroll == "now":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now().year
@@ -49,6 +49,7 @@ def obj_detail(request, pk):
     context = {
         "customer": customer,
         "obj": obj,
+        "kontroll": kontroll,
     }
 
     return render(request, "obj_detail.html", context)
