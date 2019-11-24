@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
 from .render import Render
+import datetime
 
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
@@ -38,6 +39,13 @@ def detail(request, pk):
 def obj_detail(request, pk):
     obj = Object.objects.get(pk=pk)
     customer = obj.customer
+    kontroll = request.GET.get("kontroll")
+
+    if kontroll:
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
+        objtr.save()
+        obj.sistekontroll = timezone.now().year
+        obj.save()
     context = {
         "customer": customer,
         "obj": obj,

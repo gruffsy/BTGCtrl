@@ -1,38 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<div class="just-padding">
-    <div class="container-fluid">
-        <h5><a class="text-dark" href="#">{{obj.customer.month}}</a> >
-            <a class="text-dark" href="#">{{obj.customer.kunde}}</a> >
-            <a class="text-dark" href="#">{{obj.etg}}.etg</a> >
-            <a class="text-dark" href="#">{{obj.lokasjon}}</a> >
-            <a class="text-dark" href="#">{{obj.plassering}}</a> >
-        </h5></div>
-</div>
-<div class="just-padding">
-    <div class="card" style="width:400px">
-        <div class="card-header"><h4 class="card-title">Refnr. {{obj.refnr }}</h4></div>
-        <div class="card-body">
-            <p class="card-text">
-            <h1> {{obj.extinguishant.fabrikat}}
-                {{obj.extinguishant.type}}<br></h1>
-            <h2>
-                {% if obj.extinguishant.lengde is not None %}
-                {{obj.extinguishant.lengde}}a
-                {% endif %}
-                {% if obj.extinguishant.slukkemiddel is not None %}
-                {{obj.extinguishant.slukkemiddel}}
-                {% endif %}</h2></p>
-        </div>
-        <div class="card-footer">
-            <h6>Sist kontrollert: [Dato]</h6>
-            <h6>Sist service: [Dato]</h6><br>
-            <a class="btn btn-success" href="#">Kontroll</a>
-            <a class="btn btn-warning" href="#">Service</a>
-            <a class="btn btn-danger" href="#">Avvik</a>
-        </div>
-    </div>
-</div>
+<h1>Kontrollert</h1>
+Se rapport: <a class="" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
 
 {% endblock %}

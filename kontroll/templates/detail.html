@@ -63,7 +63,7 @@
                                         {{obj.extinguishant.type}}<br></h1>
                                     <h2>
                                         {% if obj.extinguishant.lengde is not None %}
-                                        {{obj.extinguishant.lengde}}a
+                                        {{obj.extinguishant.lengde}}
                                         {% endif %}
                                         {% if obj.extinguishant.slukkemiddel is not None %}
                                         {{obj.extinguishant.slukkemiddel}}
@@ -83,7 +83,7 @@
                                 <!-- Modal footer -->
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-info" href="{% url 'obj_detail' obj.pk %}">Endringer</a>
-                                    <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}">Kontroll</a>
+                                    <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}?kontroll=now">Kontroll</a>
                                     <a class="btn btn-warning" href="{% url 'obj_detail' obj.pk %}">Service</a>
                                     <a class="btn btn-danger" href="{% url 'obj_detail' obj.pk %}">Avvik</a>
                                 </div>
