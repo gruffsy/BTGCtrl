@@ -24,21 +24,28 @@
         <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="lead table w-auto table-hover">
                     <thead>
                     <tr>
+
                         <th>Kunde</th>
                         <th>Adresse</th>
                         <th>Sted</th>
+                        <th>Kundenr</th>
+                        <th>Kontrollmnd</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     {% for kunde in month.list %}
                     <tr>
+
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
