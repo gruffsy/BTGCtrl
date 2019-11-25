@@ -95,9 +95,54 @@
                          id="myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header bg-light">
+                                    <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
+                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                </div>
+                                <!-- Modal body -->
                                 <div class="modal-body">
-                                    <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}">reload
-                                        content</a>
+
+
+                                    <h1>Utfør endringer</h1>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Email address</label>
+                                            <input type="email" class="form-control" id="exampleFormControlInput1"
+                                                   placeholder="name@example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Example select</label>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect2">Example multiple select</label>
+                                            <select multiple class="form-control" id="exampleFormControlSelect2">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlTextarea1">Example textarea</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1"
+                                                      rows="3"></textarea>
+                                        </div>
+                                    </form>
+
+
+                                    <div class="modal-footer">
+
+                                        <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}">Utfør endringer[dummy]</a></div>
                                 </div>
                             </div>
                         </div>
