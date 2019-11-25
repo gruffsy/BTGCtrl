@@ -27,33 +27,30 @@ def index(request):
 
 
 def detail(request, pk):
-    kontroll = request.GET.get("kontroll")
-
-    if kontroll == "now":
+    custpk = request.POST.get("custpk")
+    toast = request.POST.get("toast")
+    if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
-        objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
+    else:
+        customer = Customer.objects.get(pk=pk)
+        obj = ""
+
+    objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
+
+    if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now().year
         obj.save()
-        context = {
-            "customer": customer,
-            "obj": obj,
-            "kontroll": kontroll,
-            "objects": objects,
-        }
-        return render(request, "detail.html", context)
 
-    else:
-
-        customer = Customer.objects.get(pk=pk)
-        objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
-        context = {
-            "customer": customer,
-            "objects": objects,
+    context = {
+        "customer": customer,
+        "obj": obj,
+        "toast": toast,
+        "objects": objects,
         }
-        return render(request, "detail.html", context)
+    return render(request, "detail.html", context)
 
 
 def obj_detail(request, pk):
@@ -97,7 +94,7 @@ def objtr(request, pk):
     return render(request, "objtr.html", context)
 
 
-def test(request):
+def test(request, pk):
     return render(request, 'test.html', {})
 
 
