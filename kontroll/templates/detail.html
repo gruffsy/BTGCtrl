@@ -10,7 +10,7 @@
 </div>
 {% if objects %}
 <div class="just-padding">
-    <div class="list-group list-group-root well">
+    <div class="lead list-group list-group-root well">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
 
@@ -35,7 +35,7 @@
                     <div class="row list-group-item d-flex justify-content-around">
 
                         <!-- Button to Open the Modal -->
-                        <a class="btn btn-light"
+                        <a class="btn btn-lg btn-light"
                            data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
                            data-toggle="modal">
                             Objekt: Nr.
