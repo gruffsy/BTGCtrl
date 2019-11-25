@@ -79,7 +79,7 @@
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-info"
                                        data-toggle="modal" data-dismiss="modal" href=""
-                                       data-target="#myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                                       data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                                         Endringer</a>
                                     <!--  <a class="btn btn-info"
                                          href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a> -->
@@ -92,10 +92,9 @@
                         </div>
                     </div>
                     <div class="modal fade"
-                         id="myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                         id="endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
-
                                 <!-- Modal Header -->
                                 <div class="modal-header bg-light">
                                     <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
@@ -103,8 +102,6 @@
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body">
-
-
                                     <h1>Utfør endringer</h1>
                                     <form>
                                         <div class="form-group">
@@ -138,11 +135,10 @@
                                                       rows="3"></textarea>
                                         </div>
                                     </form>
-
-
                                     <div class="modal-footer">
-
-                                        <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}">Utfør endringer[dummy]</a></div>
+                                        <a class="btn btn-success btn-lg" href="{% url 'detail' customer.id %}">Utfør
+                                            endringer[dummy]</a>
+                                        <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a></div>
                                 </div>
                             </div>
                         </div>
