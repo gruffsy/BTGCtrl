@@ -5,9 +5,10 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>{% block title %}FireCtrl{% endblock %}</title>
     {% load staticfiles %}
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet" type="text/css">
@@ -50,13 +51,11 @@
 }
 
 
+
+
     </style>
-
-
-
 </head>
 <body>
-
 <nav class="navbar navbar-expand-md navbar-light bg-light">
     <a class="navbar-brand" href="/">FireCtrl</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -65,25 +64,6 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item dropdown pr-4 active">
-                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                   href="#"
-                   id="navbarDropdown" role="button">
-                    Kunder
-                </a>
-                <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'index' %}?a=all">Alle kunder</a>
-                    <a class="dropdown-item" href="#">Legg til kunde</a>
-                </div>
-            </li>
-            <li class="nav-item active">
-                <form action="{% url 'index' %}" class="form-inline my-2" method="get">
-                    <input aria-label="Search" class="form-control mr-sm-2" name="q" placeholder="Søk etter kunde..."
-                           type="search">
-
-                </form>
-            </li>
             {% if customer %}
             <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -99,6 +79,23 @@
                 </div>
             </li>
             {% endif %}
+            <li class="nav-item dropdown pr-4 active">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#"
+                   id="navbarDropdown" role="button">
+                    Kunder
+                </a>
+                <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'index' %}?a=all">Alle kunder</a>
+                    <a class="dropdown-item" href="#">Legg til kunde</a>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <form action="{% url 'index' %}" class="form-inline my-2" method="get">
+                    <input aria-label="Search" class="form-control mr-sm-2" name="q" placeholder="Søk etter kunde..."
+                           type="search">
+                </form>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link pl-4" href="#"><i aria-hidden="true" class="glyphicon glyphicon-off"></i>&nbsp;Logg
                     ut</a>
@@ -108,7 +105,6 @@
 </nav>
 {% block body %}
 {% endblock %}
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -119,12 +115,10 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
 <script
         src="/js/lib/dummy.js"
         type="text/javascript"
 ></script>
-
 <script>
     // tell the embed parent frame the height of the content
     if (window.parent && window.parent.parent){
@@ -133,9 +127,9 @@
         slug: "ann7tctp"
       }], "*")
     }
-
     // always overwrite window.name, in case users try to set it manually
     window.name = "result"
+
 
 </script>
 <script type="text/javascript">//<![CDATA[
@@ -156,7 +150,11 @@ $(function() {
 
   //]]>
 
+
+
 </script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
 </body>
 </html>
