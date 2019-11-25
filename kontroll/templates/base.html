@@ -77,13 +77,11 @@
                     <a class="dropdown-item" href="#">Legg til kunde</a>
                 </div>
             </li>
-
-
             <li class="nav-item active">
                 <form action="{% url 'index' %}" class="form-inline my-2" method="get">
                     <input aria-label="Search" class="form-control mr-sm-2" name="q" placeholder="Søk etter kunde..."
                            type="search">
-                    <button class="invisible btn" type="submit">Søk</button>
+
                 </form>
             </li>
             {% if customer %}
