@@ -29,7 +29,6 @@
                      id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                     {% for obj in p.list %}
                     <div class="row list-group-item d-flex justify-content-around">
-
                         <!-- Button to Open the Modal -->
                         <a class="btn btn-lg btn-light"
                            data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
@@ -79,9 +78,11 @@
                                 <!-- Modal footer -->
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-info"
-                                       data-toggle="modal"  data-dismiss="modal" data-target="#myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">Ny modal</a>
-                                    <a class="btn btn-info"
-                                       href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a>
+                                       data-toggle="modal" data-dismiss="modal" href=""
+                                       data-target="#myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                                        Endringer</a>
+                                    <!--  <a class="btn btn-info"
+                                         href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a> -->
                                     <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}?kontroll=ask">Kontroll</a>
                                     <a class="btn btn-warning"
                                        href="{% url 'obj_detail' obj.pk %}?service=ask">Service</a>
@@ -90,17 +91,17 @@
                             </div>
                         </div>
                     </div>
-<div id="myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}" class="modal fade"">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-body">
-       <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}" >reload content</a>
-      </div>
-    </div>
-  </div>
-</div>
-
+                    <div class="modal fade"
+                         id="myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}">reload
+                                        content</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -112,7 +113,6 @@
     {% else %}
     <div class="just-padding">
         Kunden har ingen objekter som skal kontrolleres.
-
     </div>
     {% endif %}
 </div>
