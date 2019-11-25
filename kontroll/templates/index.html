@@ -5,7 +5,7 @@
 {% regroup customers by month as month_list %}
 <div class="just-padding">
 
-    <h5><a class="text-dark" href="{% url 'index' %}?a=all">Alfabetisk</a>
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all">Vis alfabetisk</a>
     </h5>
 
 </div>
@@ -53,7 +53,7 @@
 {% if customers %}
 <div class="just-padding">
 
-    <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a>
+    <h5><a class="text-dark" href="{% url 'index' %}">Vis sortert på måned</a>
     </h5>
 
 </div>
