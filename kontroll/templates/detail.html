@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="just-padding">
-
-    <h5><a class="text-dark" href="{% url 'index' %}">{{customer.month}} > </a>
-        <a class="text-dark" href="#">{{customer.kunde}}</a>
-        >
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
+        <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
     </h5>
-
 </div>
 {% if objects %}
 <div class="just-padding">
-    <div class="list-group list-group-root well">
+    <div class="lead list-group list-group-root well">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
-
         <a class="list-group-item" href="#">
             {{ e.grouper }}. etasje</a>
         <div class="list-group in" id="item-{{ forloop.counter }}">
@@ -33,9 +29,8 @@
                      id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                     {% for obj in p.list %}
                     <div class="row list-group-item d-flex justify-content-around">
-
                         <!-- Button to Open the Modal -->
-                        <a class="btn btn-light"
+                        <a class="btn btn-lg btn-light"
                            data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
                            data-toggle="modal">
                             Objekt: Nr.
@@ -83,7 +78,11 @@
                                 <!-- Modal footer -->
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-info"
-                                       href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a>
+                                       data-toggle="modal" data-dismiss="modal" href=""
+                                       data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                                        Endringer</a>
+                                    <!--  <a class="btn btn-info"
+                                         href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a> -->
                                     <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}?kontroll=ask">Kontroll</a>
 
                                     <a class="btn btn-warning"
@@ -93,8 +92,49 @@
                             </div>
                         </div>
                     </div>
-
-
+                    <div class="modal fade"
+                         id="endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header bg-light">
+                                    <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
+                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <h1>Utfør endringer</h1>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="lokasjon">Lokasjon</label>
+                                            <input type="text" class="form-control" id="lokasjon"
+                                                   placeholder="{{ obj.lokasjon }}">
+                                            <label for="plassering">Plassering</label>
+                                            <input type="text" class="form-control" id="plassering"
+                                                   placeholder="{{ obj.plassering }}">
+                                            <label for="etg">Etasje</label>
+                                            <input type="number" class="form-control" id="etg"
+                                                   placeholder="{{ obj.etg }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Velg slokketype</label>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-success btn-lg" href="{% url 'detail' customer.id %}">Utfør
+                                            endringer[dummy]</a>
+                                        <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -106,7 +146,6 @@
     {% else %}
     <div class="just-padding">
         Kunden har ingen objekter som skal kontrolleres.
-
     </div>
     {% endif %}
 </div>

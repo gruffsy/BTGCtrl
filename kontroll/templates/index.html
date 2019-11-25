@@ -5,16 +5,17 @@
 {% regroup customers by month as month_list %}
 <div class="just-padding">
 
-    <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a> >
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all">Vis alfabetisk</a>
     </h5>
 
 </div>
+
 <div id="accordion">
     {% for month in month_list %}
     <div class="card">
         <div class="bg-white" id="heading{{ forloop.counter }}">
             <button aria-controls="collapse{{ forloop.counter }}" aria-expanded="false"
-                    class="btn btn-link collapsed text-dark"
+                    class="btn btn-link btn-lg collapsed text-dark"
                     data-target="#collapse{{ forloop.counter }}"
                     data-toggle="collapse"><i class="glyphicon glyphicon-chevron-right"></i>
                 {{ month.grouper }}
@@ -23,21 +24,28 @@
         <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
-            <div class="card-body">
-                <table class="table w-auto table-hover">
+            <div class="card-body table-responsive">
+                <table class="lead table w-auto table-hover">
                     <thead>
                     <tr>
+
                         <th>Kunde</th>
                         <th>Adresse</th>
                         <th>Sted</th>
+                        <th>Kundenr</th>
+                        <th>Kontrollmnd</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     {% for kunde in month.list %}
                     <tr>
+
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -51,6 +59,12 @@
 {% else %}
 {% if customers %}
 <div class="just-padding">
+
+    <h5><a class="text-dark" href="{% url 'index' %}">Vis sortert på måned</a>
+    </h5>
+
+</div>
+<div class="just-padding">
     <div class="row table-responsive">
         <table class="lead table w-auto table-hover">
             <thead>
@@ -60,7 +74,6 @@
                 <th>Adresse</th>
                 <th>Sted</th>
                 <th>Kontrollmnd</th>
-
             </tr>
             </thead>
             <tbody>

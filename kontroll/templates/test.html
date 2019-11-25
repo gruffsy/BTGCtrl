@@ -1,47 +1,24 @@
 {% extends 'base.html' %}
 {% block body %}
-
-<form action="#" class="was-validated" id="objectform">
-    <div class="form-group">
-        <label for="refnr">Refnr:</label>
-        <input class="form-control" disabled id="refnr" name="refnr" placeholder="Refnr." type="number">
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#test1">Open Modal 1 </button>
+<div id="test1" class="modal fade"">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+     	<a class="btn btn-info btn-lg" data-toggle="modal"  data-dismiss="modal" data-target="#test2">Open Modal 2</a>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="lokasjon">Lokasjon:</label>
-        <input class="form-control" id="lokasjon" name="lokasjon" placeholder="Lokasjon" required type="text">
-        <div class="invalid-feedback">Vennligst fyll ut</div>
+  </div>
+</div>
+<div id="test2" class="modal fade"">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+       <a class="btn btn-info btn-lg" data-toggle="modal" data-dismiss="modal" href="/">reload content</a>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="extinguishant">Slokketype</label>
-        <select class="form-control" form="objectform" id="extinguishant" name="extinguishant" required>
-            <option>NOHA 25/19mm</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="etg">Etg:</label>
-        <input class="form-control" id="etg" name="etg" placeholder="Etasjenummer" type="number">
-    </div>
-    <div class="form-group">
-        <label for="plassering">Lokasjon:</label>
-        <input class="form-control" id="plassering" name="plassering" placeholder="Plassering" required type="text">
-        <div class="invalid-feedback">Vennligst fyll ut</div>
-    </div>
-
-
-    <div class="form-group form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" name="remember" required type="checkbox"> I agree on blabla.
-            <div class="valid-feedback">Valid.</div>
-            <div class="invalid-feedback">Check this checkbox to continue.</div>
-        </label>
-    </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
-</form>
+  </div>
+</div>
 {% endblock %}
-
-plassering = models.CharField(max_length=255, null=True, blank=True)
-prodyear = models.PositiveSmallIntegerField(default=2010, blank=True)
-
