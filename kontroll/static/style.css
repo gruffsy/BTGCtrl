@@ -5,3 +5,4 @@
 .navbar-brand {
     font-family: 'Satisfy', cursive;
 }
+select { height: 240px; }
