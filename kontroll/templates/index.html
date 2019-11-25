@@ -28,17 +28,21 @@
                 <table class="lead table w-auto table-hover">
                     <thead>
                     <tr>
+                        <th>Kundenr</th>
                         <th>Kunde</th>
                         <th>Adresse</th>
                         <th>Sted</th>
+                        <th>Kontrollmnd</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for kunde in month.list %}
                     <tr>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
+                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
