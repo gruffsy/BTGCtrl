@@ -79,6 +79,8 @@
                                 <!-- Modal footer -->
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-info"
+                                       data-toggle="modal"  data-dismiss="modal" data-target="#myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">Ny modal</a>
+                                    <a class="btn btn-info"
                                        href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a>
                                     <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}?kontroll=ask">Kontroll</a>
                                     <a class="btn btn-warning"
@@ -88,7 +90,16 @@
                             </div>
                         </div>
                     </div>
-
+<div id="myModal2{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}" class="modal fade"">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+       <a class="btn btn-info btn-lg" href="{% url 'detail' customer.id %}" >reload content</a>
+      </div>
+    </div>
+  </div>
+</div>
 
                     {% endfor %}
                 </div>
