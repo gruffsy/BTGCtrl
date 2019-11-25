@@ -5,10 +5,11 @@
 {% regroup customers by month as month_list %}
 <div class="just-padding">
 
-    <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a> >
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all">Alfabetisk</a>
     </h5>
 
 </div>
+
 <div id="accordion">
     {% for month in month_list %}
     <div class="card">
@@ -50,6 +51,12 @@
 </div>
 {% else %}
 {% if customers %}
+<div class="just-padding">
+
+    <h5><a class="text-dark" href="{% url 'index' %}">Månedsoversikt</a>
+    </h5>
+
+</div>
 <div class="just-padding">
     <div class="row table-responsive">
         <table class="lead table w-auto table-hover">

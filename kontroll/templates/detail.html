@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="just-padding">
-
-    <h5><a class="text-dark" href="{% url 'index' %}">{{customer.month}} > </a>
-        <a class="text-dark" href="#">{{customer.kunde}}</a>
-        >
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
+        <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
     </h5>
-
 </div>
 {% if objects %}
 <div class="just-padding">
     <div class="lead list-group list-group-root well">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
-
         <a class="list-group-item" href="#">
             {{ e.grouper }}. etasje</a>
         <div class="list-group in" id="item-{{ forloop.counter }}">

@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block body %}
+<div class="just-padding">
 
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
+        <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
+    </h5>
+</div>
 
 {% if kontroll == "now" %}
 <h1>Kontrollert</h1>

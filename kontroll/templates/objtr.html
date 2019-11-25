@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block body %}
+
+<div class="just-padding">
+
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
+        <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
+    </h5>
+</div>
 <a href="{% url 'pdf' customer.id %}">Skriv til PDF</a>
 <div class="table-responsive">
     <table class="lead table w-auto table-hover">
@@ -39,7 +46,7 @@
                 {% if obj.object.extinguishant.lengde %}
                 {{ obj.object.extinguishant.lengde }}
                 {% endif %}
-            </a></td>
+                </a></td>
             <td class="text-dark">{{ obj.object.prodyear }}</td>
             <td class="text-dark">user</td>
         </tr>
