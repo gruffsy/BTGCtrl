@@ -41,8 +41,9 @@
                             {% endif %}
                             {% if obj.extinguishant.slukkemiddel is not None %}
                             {{obj.extinguishant.slukkemiddel}}
-                            {% endif %}</a></div>
-                    <!-- The Modal -->
+                            {% endif %}</a>
+                    </div>
+                    <!-- Hoved Modal -->
                     <div class="modal fade"
                          id="myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -62,7 +63,7 @@
                                         {% endif %}
                                         {% if obj.extinguishant.slukkemiddel is not None %}
                                         {{obj.extinguishant.slukkemiddel}}
-                                        {% endif %}</h2></p><br>
+                                        {% endif %}</h2><br>
                                     <div class="table-responsive">
                                         <table class="lead table" style="border">
                                             <tr>
@@ -81,10 +82,12 @@
                                        data-toggle="modal" data-dismiss="modal" href=""
                                        data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                                         Endringer</a>
-                                    <!--  <a class="btn btn-info"
-                                         href="{% url 'obj_detail' obj.pk %}?endring=ask">Endringer</a> -->
-                                    <a class="btn btn-success" href="{% url 'obj_detail' obj.pk %}?kontroll=ask">Kontroll</a>
-
+                                    <a class="btn btn-success"
+                                       data-dismiss="modal"
+                                       data-target="#kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                                       data-toggle="modal"
+                                       href="">
+                                        Kontroll</a>
                                     <a class="btn btn-warning"
                                        href="{% url 'obj_detail' obj.pk %}?service=ask">Service</a>
                                     <a class="btn btn-danger" href="{% url 'obj_detail' obj.pk %}?avvik=ask">Avvik</a>
@@ -92,6 +95,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Endringer Modal -->
                     <div class="modal fade"
                          id="endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -127,10 +131,41 @@
                                             </select>
                                         </div>
                                     </form>
-                                    <div class="modal-footer">
-                                        <a class="btn btn-success btn-lg" href="{% url 'detail' customer.id %}">Utfør
-                                            endringer[dummy]</a>
-                                        <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a></div>
+                                </div>
+                                <div class="modal-footer bg-light">
+                                    <a class="btn btn-success btn-lg" href="{% url 'detail' customer.id %}">Utfør
+                                        endringer[dummy]</a>
+                                    <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Kontroll Modal -->
+                    <div class="modal fade"
+                         id="kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header bg-light">
+                                    <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
+                                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <h1>Kontroll</h1>
+                                    <h3>Kontrollrutine</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim id est laborum.</p>
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="modal-footer bg-light">
+                                    <a class="btn btn-success btn-lg"
+                                       href="{% url 'obj_detail' customer.id %}?kontroll=now">Utfør kontroll[dummy]</a>
+                                    <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
                                 </div>
                             </div>
                         </div>
