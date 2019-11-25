@@ -7,6 +7,21 @@
 </div>
 {% if objects %}
 <div class="just-padding">
+    <!-- Toast for kontroll -->
+    {% if kontroll == "now" %}
+    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false" role="alert">
+        <div class="toast-header">
+            <strong class="mr-auto">Kontroll</strong>
+            <small class="text-muted">{{ obj }}</small>
+            <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Da er {{ obj }} kontrollert og lagt til i kontrollrapporten
+        </div>
+    </div>
+    {% endif %}
     <div class="lead list-group list-group-root well">
         {% regroup objects by etg as etg_list %}
         {% for e in etg_list %}
@@ -164,7 +179,7 @@
                                 <!-- Modal footer -->
                                 <div class="modal-footer bg-light">
                                     <a class="btn btn-success btn-lg"
-                                       href="{% url 'obj_detail' customer.id %}?kontroll=now">Utfør kontroll[dummy]</a>
+                                       href="{% url 'detail' obj.pk %}?kontroll=now">Utfør kontroll[dummy]</a>
                                     <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
                                 </div>
                             </div>
@@ -183,5 +198,7 @@
         Kunden har ingen objekter som skal kontrolleres.
     </div>
     {% endif %}
+
 </div>
+
 {% endblock %}

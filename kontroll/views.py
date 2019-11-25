@@ -6,6 +6,7 @@ from django.utils import timezone
 from .render import Render
 import datetime
 
+
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
     query = request.GET.get("q")
@@ -26,14 +27,33 @@ def index(request):
 
 
 def detail(request, pk):
-    customer = Customer.objects.get(pk=pk)
-    objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
-    context = {
-        "customer": customer,
-        "objects": objects,
-    }
+    kontroll = request.GET.get("kontroll")
 
-    return render(request, "detail.html", context)
+    if kontroll == "now":
+        obj = Object.objects.get(pk=pk)
+        customer = obj.customer
+        objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
+        objtr.save()
+        obj.sistekontroll = timezone.now().year
+        obj.save()
+        context = {
+            "customer": customer,
+            "obj": obj,
+            "kontroll": kontroll,
+            "objects": objects,
+        }
+        return render(request, "detail.html", context)
+
+    else:
+
+        customer = Customer.objects.get(pk=pk)
+        objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
+        context = {
+            "customer": customer,
+            "objects": objects,
+        }
+        return render(request, "detail.html", context)
 
 
 def obj_detail(request, pk):
