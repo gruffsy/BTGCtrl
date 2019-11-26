@@ -7,7 +7,7 @@
 </div>
 {% if objects %}
 <div class="just-padding">
-    <!-- Toast for kontroll -->
+    <!-- Toast -->
     {% if toast %}
     <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false" role="alert">
         {% if toast == "kontroll" %}
@@ -18,19 +18,24 @@
             <div class="toast-header bg-info text-white">
                 <strong class="mr-auto">Endring</strong>
                 {% endif %}
-                <small>Objekt: Nr.
-                    {{obj.refnr}}-{{obj.extinguishant.fabrikat}}
-                    {{obj.extinguishant.type}}
-                    {% if obj.extinguishant.lengde is not None %}
-                    {{obj.extinguishant.lengde}}a
+                {% if toast == "service" %}
+                <div class="toast-header bg-warning text-white">
+                    <strong class="mr-auto">Service</strong>
                     {% endif %}
-                    {% if obj.extinguishant.slukkemiddel is not None %}
-                    {{obj.extinguishant.slukkemiddel}}
-                    {% endif %}</small>
-                <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+                    <small>Objekt: Nr.
+                        {{obj.refnr}}-{{obj.extinguishant.fabrikat}}
+                        {{obj.extinguishant.type}}
+                        {% if obj.extinguishant.lengde is not None %}
+                        {{obj.extinguishant.lengde}}a
+                        {% endif %}
+                        {% if obj.extinguishant.slukkemiddel is not None %}
+                        {{obj.extinguishant.slukkemiddel}}
+                        {% endif %}</small>
+                    <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Toat Body -->
             <div class="toast-body">
                 Da er objektnr. {{obj.refnr}}, {{obj.extinguishant.fabrikat}}
                 {{obj.extinguishant.type}}
@@ -39,7 +44,19 @@
                 {% endif %}
                 {% if obj.extinguishant.slukkemiddel is not None %}
                 {{obj.extinguishant.slukkemiddel}},
-                {% endif %} kontrollert og lagt til i kontrollrapporten
+                {% endif %}
+
+
+                {% if toast == "kontroll" %}
+                kontrollert og lagt til i kontrollrapporten
+                {% endif %}
+                {% if toast == "endring" %}
+                oppdatert og endret
+                {% endif %}
+                {% if toast == "service" %}
+                fått utført service og lagt til i kontrollrapporten
+                {% endif %}
+
             </div>
         </div>
         {% endif %}
@@ -127,7 +144,12 @@
                                            href="">
                                             Kontroll</a>
                                         <a class="btn btn-warning"
-                                           href="{% url 'obj_detail' obj.pk %}?service=ask">Service</a>
+                                           data-dismiss="modal"
+                                           data-target="#service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                                           data-toggle="modal"
+                                           href="">
+                                            Service</a>
+
                                         <a class="btn btn-danger"
                                            href="{% url 'obj_detail' obj.pk %}?avvik=ask">Avvik</a>
                                     </div>
@@ -220,6 +242,45 @@
                                             {% csrf_token %}
                                             <button class="btn btn-success btn-lg" name="toast" type="submit"
                                                     value="kontroll">Utfør kontroll
+                                            </button>
+                                            <input name="custpk" type="hidden" value="{{ customer.pk }}">
+                                        </form>
+                                        <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Modal -->
+                        <div class="modal fade"
+                             id="service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header bg-light">
+                                        <h4 class="modal-title">Refnr. {{obj.refnr }}</h4>
+                                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <h1>Service</h1>
+                                        <h3>Servicerutine</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor
+                                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat.
+                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                                            eu
+                                            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                                            in
+                                            culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer bg-light">
+                                        <form action="{% url 'detail' obj.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-success btn-lg" name="toast" type="submit"
+                                                    value="service">Utfør service
                                             </button>
                                             <input name="custpk" type="hidden" value="{{ customer.pk }}">
                                         </form>

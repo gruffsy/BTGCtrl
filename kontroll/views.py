@@ -44,6 +44,13 @@ def detail(request, pk):
         obj.sistekontroll = timezone.now().year
         obj.save()
 
+    if toast == "service":
+        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), kontrolldato=timezone.now())
+        objtr.save()
+        obj.sisteservice = timezone.now().year
+        obj.sistekontroll = timezone.now().year
+        obj.save()
+
     context = {
         "customer": customer,
         "obj": obj,
