@@ -9,7 +9,7 @@
 <div class="just-padding">
     <!-- Toast -->
     {% if toast %}
-    <div aria-atomic="true" aria-live="assertive" class="toast" data-delay="5000" role="alert">
+    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false">
         {% if toast == "kontroll" %}
         <div class="toast-header bg-success text-white">
             <strong class="mr-auto">Kontroll</strong>
@@ -35,7 +35,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!-- Toat Body -->
+                <!-- Toast Body -->
                 <div class="toast-body">
                     Da er objekt {{obj.extinguishant.fabrikat}}
                     {{obj.extinguishant.type}}
@@ -45,8 +45,6 @@
                     {% if obj.extinguishant.slukkemiddel is not None %}
                     {{obj.extinguishant.slukkemiddel}},
                     {% endif %}
-
-
                     {% if toast == "kontroll" %}
                     kontrollert og lagt til i kontrollrapporten
                     {% endif %}
@@ -56,7 +54,6 @@
                     {% if toast == "service" %}
                     fått utført service og lagt til i kontrollrapporten
                     {% endif %}
-
                 </div>
             </div>
             {% endif %}
@@ -307,7 +304,7 @@
                 Kunden har ingen objekter som skal kontrolleres.
             </div>
             {% endif %}
-
         </div>
-
-        {% endblock %}
+    </div>
+</div>
+{% endblock %}
