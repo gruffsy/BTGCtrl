@@ -50,7 +50,6 @@ class Extinguishant(models.Model):
 
 class Object(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    refnr = models.PositiveSmallIntegerField(blank=False)
     lokasjon = models.CharField(max_length=255, null=True, blank=True)
     etg = models.CharField(max_length=255, null=True, blank=True)
     plassering = models.CharField(max_length=255, null=True, blank=True)
@@ -60,7 +59,8 @@ class Object(models.Model):
     sistekontroll = models.PositiveSmallIntegerField(blank=True)
     nesteservice = models.PositiveSmallIntegerField(blank=True)
     nestekontroll = models.PositiveSmallIntegerField(blank=True)
-
+    avvik = models.BooleanField(default=False)
+    aktiv = models.BooleanField(default=True)
     def __str__(self):
         return self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg + ' | ' + self.extinguishant.fabrikat
 
@@ -76,3 +76,9 @@ class ObjTr(models.Model):
         return str(self.object.refnr) + ' | ' + self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
 
 
+class Avvik(models.Model):
+    avvik = models.TextField()
+    slokketype = models.ManyToManyField('Slokketype')
+
+    def __str__(self):
+        return str(self.avvik)

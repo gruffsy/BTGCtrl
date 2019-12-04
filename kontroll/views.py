@@ -1,11 +1,69 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Customer, Object, ObjTr
+from django.shortcuts import render
+from .models import Customer, Object, ObjTr, Slokketype
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
 from .render import Render
 import datetime
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    # use short variable names
+    sUrl = settings.STATIC_URL  # Typically /static/
+    sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+    mUrl = settings.MEDIA_URL  # Typically /static/media/
+    mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+    # convert URIs to absolute system paths
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+        raise Exception(
+            'media URI must start with %s or %s' % (sUrl, mUrl)
+        )
+    return path
+
+
+def render_pdf_view(request):
+    template_path = 'pdf.html'
+    context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(Context(context))
+
+    # create a pdf
+    pisaStatus = pisa.CreatePDF(
+        html, dest=response, link_callback=link_callback)
+    # if error then show some funy view
+    if pisaStatus.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
@@ -29,6 +87,7 @@ def index(request):
 def detail(request, pk):
     custpk = request.POST.get("custpk")
     toast = request.POST.get("toast")
+
     if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
@@ -36,7 +95,8 @@ def detail(request, pk):
         customer = Customer.objects.get(pk=pk)
         obj = ""
 
-    objects = Object.objects.filter(customer=customer).order_by("etg", "refnr")
+    objects = Object.objects.filter(customer=customer).order_by("etg", "plassering")
+    exts = Slokketype.objects.all()
 
     if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
@@ -56,6 +116,7 @@ def detail(request, pk):
         "obj": obj,
         "toast": toast,
         "objects": objects,
+        "exts": exts
         }
     return render(request, "detail.html", context)
 
@@ -120,4 +181,16 @@ class Pdf(View):
             "kontrs": kontrs,
             "services": services,
         }
-        return Render.render('pdf.html', context)
+        template_path = 'pdf.html'
+
+        # Create a Django response object, and specify content_type as pdf
+        response = HttpResponse(content_type='application/pdf')
+        template = get_template(template_path)
+        html = template.render(context)
+        # create a pdf
+        pisaStatus = pisa.CreatePDF(
+            html, dest=response, link_callback=link_callback)
+
+        return response
+
+    # return Render.render('pdf.html', context)
