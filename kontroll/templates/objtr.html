@@ -7,38 +7,85 @@
         <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
     </h5>
 </div>
-<a href="{% url 'pdf' customer.id %}">Skriv til PDF</a>
+
+
 <div class="table-responsive">
-    <table class="lead table w-auto">
-        <thead>
+    <table class="table w-auto">
+        <tr>
+            <td>Navn:</td>
+            <td>{{customer.kunde}}</td>
+            <td>Kundenummer:</td>
+            <td>{{customer.tripletex}}</td>
+        </tr>
+        <tr>
+            <td>Oppdragsadresse:</td>
+            <td>{{customer.badresse}}</td>
+            <td>Fakturaadresse:</td>
+            <td>{% if customer.fadresse is not None %}
+                {{customer.fadresse}}
+                {% else %}
+                {{customer.badresse}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Postnr./-sted:</td>
+            <td>{{customer.bpostnr}} {{customer.bpoststed}}</td>
+            <td>Fakturapostnr./-sted:</td>
+            <td>{% if customer.fpostnr is not None %}
+                {{customer.fpostnr}}
+                {{customer.fpoststed}}
+                {% else %}
+                {{customer.bpostnr}}
+                {{customer.bpoststed}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Kontaktperson:</td>
+            <td>{{customer.kontaktperson}}</td>
+            <td>Telefonnr:</td>
+            <td>{{customer.tlf1}}
+                {% if customer.tlf2 is not None %}
+                /
+                {{customer.tlf2}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>E-post:</td>
+            <td>{{customer.email}}</td>
+        </tr>
+    </table>
+    <a class="btn btn-info" href="{% url 'pdf' customer.id %}">Skriv rapport(PDF)</a>
+    <br>
+    <table class="small table w-auto">
+        <tr>
+            <td colspan="9"><h1>Kontrollrapport</h1></td>
+        </tr>
+
         <tr>
             <th>Kontrollert</th>
-            <th>Service</th>
-            <th>Slokkeutstyr</th>
-            <th>Objektnr</th>
+            <th>Etg</th>
             <th>Lokasjon</th>
             <th>Plassering</th>
-            <th>Etasje</th>
-            <th>Fabrikat</th>
-            <th>Type</th>
-            <th>Prod.år</th>
+            <th>Slokkeutstyr</th>
+            <th>Utstyr</th>
+            <th>Prod. år</th>
+            <th>Siste service</th>
+            <th>Neste service</th>
             <th>Kontrollør</th>
-
-
         </tr>
-        </thead>
-        <tbody>
-        {% for obj in objs %}
+
+        <tr>&nbsp;</tr>
+        {% for obj in kontrs %}
         <tr>
-            <td class="text-dark">{{ obj.kontrolldato }}</td>
-            <td class="text-dark">{{ obj.servicedato }}</td>
-            <td class="text-dark">{{ obj.object.extinguishant.slokketype.navn }}</td>
-            <td class="text-dark">{{ obj.object.refnr }}</td>
-            <td class="text-dark">{{ obj.object.lokasjon }}</td>
-            <td class="text-dark">{{ obj.object.plassering }}</td>
-            <td class="text-dark">{{ obj.object.etg }}</td>
-            <td class="text-dark">{{ obj.object.extinguishant.fabrikat }}</td>
-            <td class="text-dark">
+            <td>{{ obj.kontrolldato }}</td>
+            <td>{{ obj.object.etg }}</td>
+            <td>{{ obj.object.lokasjon }}</td>
+            <td>{{ obj.object.plassering }}</td>
+            <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
+            <td>{{ obj.object.extinguishant.fabrikat }}
                 {{ obj.object.extinguishant.type }}
                 {% if obj.object.extinguishant.slukkemiddel %}
                 {{ obj.object.extinguishant.slukkemiddel }}
@@ -46,12 +93,50 @@
                 {% if obj.object.extinguishant.lengde %}
                 {{ obj.object.extinguishant.lengde }}
                 {% endif %}
-                </a></td>
-            <td class="text-dark">{{ obj.object.prodyear }}</td>
-            <td class="text-dark">user</td>
+            </td>
+            <td>{{ obj.object.prodyear }}</td>
+            <td>{{ obj.object.sisteservice }}</td>
+            <td>{{ obj.object.nesteservice }}</td>
+            <td>user</td>
         </tr>
         {% endfor %}
-        </tbody>
+    </table>
+
+    <table class="small table w-auto">
+        <tr>
+            <td colspan="9"><h1>Servicerapport</h1></td>
+        </tr>
+        <tr>
+            <th>Service</th>
+            <th>Etg</th>
+            <th>Lokasjon</th>
+            <th>Plassering</th>
+            <th>Slokkeutstyr</th>
+            <th>Utstyr</th>
+            <th>Prod. år</th>
+            <th>Kontrollør</th>
+        </tr>
+        <tr>&nbsp;</tr>
+        {% for obj in services %}
+        <tr>
+            <td>{{ obj.servicedato }}</td>
+            <td>{{ obj.object.etg }}</td>
+            <td>{{ obj.object.lokasjon }}</td>
+            <td>{{ obj.object.plassering }}</td>
+            <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
+            <td>{{ obj.object.extinguishant.fabrikat }}
+                {{ obj.object.extinguishant.type }}
+                {% if obj.object.extinguishant.slukkemiddel %}
+                {{ obj.object.extinguishant.slukkemiddel }}
+                {% endif %}
+                {% if obj.object.extinguishant.lengde %}
+                {{ obj.object.extinguishant.lengde }}
+                {% endif %}
+            </td>
+            <td>{{ obj.object.prodyear }}</td>
+            <td>user</td>
+        </tr>
+        {% endfor %}
     </table>
 </div>
 

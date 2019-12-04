@@ -155,9 +155,15 @@ def obj_detail(request, pk):
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
     objs = customer.objtr_set.all()
+    kontrs = objs.exclude(kontrolldato=None)
+    services = objs.exclude(servicedato=None)
+    today = timezone.now()
     context = {
         "customer": customer,
+        "today": today,
         "objs": objs,
+        "kontrs": kontrs,
+        "services": services,
     }
     return render(request, "objtr.html", context)
 
