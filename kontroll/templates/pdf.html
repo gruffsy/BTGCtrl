@@ -2,111 +2,254 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Sales Report</title>
-    <style type="text/css">
+    <title>Dokumentasjon {{customer.kunde}}</title>
+    <style>
         @page {
             size: A4 landscape;
+            top: 3.2cm;
             margin: 1cm;
+            @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 0cm;
+                margin-left: 27cm;
+                margin-right: 1cm;
+                height: 0.5cm;
+                }
+             @frame header {
+               -pdf-frame-content: page-header;
+                top: 0cm;
+                margin-top: 0.5cm;
+                margin-left: 1cm;
+                margin-right: 1cm;
+
+                }
+
+
         }
-        .table {
-            width: 100%;
-            max-width: 100%;
-            margin-bottom: 5px;
-            background-color: #fff;
+
+        th, td {
+  padding: 1px;
+
+}
+
+        th {
+            border-bottom: 1px solid #ddd;
+            text-align: left;
         }
-        .table th,
-        .table td {
-            padding: 5px;
-            vertical-align: top;
-            border-top: 1px solid #000;
-            text-align: center;
-        }
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #000;
-        }
-        .table tbody + tbody {
-            border-top: 2px solid #000;
-        }
-        .table .table {
-            background-color: #fff;
-        }
-        .list-group {
-            display: block;
-            width: 100%;
-            list-style: none;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-        .list-group p {
-            width: 100%;
-            height: 20px;
-            line-height: 20px;
-            list-style: none;
-            font-size: 1.1em;
-        }
+        tr { page-break-inside: avoid !important; }
 
 
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Sales Report - {{ today | date:"d/m/Y" }}</h3>
-        </div>
-
-        <div class="list-group">
-            <p>Name: {{customer.kunde}}</p>
-        </div>
-
-        <table class="table w-auto table-hover">
-            <thead>
-            <tr>
-                <th>Kontrollert</th>
-                <th>Service</th>
-                <th>Slokkeutstyr</th>
-                <th>Objektnr</th>
-                <th>Lokasjon</th>
-                <th>Plassering</th>
-                <th>Etasje</th>
-                <th>Fabrikat</th>
-                <th>Type</th>
-                <th>Prod. år</th>
-                <th>Kontrollør</th>
-
-
-            </tr>
-            </thead>
-            <tbody>
-            {% for obj in objs %}
-            <tr>
-                <td>{{ obj.kontrolldato }}</td>
-                <td>{{ obj.servicedato }}</td>
-                <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
-                <td>{{ obj.object.refnr }}</td>
-                <td>{{ obj.object.lokasjon }}</td>
-                <td>{{ obj.object.plassering }}</td>
-                <td>{{ obj.object.etg }}</td>
-                <td>{{ obj.object.extinguishant.fabrikat }}</td>
-                <td>
-                    {{ obj.object.extinguishant.type }}
-                    {% if obj.object.extinguishant.slukkemiddel %}
-                    {{ obj.object.extinguishant.slukkemiddel }}
-                    {% endif %}
-                    {% if obj.object.extinguishant.lengde %}
-                    {{ obj.object.extinguishant.lengde }}
-                    {% endif %}
-                </td>
-                <td>{{ obj.object.prodyear }}</td>
-                <td>user</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div id="page-header">
+    <table>
+        <tr>
+            <td rowspan="7" style="width:220px"><img alt=""
+                                                     src="http://btg.as/wp-content/uploads/2016/09/cropped-logo-transparent58-1.png">
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="6" style="width:20px"></td>
+        </tr>
+        <tr>
+            <td style="width:120px">Utførende selskap:</td>
+            <td style="width:220px">BRANNTEKNIKK GRENLAND AS</td>
+            <td style="width:120px">Kompetent virksomhet:</td>
+            <td style="width:220px">Reg.nr. 113</td>
+        </tr>
+        <tr>
+            <td>Adresse:</td>
+            <td>Klyvevegen 9</td>
+            <td>Orgnr.:</td>
+            <td>984879873</td>
+        </tr>
+        <tr>
+            <td>Postnr/-sted:</td>
+            <td>3740 Skien</td>
+            <td>E-post:</td>
+            <td>btg@btg.as</td>
+        </tr>
+        <tr>
+            <td>Telefonnr.:</td>
+            <td>35 59 46 36</td>
+            <td>Webside</td>
+            <td>www.btg.as</td>
+        </tr>
+        <tr>
+            <td>Mobilnr.:</td>
+            <td>975 01 062</td>
+        </tr>
+    </table>
+    <hr>
 </div>
+<br><br><br>
+<h1>DOKUMENTASJON PÅ UTFØRT KONTROLL AV BRANNSLOKKEUTSTYR</h1>
+<br>
+<h2>EIERINFORMASJON</h2>
+<table>
+    <tr>
+        <td>Navn:</td>
+        <td>{{customer.kunde}}</td>
+        <td>Kundenummer:</td>
+        <td>{{customer.tripletex}}</td>
+    </tr>
+    <tr>
+        <td>Oppdragsadresse:</td>
+        <td>{{customer.badresse}}</td>
+        <td>Fakturaadresse:</td>
+        <td>{% if customer.fadresse is not None %}
+            {{customer.fadresse}}
+            {% else %}
+            {{customer.badresse}}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td style="width:120px">Postnr./-sted:</td>
+        <td style="width:220px">{{customer.bpostnr}} {{customer.bpoststed}}</td>
+        <td style="width:120px">Fakturapostnr./-sted:</td>
+        <td style="width:220px">{% if customer.fpostnr is not None %}
+            {{customer.fpostnr}}
+            {{customer.fpoststed}}
+            {% else %}
+            {{customer.bpostnr}}
+            {{customer.bpoststed}}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Kontaktperson:</td>
+        <td>{{customer.kontaktperson}}</td>
+        <td>Telefonnr:</td>
+        <td>{{customer.tlf1}}
+            {% if customer.tlf2 is not None %}
+            /
+            {{customer.tlf2}}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>E-post:</td>
+        <td>{{customer.email}}</td>
+    </tr>
+</table>
+<hr>
+<table width="170px">
+    <tr>
+        <td>Kontroller:</td>
+        <td align="right">{% for kont in kontrs %}
+            {% if forloop.last %}
+            {{forloop.counter}} stk
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Service:</td>
+        <td align="right">{% for service in services %}
+            {% if forloop.last %}
+            {{forloop.counter}} stk
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Avvik:</td>
+        <td align="right">0 stk</td>
+    </tr>
+</table>
 
+<hr>
+<pdf:nextpage/>
+<table repeat="3">
+    <tr>
+        <td colspan="9"><h1>Kontrollrapport</h1></td>
+    </tr>
+
+    <tr>
+        <th style="width:80px">Kontrollert</th>
+        <th style="width:25px">Etg</th>
+        <th style="width:125px">Lokasjon</th>
+        <th style="width:250px">Plassering</th>
+        <th style="width:80px">Slokkeutstyr</th>
+        <th style="width:250px">Utstyr</th>
+        <th style="width:50px">Prod. år</th>
+        <th style="width:50px">Siste service</th>
+        <th style="width:50px">Neste service</th>
+        <th style="width:125px">Kontrollør</th>
+    </tr>
+
+    <tr>&nbsp;</tr>
+    {% for obj in kontrs %}
+    <tr>
+        <td>{{ obj.kontrolldato }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
+            {% endif %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
+            {% endif %}
+        </td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>{{ obj.object.sisteservice }}</td>
+        <td>{{ obj.object.nesteservice }}</td>
+        <td>user</td>
+    </tr>
+    {% endfor %}
+</table>
+<pdf:nextpage>
+    <table>
+        <tr>
+            <td colspan="9"><h1>Servicerapport</h1></td>
+        </tr>
+        <tr>
+            <th style="width:80px">Service</th>
+            <th style="width:25px">Etg</th>
+            <th style="width:125px">Lokasjon</th>
+            <th style="width:250px">Plassering</th>
+            <th style="width:80px">Slokkeutstyr</th>
+            <th style="width:250px">Utstyr</th>
+            <th style="width:50px">Prod. år</th>
+            <th style="width:125px">Kontrollør</th>
+        </tr>
+        <tr>&nbsp;</tr>
+        {% for obj in services %}
+        <tr>
+            <td>{{ obj.servicedato }}</td>
+            <td>{{ obj.object.etg }}</td>
+            <td>{{ obj.object.lokasjon }}</td>
+            <td>{{ obj.object.plassering }}</td>
+            <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
+            <td>{{ obj.object.extinguishant.fabrikat }}
+                {{ obj.object.extinguishant.type }}
+                {% if obj.object.extinguishant.slukkemiddel %}
+                {{ obj.object.extinguishant.slukkemiddel }}
+                {% endif %}
+                {% if obj.object.extinguishant.lengde %}
+                {{ obj.object.extinguishant.lengde }}
+                {% endif %}
+            </td>
+            <td>{{ obj.object.prodyear }}</td>
+            <td>user</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <footer>
+        <div id="footerContent">
+            Side
+            <pdf:pagenumber/>
+            av
+            <pdf:pagecount>
+
+        </div>
+    </footer>
 </body>
 </html>

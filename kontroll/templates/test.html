@@ -1,40 +1,345 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  <title></title>
+  <script type="text/javascript">
+        function PrintPage() {
+            document.getElementById('print').style.display = 'none';
+            window.resizeTo(960, 600);
+            document.URL = "";
+            window.location.href = "";
+            window.print();
+        }
 
+
+  </script>
+  <style media="print" type="text/css">
+        @page
+        {
+            size: auto; /* auto is the initial value */
+            margin: 2mm 4mm 0mm 0mm; /* this affects the margin in the printer settings */
+        }
+        thead
+        {
+            display: table-header-group;
+        }
+        tfoot
+        {
+            display: table-footer-group;
+        }
+
+  </style>
+  <style media="screen" type="text/css">
+        thead
+        {
+            display: block;
+        }
+        tfoot
+        {
+            display: block;
+        }
+
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <h3>Toast Example</h3>
-    <p>In this example, we use data-autohide="false" to show the toast by default. You can close it by clicking on the
-        close (x) icon inside the toast header.</p>
-
-    <div class="toast" data-autohide="false">
-        <div class="toast-header">
-            <strong class="mr-auto text-primary">Toast Header</strong>
-            <small class="text-muted">5 mins ago</small>
-            <button class="ml-2 mb-1 close" data-dismiss="toast" type="button">&times;</button>
-        </div>
-        <div class="toast-body">
-            Some text inside the toast body
-        </div>
-    </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function(){
-  $('.toast').toast('show');
-});
-
-</script>
-
+<form id="form1" runat="server">
+  <div>
+    <table style="width: 500px; margin: 0 auto;">
+      <thead>
+      <tr>
+        <td>
+          header comes here for each page
+        </td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          1
+        </td>
+      </tr>
+      <tr>
+        <td>
+          2
+        </td>
+      </tr>
+      <tr>
+        <td>
+          3
+        </td>
+      </tr>
+      <tr>
+        <td>
+          4
+        </td>
+      </tr>
+      <tr>
+        <td>
+          5
+        </td>
+      </tr>
+      <tr>
+        <td>
+          6
+        </td>
+      </tr>
+      <tr>
+        <td>
+          7
+        </td>
+      </tr>
+      <tr>
+        <td>
+          8
+        </td>
+      </tr>
+      <tr>
+        <td>
+          9
+        </td>
+      </tr>
+      <tr>
+        <td>
+          10
+        </td>
+      </tr>
+      <tr>
+        <td>
+          11
+        </td>
+      </tr>
+      <tr>
+        <td>
+          12
+        </td>
+      </tr>
+      <tr>
+        <td>
+          13
+        </td>
+      </tr>
+      <tr>
+        <td>
+          14
+        </td>
+      </tr>
+      <tr>
+        <td>
+          15
+        </td>
+      </tr>
+      <tr>
+        <td>
+          16
+        </td>
+      </tr>
+      <tr>
+        <td>
+          17
+        </td>
+      </tr>
+      <tr>
+        <td>
+          18
+        </td>
+      </tr>
+      <tr>
+        <td>
+          19
+        </td>
+      </tr>
+      <tr>
+        <td>
+          20
+        </td>
+      </tr>
+      <tr>
+        <td>
+          21
+        </td>
+      </tr>
+      <tr>
+        <td>
+          22
+        </td>
+      </tr>
+      <tr>
+        <td>
+          23
+        </td>
+      </tr>
+      <tr>
+        <td>
+          24
+        </td>
+      </tr>
+      <tr>
+        <td>
+          25
+        </td>
+      </tr>
+      <tr>
+        <td>
+          26
+        </td>
+      </tr>
+      <tr>
+        <td>
+          27
+        </td>
+      </tr>
+      <tr>
+        <td>
+          28
+        </td>
+      </tr>
+      <tr>
+        <td>
+          29
+        </td>
+      </tr>
+      <tr>
+        <td>
+          30
+        </td>
+      </tr>
+      <tr>
+        <td>
+          31
+        </td>
+      </tr>
+      <tr>
+        <td>
+          32
+        </td>
+      </tr>
+      <tr>
+        <td>
+          33
+        </td>
+      </tr>
+      <tr>
+        <td>
+          34
+        </td>
+      </tr>
+      <tr>
+        <td>
+          35
+        </td>
+      </tr>
+      <tr>
+        <td>
+          36
+        </td>
+      </tr>
+      <tr>
+        <td>
+          37
+        </td>
+      </tr>
+      <tr>
+        <td>
+          38
+        </td>
+      </tr>
+      <tr>
+        <td>
+          39
+        </td>
+      </tr>
+      <tr>
+        <td>
+          40
+        </td>
+      </tr>
+      <tr>
+        <td>
+          41
+        </td>
+      </tr>
+      <tr>
+        <td>
+          42
+        </td>
+      </tr>
+      <tr>
+        <td>
+          43
+        </td>
+      </tr>
+      <tr>
+        <td>
+          44
+        </td>
+      </tr>
+      <tr>
+        <td>
+          45
+        </td>
+      </tr>
+      <tr>
+        <td>
+          46
+        </td>
+      </tr>
+      <tr>
+        <td>
+          47
+        </td>
+      </tr>
+      <tr>
+        <td>
+          48
+        </td>
+      </tr>
+      <tr>
+        <td>
+          49
+        </td>
+      </tr>
+      <tr>
+        <td>
+          50
+        </td>
+      </tr>
+      <tr>
+        <td>
+          51
+        </td>
+      </tr>
+      <tr>
+        <td>
+          52
+        </td>
+      </tr>
+      <tr>
+        <td>
+          53
+        </td>
+      </tr>
+      <tr>
+        <td>
+          54
+        </td>
+      </tr>
+      <tr>
+        <td>
+          55
+        </td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td>
+          footer comes here for each page
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <br clear="all"/>
+  <input class="button" id="print" name="print" onclick="javascript:PrintPage();" type="button"
+         value="Print"/>
+</form>
 </body>
 </html>

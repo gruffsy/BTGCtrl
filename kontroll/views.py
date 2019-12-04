@@ -101,7 +101,7 @@ def objtr(request, pk):
     return render(request, "objtr.html", context)
 
 
-def test(request, pk):
+def test(request):
     return render(request, 'test.html', {})
 
 
@@ -110,10 +110,14 @@ class Pdf(View):
     def get(self, request, pk):
         customer = Customer.objects.get(pk=pk)
         objs = customer.objtr_set.all()
+        kontrs = objs.exclude(kontrolldato=None)
+        services = objs.exclude(servicedato=None)
         today = timezone.now()
         context = {
             "customer": customer,
             "today": today,
-            "objs": objs
+            "objs": objs,
+            "kontrs": kontrs,
+            "services": services,
         }
         return Render.render('pdf.html', context)
