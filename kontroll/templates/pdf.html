@@ -207,8 +207,8 @@
             {% endif %}
         </td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>{{ obj.object.sisteservice }}</td>
-        <td>{{ obj.object.nesteservice }}</td>
+        <td>{{ obj.object.sisteservice|date:'M. Y' }}</td>
+        <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
         <td>user</td>
     </tr>
     {% endfor %}
