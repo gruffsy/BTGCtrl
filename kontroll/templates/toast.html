@@ -1,8 +1,7 @@
 {% block toast %}
 <div class="just-padding">
     <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false">
-        <div class="toast-header
-                    {% if toast == " kontroll
+        <div class="{% if toast == " kontroll
         " %}
         bg-success
         {% elif toast == "endring" %}
@@ -10,7 +9,7 @@
         {% elif toast == "service" %}
         bg-warning
         {% endif %}
-        text-white">
+        toast-header text-white">
         <strong class="mr-auto">{% if toast == "kontroll" %}
             Kontroll
             {% elif toast == "endring" %}
