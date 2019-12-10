@@ -228,6 +228,7 @@
             <th style="width:80px">Slokkeutstyr</th>
             <th style="width:250px">Utstyr</th>
             <th style="width:50px">Prod. år</th>
+            <th style="width:80px">Neste service</th>
             <th style="width:125px">Kontrollør</th>
         </tr>
         <tr>&nbsp;</tr>
@@ -249,6 +250,7 @@
                 {% endif %}
             </td>
             <td>{{ obj.object.prodyear }}</td>
+            <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
             <td>user</td>
         </tr>
         {% endfor %}
