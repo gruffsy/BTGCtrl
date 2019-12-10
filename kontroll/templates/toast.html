@@ -42,13 +42,13 @@
         {{obj.extinguishant.slukkemiddel}},
         {% endif %}
         {% if toast == "kontroll" %}
-        kontrollert og lagt til i kontrollrapporten
+        kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
         {% endif %}
         {% if toast == "endring" %}
         oppdatert og endret
         {% endif %}
         {% if toast == "service" %}
-        fått utført service og lagt til i kontrollrapporten
+        fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
         {% endif %}
     </div>
 </div>

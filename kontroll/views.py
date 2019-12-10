@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
 from .render import Render
-import datetime
+from datetime import datetime, date
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -101,14 +101,16 @@ def detail(request, pk):
     if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
-        obj.sistekontroll = timezone.now().year
+        obj.sistekontroll = timezone.now()
         obj.save()
 
     if toast == "service":
         objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), kontrolldato=timezone.now())
         objtr.save()
-        obj.sisteservice = timezone.now().year
-        obj.sistekontroll = timezone.now().year
+        obj.sisteservice = timezone.now()
+        obj.sistekontroll = timezone.now()
+        obj.nesteservice = date(timezone.now().year + 5, timezone.now().month, timezone.now().day)
+        obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
     context = {
@@ -154,7 +156,7 @@ def obj_detail(request, pk):
 
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
-    objs = customer.objtr_set.all()
+    objs = customer.objtr_set.all().order_by('-kontrolldato')
     kontrs = objs.exclude(kontrolldato=None)
     services = objs.exclude(servicedato=None)
     today = timezone.now()

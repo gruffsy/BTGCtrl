@@ -1,9 +1,10 @@
 from django.db import models
-
+from datetime import datetime, date
 # Create your models here.
 
 class Month(models.Model):
     navn = models.CharField(max_length=20)
+    intervall = models.PositiveSmallIntegerField(default=5)
 
     def __str__(self):
         return self.navn
@@ -55,10 +56,10 @@ class Object(models.Model):
     plassering = models.CharField(max_length=255, null=True, blank=True)
     prodyear = models.PositiveSmallIntegerField(default=2010, blank=True)
     extinguishant = models.ForeignKey(Extinguishant, on_delete=models.CASCADE)
-    sisteservice = models.PositiveSmallIntegerField(blank=True)
-    sistekontroll = models.PositiveSmallIntegerField(blank=True)
-    nesteservice = models.PositiveSmallIntegerField(blank=True)
-    nestekontroll = models.PositiveSmallIntegerField(blank=True)
+    sisteservice = models.DateField(null=True, blank=True)
+    sistekontroll = models.DateField(null=True, blank=True)
+    nesteservice = models.DateField(null=True, blank=True)
+    nestekontroll = models.DateField(null=True, blank=True)
     avvik = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
     def __str__(self):

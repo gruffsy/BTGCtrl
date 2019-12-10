@@ -58,7 +58,7 @@
 
 <h5 class="text-dark">Utførte kontroller og servicer</h5>
 </div>
-{% regroup kontrs by kontrolldato|date:'F Y' as date_list %}
+{% regroup kontrs by kontrolldato|date:'E Y' as date_list %}
 
 <div id="accordion">
     {% for month in date_list %}
@@ -75,6 +75,8 @@
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
             <div class="just-padding"><a class="btn btn-info" href="{% url 'pdf' customer.id %}?month={{month.grouper}}">Skriv rapport(PDF)</a>
+
+            <a class="btn btn-info" href="#">Fullføre kontroll?</a>
             </div>
             <div class="card-body table-responsive">
                 <table class="small table w-auto">
@@ -110,8 +112,8 @@
                             {% endif %}
                         </td>
                         <td>{{ obj.object.prodyear }}</td>
-                        <td>{{ obj.object.sisteservice }}</td>
-                        <td>{{ obj.object.nesteservice }}</td>
+                        <td>{{ obj.object.sisteservice|date:'M. Y' }}</td>
+                        <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
                         <td>user</td>
                     </tr>
                     {% endfor %}
