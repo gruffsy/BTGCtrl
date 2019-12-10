@@ -164,7 +164,7 @@ def objtr(request, pk):
         "objs": objs,
         "kontrs": kontrs,
         "services": services,
-    }
+   }
     return render(request, "objtr.html", context)
 
 
@@ -175,8 +175,10 @@ def test(request):
 class Pdf(View):
 
     def get(self, request, pk):
+        month = request.GET.get("month")
+        month = month[-4:]
         customer = Customer.objects.get(pk=pk)
-        objs = customer.objtr_set.all()
+        objs = customer.objtr_set.all().filter(kontrolldato__year=month)
         kontrs = objs.exclude(kontrolldato=None)
         services = objs.exclude(servicedato=None)
         today = timezone.now()
@@ -186,6 +188,7 @@ class Pdf(View):
             "objs": objs,
             "kontrs": kontrs,
             "services": services,
+            "month": month,
         }
         template_path = 'pdf.html'
 

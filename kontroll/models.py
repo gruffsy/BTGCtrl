@@ -73,7 +73,7 @@ class ObjTr(models.Model):
     avvik = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.object.refnr) + ' | ' + self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
+        return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
 
 
 class Avvik(models.Model):
