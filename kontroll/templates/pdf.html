@@ -192,7 +192,7 @@
     <tr>&nbsp;</tr>
     {% for obj in kontrs %}
     <tr>
-        <td>{{ obj.kontrolldato }}</td>
+        <td>{{ obj.kontrolldato|date:'j. M. Y' }}</td>
         <td>{{ obj.object.etg }}</td>
         <td>{{ obj.object.lokasjon }}</td>
         <td>{{ obj.object.plassering }}</td>
@@ -235,7 +235,7 @@
 
         {% for obj in services %}
         <tr>
-            <td>{{ obj.servicedato }}</td>
+            <td>{{ obj.servicedato|date:'j. M. Y' }}</td>
             <td>{{ obj.object.etg }}</td>
             <td>{{ obj.object.lokasjon }}</td>
             <td>{{ obj.object.plassering }}</td>
