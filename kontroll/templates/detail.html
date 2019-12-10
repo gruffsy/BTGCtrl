@@ -1,28 +1,48 @@
 {% extends 'base.html' %}
 {% block body %}
+<!-- History -->
 <div class="just-padding">
     <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
         <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
     </h5>
 </div>
 {% if objects %}
-<div class="just-padding">
     <!-- Toast -->
     {% if toast %}
-    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false">
-        {% if toast == "kontroll" %}
-        <div class="toast-header bg-success text-white">
-            <strong class="mr-auto">Kontroll</strong>
-            {% endif %}
-            {% if toast == "endring" %}
-            <div class="toast-header bg-info text-white">
-                <strong class="mr-auto">Endring</strong>
-                {% endif %}
-                {% if toast == "service" %}
-                <div class="toast-header bg-warning text-white">
-                    <strong class="mr-auto">Service</strong>
-                    {% endif %}
-                    <small>Objekt:
+{% include 'toast.html' %}
+{% block toast %}
+{% endblock toast %}
+{% endif %}
+<!-- Liste-meny Nivå 1  Etg-->
+<div class="lead list-group list-group-root well text-dark">
+    {% regroup objects by etg as etg_list %}
+    {% for e in etg_list %}
+    <a class="list-group-item  text-dark" href="#">
+        {{ e.grouper }}. etasje</a>
+    <!-- Liste-meny Nivå 2  Loaksjon -->
+    <div class="list-group in text-dark" id="item-{{ forloop.counter }}">
+        {% regroup e.list by lokasjon as lokasjon_list %}
+        {% for l in lokasjon_list %}
+        <a class="chevron list-group-item text-dark" data-toggle="collapse"
+           href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+            <i class="fa fa-chevron-right"></i>&nbsp; Lokasjon: {{ l.grouper }}</a>
+        <!-- Liste-meny Nivå 3  plassering -->
+        <div class="list-group collapse text-dark" id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+            {%regroup l.list by plassering as plassering_list %}
+            {% for p in plassering_list %}
+            <a class="chevron list-group-item text-dark"
+               data-toggle="collapse"
+               href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                <i class="fa fa-chevron-right"></i>&nbsp; Plassering: {{ p.grouper }}</a>
+            <div class="list-group collapse"
+                 id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                {% for obj in p.list %}
+                <div class="row list-group-item d-flex justify-content-around">
+                    <!-- Button to Open the Modal -->
+                    <a class="btn btn-lg btn-light"
+                       data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                       data-toggle="modal">
+                        Objekt:
                         {{obj.extinguishant.fabrikat}}
                         {{obj.extinguishant.type}}
                         {% if obj.extinguishant.lengde is not None %}
@@ -30,281 +50,41 @@
                         {% endif %}
                         {% if obj.extinguishant.slukkemiddel is not None %}
                         {{obj.extinguishant.slukkemiddel}}
-                        {% endif %}</small>
-                    <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        {% endif %}</a>
                 </div>
-                <!-- Toast Body -->
-                <div class="toast-body">
-                    Da er objekt {{obj.extinguishant.fabrikat}}
-                    {{obj.extinguishant.type}}
-                    {% if obj.extinguishant.lengde is not None %}
-                    {{obj.extinguishant.lengde}}
-                    {% endif %}
-                    {% if obj.extinguishant.slukkemiddel is not None %}
-                    {{obj.extinguishant.slukkemiddel}},
-                    {% endif %}
-                    {% if toast == "kontroll" %}
-                    kontrollert og lagt til i kontrollrapporten
-                    {% endif %}
-                    {% if toast == "endring" %}
-                    oppdatert og endret
-                    {% endif %}
-                    {% if toast == "service" %}
-                    fått utført service og lagt til i kontrollrapporten
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
-            <div class="lead list-group list-group-root well">
-                {% regroup objects by etg as etg_list %}
-                {% for e in etg_list %}
-                <a class="list-group-item" href="#">
-                    {{ e.grouper }}. etasje</a>
-                <div class="list-group in" id="item-{{ forloop.counter }}">
-                    {% regroup e.list by lokasjon as lokasjon_list %}
-                    {% for l in lokasjon_list %}
-                    <a class="list-group-item" data-toggle="collapse"
-                       href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                        <i class="glyphicon glyphicon-chevron-right"></i>Lokasjon: {{ l.grouper }}</a>
-                    <div class="list-group collapse" id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                        {%regroup l.list by plassering as plassering_list %}
-                        {% for p in plassering_list %}
-                        <a class="list-group-item"
-                           data-toggle="collapse"
-                           href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                            <i class="glyphicon glyphicon-chevron-right"></i>Plassering: {{ p.grouper }}</a>
-                        <div class="list-group collapse"
-                             id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                            {% for obj in p.list %}
-                            <div class="row list-group-item d-flex justify-content-around">
-                                <!-- Button to Open the Modal -->
-                                <a class="btn btn-lg btn-light"
-                                   data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                                   data-toggle="modal">
-                                    Objekt:
-                                    {{obj.extinguishant.fabrikat}}
-                                    {{obj.extinguishant.type}}
-                                    {% if obj.extinguishant.lengde is not None %}
-                                    {{obj.extinguishant.lengde}}
-                                    {% endif %}
-                                    {% if obj.extinguishant.slukkemiddel is not None %}
-                                    {{obj.extinguishant.slukkemiddel}}
-                                    {% endif %}</a>
-                            </div>
-                            <!-- Hoved Modal -->
-                            <div class="modal fade"
-                                 id="myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-                                <div class="modal-dialog modal-dialog-centered modal-xl">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header bg-light">
-                                            <h4 class="modal-title">{{obj.fabrikat }}</h4>
-                                            <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <h1> {{obj.extinguishant.fabrikat}}
-                                                {{obj.extinguishant.type}}<br></h1>
-                                            <h2>
-                                                {% if obj.extinguishant.lengde is not None %}
-                                                {{obj.extinguishant.lengde}}
-                                                {% endif %}
-                                                {% if obj.extinguishant.slukkemiddel is not None %}
-                                                {{obj.extinguishant.slukkemiddel}}
-                                                {% endif %}</h2><br>
-                                            <div class="table-responsive">
-                                                <table class="lead table" style="border">
-                                                    <tr>
-                                                        <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Siste service: [{{obj.sisteservice}}]</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <br>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer bg-light">
-                                            <a class="btn btn-info"
-                                               data-dismiss="modal"
-                                               data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                                               data-toggle="modal"
-                                               href="">
-                                                Endringer</a>
-                                            <a class="btn btn-success"
-                                               data-dismiss="modal"
-                                               data-target="#kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                                               data-toggle="modal"
-                                               href="">
-                                                Kontroll</a>
-                                            <a class="btn btn-warning"
-                                               data-dismiss="modal"
-                                               data-target="#service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                                               data-toggle="modal"
-                                               href="">
-                                                Service</a>
-
-                                            <a class="btn btn-danger"
-                                               href="{% url 'obj_detail' obj.pk %}?avvik=ask">Avvik</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Endringer Modal -->
-                            <div class="modal fade"
-                                 id="endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-                                <div class="modal-dialog modal-dialog-centered modal-xl">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header bg-light">
-                                            <h4 class="modal-title">{{obj.fabrikat }}</h4>
-                                            <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <h1>Utfør endringer</h1>
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="lokasjon">Lokasjon</label>
-                                                    <input class="form-control" id="lokasjon"
-                                                           placeholder="{{ obj.lokasjon }}"
-                                                           type="text" value="{{obj.lokasjon}}">
-                                                    <label for="plassering">Plassering</label>
-                                                    <input class="form-control" id="plassering"
-                                                           placeholder="{{ obj.plassering }}"
-                                                           type="text" value="{{obj.plassering}}">
-                                                    <label for="etg">Etasje</label>
-                                                    <input class="form-control" id="etg" placeholder="{{ obj.etg }}"
-                                                           type="number" value="{{obj.etg}}">
-                                                </div>
-                                                <!-- Kan brukes senere
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Velg slokketype</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                        {% for valg in exts %}
-                                                        <option>{{valg.navn}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div> -->
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer bg-light">
-
-                                            <form action="{% url 'detail' obj.pk %}" method="post">
-                                                {% csrf_token %}
-                                                <button class="btn btn-success btn-lg" name="toast" type="submit"
-                                                        value="endring">Utfør endringer
-                                                </button>
-                                                <input name="custpk" type="hidden" value="{{ customer.pk }}">
-                                            </form>
-
-
-                                            <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Kontroll Modal -->
-                            <div class="modal fade"
-                                 id="kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-                                <div class="modal-dialog modal-dialog-centered modal-xl">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header bg-light">
-                                            <h4 class="modal-title">{{obj.fabrikat }}</h4>
-                                            <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <h1>Kontroll</h1>
-                                            <h3>Kontrollrutine</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor
-                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                quis
-                                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                                consequat.
-                                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                                dolore
-                                                eu
-                                                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                                sunt
-                                                in
-                                                culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer bg-light">
-                                            <form action="{% url 'detail' obj.pk %}" method="post">
-                                                {% csrf_token %}
-                                                <button class="btn btn-success btn-lg" name="toast" type="submit"
-                                                        value="kontroll">Utfør kontroll
-                                                </button>
-                                                <input name="custpk" type="hidden" value="{{ customer.pk }}">
-                                            </form>
-                                            <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Service Modal -->
-                            <div class="modal fade"
-                                 id="service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-                                <div class="modal-dialog modal-dialog-centered modal-xl">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header bg-light">
-                                            <h4 class="modal-title">{{obj.fabrikat}}</h4>
-                                            <button class="close" data-dismiss="modal" type="button">&times;</button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <h1>Service</h1>
-                                            <h3>Servicerutine</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor
-                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                quis
-                                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                                consequat.
-                                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                                dolore
-                                                eu
-                                                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                                sunt
-                                                in
-                                                culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer bg-light">
-                                            <form action="{% url 'detail' obj.pk %}" method="post">
-                                                {% csrf_token %}
-                                                <button class="btn btn-success btn-lg" name="toast" type="submit"
-                                                        value="service">Utfør service
-                                                </button>
-                                                <input name="custpk" type="hidden" value="{{ customer.pk }}">
-                                            </form>
-                                            <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endfor %}
-                </div>
+                <!-- Modaler -->
+                {% include 'modal.html' %}
+                {% block modal %}
+                {% endblock modal %}
                 {% endfor %}
             </div>
-            {% else %}
-            <div class="just-padding">
-                Kunden har ingen objekter som skal kontrolleres.
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+    {% endfor %}
 </div>
+{% else %}
+<div class="just-padding">
+    Kunden har ingen objekter som skal kontrolleres.
+</div>
+{% endif %}
+<!--
+<script>
+    $(document).ready(function() {
+  $(this).on("click", ".fa", function() {
+    $(this).toggleClass( "fa-chevron-right" ).toggleClass( "fa-chevron-down" );
+
+  });
+});
+
+</script>
+
+
+    <i class="list-group-item fa fa-chevron-right" id="supergirl" aria-hidden="true"></i>
+    <span class="koh-faq-question-span"> Test Question 1 </span>
+<i class="list-group-item fa fa-chevron-right" id="supergirl2" aria-hidden="true"></i>
+    <span class="koh-faq-question-span"> Test Question 2 </span>
+-->
 {% endblock %}
+

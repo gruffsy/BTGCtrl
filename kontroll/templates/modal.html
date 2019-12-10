@@ -1,0 +1,200 @@
+{% block modal %}
+<!-- Hoved Modal -->
+<div class="modal fade"
+     id="myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1> {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}<br></h1>
+                <h2>
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}</h2><br>
+                <div class="table-responsive">
+                    <table class="lead table" style="border">
+                        <tr>
+                            <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Siste service: [{{obj.sisteservice}}]</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer bg-light">
+                <a class="btn btn-info"
+                   data-dismiss="modal"
+                   data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                   data-toggle="modal"
+                   href="">
+                    Endringer</a>
+                <a class="btn btn-success"
+                   data-dismiss="modal"
+                   data-target="#kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                   data-toggle="modal"
+                   href="">
+                    Kontroll</a>
+                <a class="btn btn-warning"
+                   data-dismiss="modal"
+                   data-target="#service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                   data-toggle="modal"
+                   href="">
+                    Service</a>
+
+                <a class="btn btn-danger"
+                   href="{% url 'obj_detail' obj.pk %}?avvik=ask">Avvik</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Endringer Modal -->
+<div class="modal fade"
+     id="endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Utfør endringer</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="lokasjon">Lokasjon</label>
+                        <input class="form-control" id="lokasjon"
+                               placeholder="{{ obj.lokasjon }}"
+                               type="text" value="{{obj.lokasjon}}">
+                        <label for="plassering">Plassering</label>
+                        <input class="form-control" id="plassering"
+                               placeholder="{{ obj.plassering }}"
+                               type="text" value="{{obj.plassering}}">
+                        <label for="etg">Etasje</label>
+                        <input class="form-control" id="etg" placeholder="{{ obj.etg }}"
+                               type="number" value="{{obj.etg}}">
+                    </div>
+                    <!-- Kan brukes senere
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Velg slokketype</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            {% for valg in exts %}
+                            <option>{{valg.navn}}</option>
+                            {% endfor %}
+                        </select>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+
+                <form action="{% url 'detail' obj.pk %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-lg" name="toast" type="submit"
+                            value="endring">Utfør endringer
+                    </button>
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+                </form>
+
+
+                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Kontroll Modal -->
+<div class="modal fade"
+     id="kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Kontroll</h1>
+                <h3>Kontrollrutine</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore
+                    eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt
+                    in
+                    culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer bg-light">
+                <form action="{% url 'detail' obj.pk %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-lg" name="toast" type="submit"
+                            value="kontroll">Utfør kontroll
+                    </button>
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+                </form>
+                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service Modal -->
+<div class="modal fade"
+     id="service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h4 class="modal-title">{{obj.fabrikat}}</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Service</h1>
+                <h3>Servicerutine</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore
+                    eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt
+                    in
+                    culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer bg-light">
+                <form action="{% url 'detail' obj.pk %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-lg" name="toast" type="submit"
+                            value="service">Utfør service
+                    </button>
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+                </form>
+                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

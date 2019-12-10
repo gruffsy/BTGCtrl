@@ -1,0 +1,58 @@
+{% block toast %}
+<div class="just-padding">
+    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false">
+        <div class="toast-header
+                    {% if toast == " kontroll
+        " %}
+        bg-success
+        {% elif toast == "endring" %}
+        bg-info
+        {% elif toast == "service" %}
+        bg-warning
+        {% endif %}
+        text-white">
+        <strong class="mr-auto">{% if toast == "kontroll" %}
+            Kontroll
+            {% elif toast == "endring" %}
+            Endring
+            {% elif toast == "service" %}
+            Service
+            {% endif %}
+        </strong>
+        <small>Objekt:
+            {{obj.extinguishant.fabrikat}}
+            {{obj.extinguishant.type}}
+            {% if obj.extinguishant.lengde is not None %}
+            {{obj.extinguishant.lengde}}
+            {% endif %}
+            {% if obj.extinguishant.slukkemiddel is not None %}
+            {{obj.extinguishant.slukkemiddel}}
+            {% endif %}
+        </small>
+        <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- Toast Body -->
+    <div class="toast-body">
+        Da er objekt {{obj.extinguishant.fabrikat}}
+        {{obj.extinguishant.type}}
+        {% if obj.extinguishant.lengde is not None %}
+        {{obj.extinguishant.lengde}}
+        {% endif %}
+        {% if obj.extinguishant.slukkemiddel is not None %}
+        {{obj.extinguishant.slukkemiddel}},
+        {% endif %}
+        {% if toast == "kontroll" %}
+        kontrollert og lagt til i kontrollrapporten
+        {% endif %}
+        {% if toast == "endring" %}
+        oppdatert og endret
+        {% endif %}
+        {% if toast == "service" %}
+        fått utført service og lagt til i kontrollrapporten
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}
