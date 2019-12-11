@@ -4,7 +4,7 @@ from datetime import datetime, date
 
 class Month(models.Model):
     navn = models.CharField(max_length=20)
-    intervall = models.PositiveSmallIntegerField(default=5)
+
 
     def __str__(self):
         return self.navn
@@ -34,6 +34,7 @@ class Customer(models.Model):
 
 class Slokketype(models.Model):
     navn = models.CharField(max_length=255)
+    intervall = models.PositiveSmallIntegerField(default=5)
 
     def __str__(self):
         return self.navn

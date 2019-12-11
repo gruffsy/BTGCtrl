@@ -1,23 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Customer, Object, ObjTr, Slokketype
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
-from .render import Render
-from datetime import datetime, date
+from datetime import date
 import os
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
 
-import os
-from django.conf import settings
-from django.http import HttpResponse
-from django.template import Context
-from django.template.loader import get_template
-from xhtml2pdf import pisa
+
 
 
 def link_callback(uri, rel):
@@ -64,6 +60,7 @@ def render_pdf_view(request):
     if pisaStatus.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
 
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
@@ -119,7 +116,7 @@ def detail(request, pk):
         "toast": toast,
         "objects": objects,
         "exts": exts
-        }
+    }
     return render(request, "detail.html", context)
 
 
@@ -166,7 +163,7 @@ def objtr(request, pk):
         "objs": objs,
         "kontrs": kontrs,
         "services": services,
-   }
+    }
     return render(request, "objtr.html", context)
 
 

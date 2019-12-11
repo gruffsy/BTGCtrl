@@ -6,6 +6,11 @@
         <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
     </h5>
 </div>
+
+<div class="just-padding">
+    <a class="btn btn-info btn-sm" href="#"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg til nytt objekt</a>
+
+</div>
 {% if objects %}
     <!-- Toast -->
     {% if toast %}
