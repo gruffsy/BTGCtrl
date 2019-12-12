@@ -2,10 +2,15 @@
 {% block body %}
 
 <div class="just-padding">
-    <a class="btn btn-white btn-sm" href="{% url 'nyobject' customer.pk %}"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+     <a class="btn btn-white btn-sm"
+                       data-target="#nyobject"
+                       data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
         til nytt objekt</a>
-
+    <!-- <a class="btn btn-white btn-sm" href="{% url 'nyobject' customer.pk %}"> -->
 </div>
+{% include 'forms_modal.html' %}
+{% block nyobject %}
+{% endblock nyobject %}
 {% if objects %}
 <!-- Toast -->
 {% if toast %}

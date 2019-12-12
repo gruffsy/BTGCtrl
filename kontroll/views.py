@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Customer, Object, ObjTr, Slokketype
 from django.db.models import Q
 from django.views.generic import View
@@ -12,8 +12,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-
-
+from .forms import NyObjectForm
 
 
 def link_callback(uri, rel):
@@ -43,25 +42,6 @@ def link_callback(uri, rel):
     return path
 
 
-def render_pdf_view(request):
-    template_path = 'pdf.html'
-    context = {'myvar': 'this is your template context'}
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-    # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(Context(context))
-
-    # create a pdf
-    pisaStatus = pisa.CreatePDF(
-        html, dest=response, link_callback=link_callback)
-    # if error then show some funy view
-    if pisaStatus.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
-
-
 def index(request):
     customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
     query = request.GET.get("q")
@@ -82,17 +62,21 @@ def index(request):
 
 
 def detail(request, pk):
-    custpk = request.POST.get("custpk")
-    toast = request.POST.get("toast")
+    custpk = request.GET.get("custpk")
+    toast = request.GET.get("toast")
 
     if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
     else:
-        customer = Customer.objects.get(pk=pk)
+        customer = Customer.objects.filter(pk=pk)[0]
         obj = ""
 
     objects = Object.objects.filter(customer=customer).order_by("etg", "plassering")
+    lokasjon = objects.values_list('lokasjon', flat=True).last()
+    etg = objects.values_list('etg', flat=True).last()
+    plassering = objects.values_list('plassering', flat=True).last()
+    submitted = False
     exts = Slokketype.objects.all()
 
     if toast == "kontroll":
@@ -110,14 +94,35 @@ def detail(request, pk):
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
+    if request.method == 'POST':
+        form = NyObjectForm(request.POST or None or not 'toast')
+        if form.is_valid():
+            objform = form.save(commit=False)
+            objform.customer = customer
+            objform.save()
+            return redirect('../' + str(pk) + '?submitted=True')
+    else:
+
+        form = NyObjectForm(
+            initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
+                     'prodyear': int(timezone.now().year)})
+        if 'submitted' in request.GET:
+            submitted = True
     context = {
         "customer": customer,
         "obj": obj,
         "toast": toast,
         "objects": objects,
-        "exts": exts
+        "exts": exts,
+        'form': form,
+        'submitted': submitted,
+        'pk': pk,
     }
     return render(request, "detail.html", context)
+
+
+def nyobject(request, pk):
+    return render(request, 'index.html', {})
 
 
 def obj_detail(request, pk):

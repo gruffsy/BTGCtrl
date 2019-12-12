@@ -1,0 +1,36 @@
+{% load widget_tweaks %}
+
+{% block body %}
+
+<div class="just-padding">
+    <h2>Legg til objekt</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+
+        {% for field in form.visible_fields %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+
+
+    <div class="modal-footer bg-light">
+
+        <div class="form-group">
+            <button class="btn btn-success" type="submit">
+                <span class="fa fa-ok"></span> Opprett objekt
+            </button>
+            <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
+        </div>
+    </div> </form>
+</div>
+{% endblock %}

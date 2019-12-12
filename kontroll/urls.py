@@ -10,6 +10,6 @@ urlpatterns = [
     path('objtr/<int:pk>/', views.objtr, name='objtr'),
     path('pdf/<int:pk>/', views.Pdf.as_view(), name='pdf'),
     path('contact/', forms.nyslokketype, name='nyslokketype'),
-    path('nyobject/<int:pk>', forms.nyobject, name='nyobject'),
+    path('nyobject/<int:pk>', views.nyobject, name='nyobject'),
 
 ]
