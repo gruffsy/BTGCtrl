@@ -120,7 +120,27 @@
         </ul>
     </div>
 </nav>
+<!-- History -->
+{% if customer %}
+<div class="just-padding">
+    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
 
+        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle text-dark" data-toggle="dropdown" href="#"
+           id="historyDropdown" role="button">
+            {{ customer.kunde }}
+        </a>
+        <div aria-labelledby="historyDropdown" class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
+            <a class="dropdown-item disabled" href="#">Avviksrapporter</a>
+            <a class="dropdown-item" href="{% url 'detail' customer.id %}">Alle objekter</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item disabled" href="#">Rediger kunde</a>
+        </div>
+
+        {%endif%}
+
+    </h5>
+</div>
 
 {% block body %}
 {% endblock %}

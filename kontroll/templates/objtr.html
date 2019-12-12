@@ -3,60 +3,56 @@
 
 <div class="just-padding">
 
-    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
-        <a class="text-dark" href="{% url 'detail' customer.id %}">{{customer.kunde}} ></a>
-    </h5>
-
-<table class="table w-auto">
-    <tr>
-        <td>Navn:</td>
-        <td>{{customer.kunde}}</td>
-        <td>Kundenummer:</td>
-        <td>{{customer.tripletex}}</td>
-    </tr>
-    <tr>
-        <td>Oppdragsadresse:</td>
-        <td>{{customer.badresse}}</td>
-        <td>Fakturaadresse:</td>
-        <td>{% if customer.fadresse is not None %}
-            {{customer.fadresse}}
-            {% else %}
-            {{customer.badresse}}
-            {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <td>Postnr./-sted:</td>
-        <td>{{customer.bpostnr}} {{customer.bpoststed}}</td>
-        <td>Fakturapostnr./-sted:</td>
-        <td>{% if customer.fpostnr is not None %}
-            {{customer.fpostnr}}
-            {{customer.fpoststed}}
-            {% else %}
-            {{customer.bpostnr}}
-            {{customer.bpoststed}}
-            {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <td>Kontaktperson:</td>
-        <td>{{customer.kontaktperson}}</td>
-        <td>Telefonnr:</td>
-        <td>{{customer.tlf1}}
-            {% if customer.tlf2 is not None %}
-            /
-            {{customer.tlf2}}
-            {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <td>E-post:</td>
-        <td>{{customer.email}}</td>
-    </tr>
-</table>
+    <table class="table w-auto">
+        <tr>
+            <td>Navn:</td>
+            <td>{{customer.kunde}}</td>
+            <td>Kundenummer:</td>
+            <td>{{customer.tripletex}}</td>
+        </tr>
+        <tr>
+            <td>Oppdragsadresse:</td>
+            <td>{{customer.badresse}}</td>
+            <td>Fakturaadresse:</td>
+            <td>{% if customer.fadresse is not None %}
+                {{customer.fadresse}}
+                {% else %}
+                {{customer.badresse}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Postnr./-sted:</td>
+            <td>{{customer.bpostnr}} {{customer.bpoststed}}</td>
+            <td>Fakturapostnr./-sted:</td>
+            <td>{% if customer.fpostnr is not None %}
+                {{customer.fpostnr}}
+                {{customer.fpoststed}}
+                {% else %}
+                {{customer.bpostnr}}
+                {{customer.bpoststed}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Kontaktperson:</td>
+            <td>{{customer.kontaktperson}}</td>
+            <td>Telefonnr:</td>
+            <td>{{customer.tlf1}}
+                {% if customer.tlf2 is not None %}
+                /
+                {{customer.tlf2}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>E-post:</td>
+            <td>{{customer.email}}</td>
+        </tr>
+    </table>
 
 
-<h5 class="text-dark">Utførte kontroller og servicer</h5>
+    <h5 class="text-dark">Utførte kontroller og servicer</h5>
 </div>
 {% regroup kontrs by kontrolldato|date:'E Y' as date_list %}
 
@@ -74,9 +70,11 @@
         <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
-            <div class="just-padding"><a class="btn btn-info" href="{% url 'pdf' customer.id %}?month={{month.grouper}}">Skriv rapport(PDF)</a>
+            <div class="just-padding"><a class="btn btn-info"
+                                         href="{% url 'pdf' customer.id %}?month={{month.grouper}}">Skriv
+                rapport(PDF)</a>
 
-            <a class="btn btn-info" href="#">Fullføre kontroll?</a>
+                <a class="btn btn-info" href="#">Fullføre kontroll?</a>
             </div>
             <div class="card-body table-responsive">
                 <table class="small table w-auto">
