@@ -8,7 +8,8 @@
 </div>
 
 <div class="just-padding">
-    <a class="btn btn-info btn-sm" href="#"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg til nytt objekt</a>
+    <a class="btn btn-white btn-sm" href="{% url 'nyobject' customer.pk %}"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+        til nytt objekt</a>
 
 </div>
 {% if objects %}

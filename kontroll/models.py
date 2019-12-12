@@ -52,10 +52,10 @@ class Extinguishant(models.Model):
 
 class Object(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    lokasjon = models.CharField(max_length=255, null=True, blank=True)
-    etg = models.CharField(max_length=255, null=True, blank=True)
-    plassering = models.CharField(max_length=255, null=True, blank=True)
-    prodyear = models.PositiveSmallIntegerField(default=2010, blank=True)
+    lokasjon = models.CharField(max_length=255)
+    etg = models.SmallIntegerField(blank=False)
+    plassering = models.CharField(max_length=255)
+    prodyear = models.PositiveSmallIntegerField(blank=False)
     extinguishant = models.ForeignKey(Extinguishant, on_delete=models.CASCADE)
     sisteservice = models.DateField(null=True, blank=True)
     sistekontroll = models.DateField(null=True, blank=True)
@@ -64,7 +64,8 @@ class Object(models.Model):
     avvik = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
     def __str__(self):
-        return self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg + ' | ' + self.extinguishant.fabrikat
+        return str(
+            self.pk) + ' ' + self.customer.kunde + ' | ' + self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg + ' | ' + self.extinguishant.fabrikat
 
 
 class ObjTr(models.Model):
