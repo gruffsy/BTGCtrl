@@ -95,7 +95,7 @@ def detail(request, pk):
         obj.save()
 
     if request.method == 'POST':
-        form = NyObjectForm(request.POST or None or not 'toast')
+        form = NyObjectForm(request.POST or None)
         if form.is_valid():
             objform = form.save(commit=False)
             objform.customer = customer
@@ -121,8 +121,8 @@ def detail(request, pk):
     return render(request, "detail.html", context)
 
 
-def nyobject(request, pk):
-    return render(request, 'index.html', {})
+def nyobject(request):
+    pass
 
 
 def obj_detail(request, pk):

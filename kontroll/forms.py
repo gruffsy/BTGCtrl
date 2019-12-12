@@ -38,3 +38,8 @@ class NyObjectForm(forms.ModelForm):
         model = Object
         fields = ['extinguishant', 'prodyear', 'lokasjon', 'plassering', 'etg']
 
+class EndreObjectForm(forms.ModelForm):
+    class Meta:
+        model = Object
+        fields = ['lokasjon', 'plassering', 'etg']
+
