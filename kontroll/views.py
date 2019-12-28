@@ -64,15 +64,17 @@ def index(request):
 def detail(request, pk):
     custpk = request.GET.get("custpk")
     toast = request.GET.get("toast")
+    aktiv = request.GET.get('aktiv')
 
     if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
+
     else:
         customer = Customer.objects.filter(pk=pk)[0]
-        obj = ""
+        obj = None
 
-    objects = Object.objects.filter(customer=customer).order_by("etg", "plassering")
+    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "plassering")
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
     plassering = objects.values_list('plassering', flat=True).last()
@@ -83,6 +85,17 @@ def detail(request, pk):
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now()
+        obj.save()
+
+    if toast == "endring":
+        obj.etg = request.GET['etg']
+        obj.lokasjon = request.GET['lokasjon']
+        obj.plassering = request.GET['plassering']
+        if aktiv:
+            obj.aktiv = False
+            objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), avvik=True)
+            objtr.save()
+
         obj.save()
 
     if toast == "service":
@@ -100,9 +113,8 @@ def detail(request, pk):
             objform = form.save(commit=False)
             objform.customer = customer
             objform.save()
-            return redirect('../' + str(pk) + '?submitted=True')
+            # return redirect('../' + str(pk) + '?submitted=True')
     else:
-
         form = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                      'prodyear': int(timezone.now().year)})
@@ -115,8 +127,10 @@ def detail(request, pk):
         "objects": objects,
         "exts": exts,
         'form': form,
+        'custpk': custpk,
         'submitted': submitted,
         'pk': pk,
+        'aktiv': aktiv,
     }
     return render(request, "detail.html", context)
 
@@ -158,7 +172,7 @@ def obj_detail(request, pk):
 
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
-    objs = customer.objtr_set.all().order_by('-kontrolldato')
+    objs = customer.objtr_set.all().filter(avvik=False).order_by('-kontrolldato')
     kontrs = objs.exclude(kontrolldato=None)
     services = objs.exclude(servicedato=None)
     today = timezone.now()

@@ -34,7 +34,7 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer bg-light">
-                <a class="btn btn-info disabled"
+                <a class="btn btn-info"
                    data-dismiss="modal"
                    data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
                    data-toggle="modal"
@@ -68,45 +68,39 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <h4 class="modal-title">{{obj.fabrikat}}</h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <h1>Utfør endringer</h1>
-                <form>
+                <form action="{% url 'detail' obj.pk %}" method="get">
                     <div class="form-group">
                         <label for="lokasjon">Lokasjon</label>
                         <input class="form-control" id="lokasjon"
-                               placeholder="{{ obj.lokasjon }}"
+                               name="lokasjon" placeholder="{{ obj.lokasjon }}"
                                type="text" value="{{obj.lokasjon}}">
                         <label for="plassering">Plassering</label>
                         <input class="form-control" id="plassering"
-                               placeholder="{{ obj.plassering }}"
+                               name="plassering" placeholder="{{ obj.plassering }}"
                                type="text" value="{{obj.plassering}}">
                         <label for="etg">Etasje</label>
-                        <input class="form-control" id="etg" placeholder="{{ obj.etg }}"
+                        <input class="form-control" id="etg" name="etg" placeholder="{{ obj.etg }}"
                                type="number" value="{{obj.etg}}">
+                        <div class="form-check">
+                            <input class="form-check-input" id="aktiv" name="aktiv" type="checkbox">
+                            <label class="form-check-label">Slett objekt!</label>
+                        </div>
                     </div>
-                    <!-- Kan brukes senere
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Velg slokketype</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            {% for valg in exts %}
-                            <option>{{valg.navn}}</option>
-                            {% endfor %}
-                        </select>
-                    </div> -->
-                </form>
+
             </div>
             <div class="modal-footer bg-light">
 
-                <form action="{% url 'detail' obj.pk %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-success btn-lg" name="toast" type="submit"
-                            value="endring">Utfør endringer
-                    </button>
-                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+
+                <button class="btn btn-success btn-lg" name="toast" type="submit"
+                        value="endring">Utfør endringer
+                </button>
+                <input name="custpk" type="hidden" value="{{ customer.pk }}">
                 </form>
 
 

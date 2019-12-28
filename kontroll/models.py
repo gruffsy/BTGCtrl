@@ -63,9 +63,10 @@ class Object(models.Model):
     nestekontroll = models.DateField(null=True, blank=True)
     avvik = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
+
     def __str__(self):
-        return str(
-            self.pk) + ' ' + self.customer.kunde + ' | ' + self.lokasjon + ' | ' + self.plassering + ' | ' + self.etg + ' | ' + self.extinguishant.fabrikat
+        return str(self.pk) + ' ' + self.customer.kunde + ' | ' + self.lokasjon + ' | ' + self.plassering + ' | ' + str(
+            self.etg) + ' | ' + self.extinguishant.fabrikat + ' | ' + str(self.aktiv)
 
 
 class ObjTr(models.Model):

@@ -45,7 +45,7 @@
         kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
         {% endif %}
         {% if toast == "endring" %}
-        oppdatert og endret
+        oppdatert og endret{% endif %}{% if aktiv is not None%}/slettet
         {% endif %}
         {% if toast == "service" %}
         fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
