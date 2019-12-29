@@ -1,0 +1,21 @@
+{% load widget_tweaks %}
+
+{% block body %}
+
+<div class="just-padding">
+    <h2>Registrer Avvik</h2>
+    <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}" method="post">
+        {% csrf_token %}
+        {{avvikform}}
+
+        <div class="modal-footer bg-light">
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">
+                    <span class="fa fa-ok"></span> Registrer
+                </button>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -12,7 +12,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-from .forms import NyObjectForm
+from .forms import NyObjectForm, AvvikForm
 
 
 def link_callback(uri, rel):
@@ -65,6 +65,7 @@ def detail(request, pk):
     custpk = request.GET.get("custpk")
     toast = request.GET.get("toast")
     aktiv = request.GET.get('aktiv')
+    avvik = request.POST.get('avvik')
 
     if custpk:
         obj = Object.objects.get(pk=pk)
@@ -72,14 +73,15 @@ def detail(request, pk):
 
     else:
         customer = Customer.objects.filter(pk=pk)[0]
-        obj = None
+        obj = request.GET.get('obj') or None
+        if obj is not None:
+            obj = Object.objects.filter(pk=int(obj))[0]
+        custpk = customer.pk
 
     objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "plassering")
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
     plassering = objects.values_list('plassering', flat=True).last()
-    submitted = False
-    exts = Slokketype.objects.all()
 
     if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
@@ -93,9 +95,6 @@ def detail(request, pk):
         obj.plassering = request.GET['plassering']
         if aktiv:
             obj.aktiv = False
-            objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), avvik=True)
-            objtr.save()
-
         obj.save()
 
     if toast == "service":
@@ -108,29 +107,38 @@ def detail(request, pk):
         obj.save()
 
     if request.method == 'POST':
-        form = NyObjectForm(request.POST or None)
-        if form.is_valid():
-            objform = form.save(commit=False)
-            objform.customer = customer
+        if avvik is not None:
+            avvikform = AvvikForm(request.POST or None)
+            objform = avvikform.save(commit=False)
+            objform.customer = obj.customer
+            objform.object = obj
             objform.save()
-            # return redirect('../' + str(pk) + '?submitted=True')
+            avvikform.save_m2m()
+            nyform = NyObjectForm(
+                initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
+                         'prodyear': int(timezone.now().year)})
+        else:
+            nyform = NyObjectForm(request.POST or None)
+            if nyform.is_valid():
+                objform = nyform.save(commit=False)
+                objform.customer = customer
+                objform.save()
     else:
-        form = NyObjectForm(
+        nyform = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                      'prodyear': int(timezone.now().year)})
-        if 'submitted' in request.GET:
-            submitted = True
+        avvikform = AvvikForm()
     context = {
         "customer": customer,
         "obj": obj,
         "toast": toast,
         "objects": objects,
-        "exts": exts,
-        'form': form,
+        'nyform': nyform,
+        'avvikform': avvikform,
         'custpk': custpk,
-        'submitted': submitted,
         'pk': pk,
         'aktiv': aktiv,
+        'avvik': avvik,
     }
     return render(request, "detail.html", context)
 

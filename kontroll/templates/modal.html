@@ -56,7 +56,11 @@
                     Service</a>
 
                 <a class="btn btn-danger"
-                   href="{% url 'obj_detail' obj.pk %}?avvik=ask">Avvik</a>
+                   data-dismiss="modal"
+                   data-target="#avvik{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                   data-toggle="modal"
+                   href="">
+                    Avvik</a>
             </div>
         </div>
     </div>
@@ -116,7 +120,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <h4 class="modal-title">{{obj.fabrikat}}</h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
@@ -193,4 +197,24 @@
         </div>
     </div>
 </div>
+<!-- Avvik Modal -->
+<div class="modal fade"
+     id="avvik{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h4 class="modal-title">avvik overskrift {{obj.pk}}</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                {% include 'forms_avvik.html' %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

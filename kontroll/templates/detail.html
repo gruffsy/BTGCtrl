@@ -2,21 +2,25 @@
 {% block body %}
 
 <div class="just-padding">
-     <a class="btn btn-white btn-sm"
-                       data-target="#nyobject"
-                       data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+    <a class="btn btn-white btn-sm"
+       data-target="#nyobject"
+       data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
         til nytt objekt</a>
-    <!--<br>
-    toast = {{toast}}<br>
-    custpk = {{custpk}}<br>
-    obj = {{obj}}<br>
-    aktiv = {{aktiv}}
--->
-   
-</div>
-{% include 'forms_modal.html' %}
-{% block nyobject %}
-{% endblock nyobject %}
+    <div class="just-padding">
+        <a class="btn btn-white btn-sm"
+           data-target="#avvik"
+           data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Registrer avvik</a>
+        <br>
+        toast = {{toast}}<br>
+        custpk = {{custpk}}<br>
+        obj = {{obj}}<br>
+        aktiv = {{aktiv}}<br>
+        avvik = {{avvik}}
+
+    </div>
+    {% include 'forms_modal.html' %}
+    {% block nyobject %}
+    {% endblock nyobject %}
 {% if objects %}
 <!-- Toast -->
 {% if toast %}
