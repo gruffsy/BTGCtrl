@@ -74,7 +74,7 @@ class ObjTr(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     kontrolldato = models.DateField(null=True, blank=True)
     servicedato = models.DateField(null=True, blank=True)
-    avvik = models.BooleanField(default=False)
+    avvik = models.ManyToManyField('Avvik', blank=True)
 
     def __str__(self):
         return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
