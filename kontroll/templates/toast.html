@@ -7,6 +7,8 @@
         bg-info
         {% elif toast == 'service' %}
         bg-warning
+        {% elif toast == 'avvik' %}
+        bg-danger
         {% endif %}
         toast-header text-white">
         <strong class="mr-auto">{% if toast == "kontroll" %}
@@ -15,6 +17,8 @@
             Endring
             {% elif toast == "service" %}
             Service
+            {% elif toast == "avvik" %}
+            Avvik
             {% endif %}
         </strong>
         <small>Objekt:
@@ -49,6 +53,9 @@
         {% endif %}
         {% if toast == "service" %}
         fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
+        {% endif %}
+        {% if toast == "avvik" %}
+        registrert med avvik og kan behandles i <a href="{% url 'avvik' customer.id %}">avviksbehandlingen</a>
         {% endif %}
     </div>
 </div>

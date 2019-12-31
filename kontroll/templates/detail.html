@@ -6,18 +6,15 @@
        data-target="#nyobject"
        data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
         til nytt objekt</a>
-    <div class="just-padding">
-        <a class="btn btn-white btn-sm"
-           data-target="#avvik"
-           data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Registrer avvik</a>
-        <br>
-        toast = {{toast}}<br>
-        custpk = {{custpk}}<br>
-        obj = {{obj}}<br>
-        aktiv = {{aktiv}}<br>
-        avvik = {{avvik}}
 
-    </div>
+    <!--  <br>
+      toast = {{toast}}<br>
+      custpk = {{custpk}}<br>
+      obj = {{obj}}<br>
+      aktiv = {{aktiv}}<br>
+      avvik = {{avvik}}
+-->
+</div>
     {% include 'forms_modal.html' %}
     {% block nyobject %}
     {% endblock nyobject %}
@@ -28,6 +25,7 @@
 {% block toast %}
 {% endblock toast %}
 {% endif %}
+
 <!-- Liste-meny Nivå 1  Etg-->
 <div class="lead list-group list-group-root well text-dark">
     {% regroup objects by etg as etg_list %}
@@ -54,18 +52,24 @@
                 {% for obj in p.list %}
                 <div class="row list-group-item d-flex justify-content-around">
                     <!-- Button to Open the Modal -->
-                    <a class="btn btn-lg btn-light"
-                       data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                       data-toggle="modal">
-                        Objekt:
-                        {{obj.extinguishant.fabrikat}}
-                        {{obj.extinguishant.type}}
-                        {% if obj.extinguishant.lengde is not None %}
-                        {{obj.extinguishant.lengde}}
-                        {% endif %}
-                        {% if obj.extinguishant.slukkemiddel is not None %}
-                        {{obj.extinguishant.slukkemiddel}}
-                        {% endif %}</a>
+
+                    {% if obj.avvik == True %}
+                    <a class="btn btn-lg btn-danger" href="{% url 'avvik' customer.pk %}?obj={{obj.pk}}">
+                        {% else %}
+                        <a class="btn btn-lg btn-light"
+                           data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                           data-toggle="modal">
+                            {% endif %}
+
+                            Objekt:
+                            {{obj.extinguishant.fabrikat}}
+                            {{obj.extinguishant.type}}
+                            {% if obj.extinguishant.lengde is not None %}
+                            {{obj.extinguishant.lengde}}
+                            {% endif %}
+                            {% if obj.extinguishant.slukkemiddel is not None %}
+                            {{obj.extinguishant.slukkemiddel}}
+                            {% endif %}</a>
                 </div>
                 <!-- Modaler -->
                 {% include 'modal.html' %}

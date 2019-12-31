@@ -4,7 +4,7 @@
 
 <div class="just-padding">
     <h2>Registrer Avvik</h2>
-    <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}" method="post">
+    <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}&toast=avvik" method="post">
         {% csrf_token %}
         {{avvikform}}
 

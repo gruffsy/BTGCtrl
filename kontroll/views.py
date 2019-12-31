@@ -3,7 +3,7 @@ from .models import Customer, Object, ObjTr, Slokketype
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
-from datetime import date
+from datetime import date, datetime, timedelta
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -13,7 +13,7 @@ from xhtml2pdf import pisa
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
-
+from django.utils import timezone
 
 def link_callback(uri, rel):
     """
@@ -78,7 +78,9 @@ def detail(request, pk):
             obj = Object.objects.filter(pk=int(obj))[0]
         custpk = customer.pk
 
+    time_threshold = timezone.now() - timedelta(days=150)
     objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "plassering")
+    objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
     plassering = objects.values_list('plassering', flat=True).last()
@@ -113,12 +115,15 @@ def detail(request, pk):
             objform.customer = obj.customer
             objform.object = obj
             objform.save()
+            obj.avvik = True
+            obj.save()
             avvikform.save_m2m()
             nyform = NyObjectForm(
                 initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                          'prodyear': int(timezone.now().year)})
         else:
             nyform = NyObjectForm(request.POST or None)
+            avvikform = AvvikForm()
             if nyform.is_valid():
                 objform = nyform.save(commit=False)
                 objform.customer = customer
@@ -142,6 +147,21 @@ def detail(request, pk):
     }
     return render(request, "detail.html", context)
 
+
+def avvik(request, pk):
+    obj = request.GET.get('obj')
+    obj = Object.objects.get(pk=obj)
+    objtr = ObjTr.objects.get(object=obj)
+
+    test = objtr.avvik.all()
+
+    context = {
+        'objtr': objtr,
+        'obj': obj,
+        'pk': pk,
+        'test': test,
+    }
+    return render(request, "avvik.html", context)
 
 def nyobject(request):
     pass

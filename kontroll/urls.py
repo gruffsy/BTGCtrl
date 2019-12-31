@@ -11,5 +11,5 @@ urlpatterns = [
     path('pdf/<int:pk>/', views.Pdf.as_view(), name='pdf'),
     path('contact/', forms.nyslokketype, name='nyslokketype'),
     path('nyobject/<int:pk>', views.nyobject, name='nyobject'),
-
+    path('avvik/<int:pk>/', views.avvik, name='avvik'),
 ]
