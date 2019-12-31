@@ -151,16 +151,27 @@ def detail(request, pk):
 def avvik(request, pk):
     obj = request.GET.get('obj')
     obj = Object.objects.get(pk=obj)
-    objtr = ObjTr.objects.get(object=obj)
+    remove = request.GET.get('remove')
+    avvik = request.GET.get('avvik')
+    objtr = ObjTr.objects.get(object=obj, kontrolldato=None)
 
-    test = objtr.avvik.all()
+    if remove is not None:
+        objtr.avvik.remove(avvik)
+
+    avviks = objtr.avvik.all()
+
+    if not avviks:
+        obj.avvik = False
+        obj.save()
+        objtr.delete()
 
     context = {
         'objtr': objtr,
         'obj': obj,
         'pk': pk,
-        'test': test,
+        'avviks': avviks,
     }
+
     return render(request, "avvik.html", context)
 
 def nyobject(request):

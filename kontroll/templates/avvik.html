@@ -8,9 +8,12 @@
 PK:{{pk}}<br>
 Obj:{{obj}}<br>
 Objtr:{{objtr}}<br>
-Test: {{test}}<br>
-{% for t in test %}
-<p>{{t.pk}}&nbsp;{{t}}</p>
+Test: {{avviks}}<br>
+{% for avvik in avviks %}
+
+<a href="{% url 'avvik' pk %}?obj={{obj.pk}}&avvik={{avvik.pk}}&remove=yes">
+    <p>{{avvik.pk}}&nbsp;{{avvik}}</p>
+</a>
 {% endfor %}
 </body>
 </html>
