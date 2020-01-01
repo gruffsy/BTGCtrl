@@ -54,5 +54,5 @@ class AvvikForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AvvikForm, self).__init__(*args, **kwargs)
 
-        self.fields['avvik'].widget = CheckboxSelectMultiple()
+        # self.fields['avvik'].widget = CheckboxSelectMultiple()
         self.fields["avvik"].queryset = Avvik.objects.all()

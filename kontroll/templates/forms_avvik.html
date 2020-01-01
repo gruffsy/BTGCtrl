@@ -6,6 +6,7 @@
     <h2>Registrer Avvik</h2>
     <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}&toast=avvik" method="post">
         {% csrf_token %}
+
         {{avvikform}}
 
         <div class="modal-footer bg-light">
