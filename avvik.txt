@@ -1,0 +1,16 @@
+id,avvik,slokketype
+1,"Mangler etterlysende skilt, type flatt","1,2,3"
+2,"Mangler etterlysende skilt, type plog","1,2,3"
+3,"Mangler etterlysende skilt ""slokkeutstyr innenfor""","1,2,3"
+4,Pilretningsskilt for slokkeutstyr mot høyre/venstre,"1,2,3"
+5,Etterlysende brannskilt må heves,"1,2,3"
+6,Brannslokker må festes til vegg,3
+7,Kontroll er ikke utført,"1,2,3"
+8,Brannslokker ikke funnet,"1,2,3"
+9,Brannslokkeren må ha støvkappe,3
+10,Ikke godkjent brannslokker,3
+11,Ny brannslokker er montert,3
+12,Brannposten har defekt strålerør,1
+13,Brannpostens pakning lekker,1
+14,Ikke godkjent brannpost,1
+15,Div. avvik,"1,2,3"
