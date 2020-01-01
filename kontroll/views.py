@@ -133,6 +133,7 @@ def detail(request, pk):
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                      'prodyear': int(timezone.now().year)})
         avvikform = AvvikForm()
+
     context = {
         "customer": customer,
         "obj": obj,
@@ -149,30 +150,45 @@ def detail(request, pk):
 
 
 def avvik(request, pk):
-    obj = request.GET.get('obj')
-    obj = Object.objects.get(pk=obj)
+    obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
-    avvik = request.GET.get('avvik')
-    objtr = ObjTr.objects.get(object=obj, kontrolldato=None)
+    avvik = request.GET.get('avvik') or None
+    if obj:
+        obj = Object.objects.get(pk=obj)
+        objtr = ObjTr.objects.get(object=obj, kontrolldato=None)
+        avviks = objtr.avvik.all()
+        customer = objtr.customer
+
+    else:
+        objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None)
+        avviks = 'False'
+        customer = Customer.objects.get(pk=pk)
 
     if remove is not None:
         objtr.avvik.remove(avvik)
-
-    avviks = objtr.avvik.all()
-
-    if not avviks:
-        obj.avvik = False
-        obj.save()
-        objtr.delete()
 
     context = {
         'objtr': objtr,
         'obj': obj,
         'pk': pk,
         'avviks': avviks,
+        "customer": customer,
+
     }
 
-    return render(request, "avvik.html", context)
+    if not avviks:
+        obj.avvik = False
+        obj.sistekontroll = timezone.now()
+        obj.save()
+        objtr.delete()
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
+        objtr.save()
+        url = '../' + str(pk)
+
+        return HttpResponseRedirect(url)
+    else:
+
+        return render(request, "avvik.html", context)
 
 def nyobject(request):
     pass
@@ -209,9 +225,12 @@ def obj_detail(request, pk):
     return render(request, "obj_detail.html", context)
 
 
+#    objs = customer.objtr_set.all().filter(avvik=False).order_by('-kontrolldato')
+
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
-    objs = customer.objtr_set.all().filter(avvik=False).order_by('-kontrolldato')
+    objs = customer.objtr_set.all().order_by('-kontrolldato')
+    # objs = objs.exclude(avvik=True)
     kontrs = objs.exclude(kontrolldato=None)
     services = objs.exclude(servicedato=None)
     today = timezone.now()

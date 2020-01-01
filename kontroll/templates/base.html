@@ -89,7 +89,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
-                    <a class="dropdown-item disabled" href="#">Avviksbehandling</a>
+                    <a class="dropdown-item " href="{% url 'avvik' customer.id %}">Avviksbehandling</a>
                     <a class="dropdown-item" href="{% url 'detail' customer.id %}">Alle objekter</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#">Rediger kunde</a>
@@ -131,7 +131,7 @@
         </a>
         <div aria-labelledby="historyDropdown" class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
-            <a class="dropdown-item disabled" href="#">Avviksbehandling</a>
+            <a class="dropdown-item" href="{% url 'avvik' customer.id %}">Avviksbehandling</a>
             <a class="dropdown-item" href="{% url 'detail' customer.id %}">Alle objekter</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item disabled" href="#">Rediger kunde</a>

@@ -52,6 +52,13 @@
     </table>
 
 
+    <br>
+    <!-- test: {{objs}}
+ {% for o in objs%}
+     <p>{{o.pk}}{{o}}</p>
+     {% endfor %}
+ -->
+
     <h5 class="text-dark">Utførte kontroller og servicer</h5>
 </div>
 {% regroup kontrs by kontrolldato|date:'E Y' as date_list %}
