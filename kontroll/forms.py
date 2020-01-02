@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from .models import Slokketype, Object, Customer, ObjTr, Avvik
 from django.utils import timezone
-from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple, SelectMultiple
 
 
 class NySlokketypeForm(forms.ModelForm):
@@ -50,9 +50,3 @@ class AvvikForm(forms.ModelForm):
     class Meta:
         model = ObjTr
         fields = ['avvik']
-
-    def __init__(self, *args, **kwargs):
-        super(AvvikForm, self).__init__(*args, **kwargs)
-
-        # self.fields['avvik'].widget = CheckboxSelectMultiple()
-        self.fields["avvik"].queryset = Avvik.objects.all()

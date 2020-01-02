@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Customer, Object, ObjTr, Slokketype
+from .models import Customer, Object, ObjTr, Avvik
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
@@ -78,7 +78,8 @@ def detail(request, pk):
             obj = Object.objects.filter(pk=int(obj))[0]
         custpk = customer.pk
 
-    time_threshold = timezone.now() - timedelta(days=150)
+    dager = 150
+    time_threshold = timezone.now() - timedelta(days=dager)
     objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "plassering")
     objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
     lokasjon = objects.values_list('lokasjon', flat=True).last()
@@ -133,6 +134,7 @@ def detail(request, pk):
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                      'prodyear': int(timezone.now().year)})
         avvikform = AvvikForm()
+        # avvikform.fields["avvik"].queryset = Avvik.objects.filter(slokketype=objects.extinguishant.slokketype)
 
     context = {
         "customer": customer,
