@@ -92,6 +92,7 @@ def detail(request, pk):
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now()
+        # nestekontroll spør pappa om den ikke alltid er hvert år
         obj.save()
 
     if toast == "endring":
@@ -99,7 +100,6 @@ def detail(request, pk):
         obj.lokasjon = request.GET['lokasjon']
         obj.plassering = request.GET['plassering']
         obj.prodyear = request.GET['prodyear']
-        # legg til logikk om at service intervall må endres
         if aktiv:
             obj.aktiv = False
         obj.save()
