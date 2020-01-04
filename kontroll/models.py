@@ -29,7 +29,7 @@ class Customer(models.Model):
     aktiv = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.id) + ' | ' + self.kunde + ' | ' + self.badresse + ' | ' + self.bpoststed
+        return self.gml_id + ' | ' + self.kunde + ' | ' + self.badresse + ' | ' + self.bpoststed
 
 
 class Slokketype(models.Model):
