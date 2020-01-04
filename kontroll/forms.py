@@ -43,7 +43,7 @@ class NyObjectForm(forms.ModelForm):
 class EndreObjectForm(forms.ModelForm):
     class Meta:
         model = Object
-        fields = ['lokasjon', 'plassering', 'etg']
+        fields = ['prodyear', 'lokasjon', 'plassering', 'etg']
 
 
 class AvvikForm(forms.ModelForm):
