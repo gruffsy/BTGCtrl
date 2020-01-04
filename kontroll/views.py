@@ -97,6 +97,7 @@ def detail(request, pk):
         obj.lokasjon = request.GET['lokasjon']
         obj.plassering = request.GET['plassering']
         obj.prodyear = request.GET['prodyear']
+        # legg til logikk om at service intervall må endres
         if aktiv:
             obj.aktiv = False
         obj.save()
