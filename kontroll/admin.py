@@ -7,10 +7,13 @@ class AvvikAdmin(ImportExportModelAdmin):
     pass
 
 
+class CustomerAdmin(ImportExportModelAdmin):
+    pass
+
 # Register your models here.
 
 admin.site.register(Month),
-admin.site.register(Customer),
+admin.site.register(Customer, CustomerAdmin),
 admin.site.register(Slokketype),
 admin.site.register(Extinguishant),
 admin.site.register(Object),
