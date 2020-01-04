@@ -35,7 +35,7 @@
                         <th>Kontakt</th>
                         <th>Telefon</th>
                         <th>Epost</th>
-                        <th>Kontrollmnd</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,7 @@
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{kunde.tlf1}}/{{kunde.tlf2}}</a>
                         </td>
                         <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.email }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
+
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -73,14 +73,34 @@
         <table class="lead table w-auto table-hover">
             <thead>
             <tr>
-                <th>Kundenr</th>
-                <th>Kunde</th>
-                <th>Adresse</th>
-                <th>Sted</th>
-                <th>Kontakt</th>
-                <th>Telefon</th>
-                <th>Epost</th>
-                <th>Kontrollmnd</th>
+
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tripletex' %}-{% endif %}tripletex">Kundenr</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kunde' %}-{% endif %}kunde">Kunde</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'badresse' %}-{% endif %}badresse">Adresse</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpostnr' %}-{% endif %}bpostnr">Postnr</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpoststed' %}-{% endif %}bpoststed">Sted</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kontaktperson' %}-{% endif %}kontaktperson">Kontakt</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tlf1' %}-{% endif %}tlf1">Telefon</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'email' %}-{% endif %}email">Epost</a>
+                </th>
+                <th><a class="text-dark"
+                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'month' %}-{% endif %}month">Kontrollmnd</a>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -89,6 +109,7 @@
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
+                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpostnr }}</a></td>
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kontaktperson }}</a></td>
                 <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tlf1 }}/{{ kunde.tlf2 }}</a></td>
@@ -102,7 +123,7 @@
     {% endif %}
     {% endif %}
 </div>
-<!-- Hvis det ikke er noen treff på søk. Gi brukeren et svar -->
+<!-- Hvis det ikke er noen treff på søk. Gi brukeren beskjed -->
 {% if not customers %}
 <div class="just-padding">
     <div class="row">

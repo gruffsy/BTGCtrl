@@ -43,20 +43,22 @@ def link_callback(uri, rel):
 
 
 def index(request):
-    customers = Customer.objects.all().order_by('month_id', 'kunde', 'bpoststed')
+    customers = Customer.objects.all().order_by('month_id')
     query = request.GET.get("q")
+    sort = request.GET.get("sort")
     all = request.GET.get("a")
 
     if query:
-        customers = customers.filter(
-            Q(kunde__icontains=query)).order_by('kunde', 'bpoststed')
-    if all:
-        customers = Customer.objects.all().order_by('kunde', 'bpoststed')
+        customers = Customer.objects.all().filter(
+            Q(kunde__icontains=query)).order_by('month_id', 'kunde', 'bpoststed')
+    if sort:
+        customers = customers.order_by(sort)
 
     context = {
         'customers': customers,
         'query': query,
         'all': all,
+        'sort': sort,
     }
     return render(request, 'index.html', context)
 
