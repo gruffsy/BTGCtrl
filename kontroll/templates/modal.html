@@ -11,7 +11,7 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h1> {{obj.prodyear}} {{obj.extinguishant.fabrikat}}
+                <h1>{{obj.extinguishant.fabrikat}}
                     {{obj.extinguishant.type}}<br></h1>
                 <h2>
                     {% if obj.extinguishant.lengde is not None %}
@@ -22,6 +22,9 @@
                     {% endif %}</h2><br>
                 <div class="table-responsive">
                     <table class="lead table" style="border">
+                        <tr>
+                            <td>Produksjonsår: [{{obj.prodyear}}]</td>
+                        </tr>
                         <tr>
                             <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
                         </tr>

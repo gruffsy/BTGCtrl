@@ -110,6 +110,7 @@ def detail(request, pk):
         obj.sisteservice = timezone.now()
         obj.sistekontroll = timezone.now()
         obj.nesteservice = date(timezone.now().year + 5, timezone.now().month, timezone.now().day)
+        # trengs nestekontroll?
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
@@ -156,6 +157,8 @@ def detail(request, pk):
 
 
 def avvik(request, pk):
+    # må logge avvik
+
     obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
     avvik = request.GET.get('avvik') or None
@@ -182,8 +185,10 @@ def avvik(request, pk):
 
     }
 
+    #alle avvik er lukket
     if not avviks:
         obj.avvik = False
+        #skal avvik også følge service?
         obj.sistekontroll = timezone.now()
         obj.save()
         objtr.delete()

@@ -27,6 +27,15 @@ class Customer(models.Model):
     gml_id = models.TextField(null=True, blank=True)
     month = models.ForeignKey(Month, on_delete=models.CASCADE)
     aktiv = models.BooleanField(default=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(Customer, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.gml_id) + ' | ' + self.kunde + ' | ' + self.badresse + ' | ' + self.bpoststed
@@ -64,6 +73,15 @@ class Object(models.Model):
     avvik = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
     gml_kid = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(Object, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.pk) + ' ' + self.customer.kunde + ' | ' + self.lokasjon + ' | ' + self.plassering + ' | ' + str(
@@ -76,6 +94,15 @@ class ObjTr(models.Model):
     kontrolldato = models.DateField(null=True, blank=True)
     servicedato = models.DateField(null=True, blank=True)
     avvik = models.ManyToManyField('Avvik', blank=True)
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(Objtr, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
