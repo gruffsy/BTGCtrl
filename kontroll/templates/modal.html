@@ -80,6 +80,10 @@
                 <h1>Utfør endringer</h1>
                 <form action="{% url 'detail' obj.pk %}" method="get">
                     <div class="form-group">
+                        <label for="lokasjon">Produksjonsår</label>
+                        <input class="form-control" id="prodyear"
+                               name="prodyear" placeholder="{{ obj.prodyear }}"
+                               type="text" value="{{obj.prodyear}}">
                         <label for="lokasjon">Lokasjon</label>
                         <input class="form-control" id="lokasjon"
                                name="lokasjon" placeholder="{{ obj.lokasjon }}"

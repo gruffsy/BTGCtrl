@@ -96,6 +96,7 @@ def detail(request, pk):
         obj.etg = request.GET['etg']
         obj.lokasjon = request.GET['lokasjon']
         obj.plassering = request.GET['plassering']
+        obj.prodyear = request.GET['prodyear']
         if aktiv:
             obj.aktiv = False
         obj.save()
