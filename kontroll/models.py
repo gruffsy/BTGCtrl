@@ -24,7 +24,7 @@ class Customer(models.Model):
     nummer = models.PositiveIntegerField(null=True, blank=True)
     tripletex = models.PositiveIntegerField(null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
-    kommentar = models.TextField(null=True, blank=True)
+    gml_id = models.TextField(null=True, blank=True)
     month = models.ForeignKey(Month, on_delete=models.CASCADE)
     aktiv = models.BooleanField(default=True)
 
@@ -63,6 +63,7 @@ class Object(models.Model):
     nestekontroll = models.DateField(null=True, blank=True)
     avvik = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
+    gml_kid = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.pk) + ' ' + self.customer.kunde + ' | ' + self.lokasjon + ' | ' + self.plassering + ' | ' + str(
