@@ -2,6 +2,16 @@
 {% block body %}
 
 <div class="just-padding">
+    {% if liste == "True" %}
+    <a class="text-dark"
+       href="./">
+        Objekter som skal kontrolleres</a>
+</div>
+{% else %}
+<a class="text-dark"
+   href="?liste=True">
+    Liste over alle objekter</a>
+<div class="just-padding">
     <a class="btn btn-white btn-sm"
        data-target="#nyobject"
        data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
@@ -15,9 +25,12 @@
       avvik = {{avvik}}
 -->
 </div>
-    {% include 'forms_modal.html' %}
-    {% block nyobject %}
-    {% endblock nyobject %}
+{% endif %}
+
+
+{% include 'forms_modal.html' %}
+{% block nyobject %}
+{% endblock nyobject %}
 {% if objects %}
 <!-- Toast -->
 {% if toast %}
@@ -25,7 +38,7 @@
 {% block toast %}
 {% endblock toast %}
 {% endif %}
-
+{% if not liste %}
 <!-- Liste-meny Nivå 1  Etg-->
 <div class="lead list-group list-group-root well text-dark">
     {% regroup objects by etg as etg_list %}
@@ -82,6 +95,109 @@
         {% endfor %}
     </div>
     {% endfor %}
+</div>
+{% else %}
+<div class="just-padding">
+    <a class="text-dark" href="javascript:window.print()">
+        <i aria-hidden="true" class="fa fa-print"></i>&nbsp;Print
+    </a>
+</div>
+<!-- viser all info -->
+<div class="just-padding">
+    <h2>EIERINFORMASJON</h2>
+    <table class="small w-auto">
+        <tr>
+            <td>Navn:</td>
+            <td>{{customer.kunde}}</td>
+            <td>Kundenummer:</td>
+            <td>{{customer.tripletex}}</td>
+        </tr>
+        <tr>
+            <td>Oppdragsadresse:</td>
+            <td>{{customer.badresse}}</td>
+            <td>Fakturaadresse:</td>
+            <td>{% if customer.fadresse is not None %}
+                {{customer.fadresse}}
+                {% else %}
+                {{customer.badresse}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td style="width:120px">Postnr./-sted:</td>
+            <td style="width:220px">{{customer.bpostnr}} {{customer.bpoststed}}</td>
+            <td style="width:120px">Fakturapostnr./-sted:</td>
+            <td style="width:220px">{% if customer.fpostnr is not None %}
+                {{customer.fpostnr}}
+                {{customer.fpoststed}}
+                {% else %}
+                {{customer.bpostnr}}
+                {{customer.bpoststed}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Kontaktperson:</td>
+            <td>{{customer.kontaktperson}}</td>
+            <td>Telefonnr:</td>
+            <td>{{customer.tlf1}}
+                {% if customer.tlf2 is not None %}
+                /
+                {{customer.tlf2}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>E-post:</td>
+            <td><a class="text-dark" href="mailto:{{customer.email}}">{{customer.email}}</a></td>
+        </tr>
+    </table>
+    <br>
+    <h2>Objekter</h2>
+    <table class="small table w-auto">
+        <tr>
+
+            <th>Etg</th>
+            <th>Lokasjon</th>
+            <th>Plassering</th>
+            <th>Slokkeutstyr</th>
+            <th>Utstyr</th>
+            <th>Prod. år</th>
+            <th>Siste kontroll</th>
+            <th>Neste kontroll</th>
+            <th>Siste service</th>
+            <th>Neste service</th>
+            <th>Kontrollør</th>
+        </tr>
+        {% for obj in objects %}
+
+        <tr>
+
+            <td>{{ obj.etg }}</td>
+            <td>{{ obj.lokasjon }}</td>
+            <td>{{ obj.plassering }}</td>
+            <td>{{ obj.extinguishant.slokketype.navn }}</td>
+            <td>{{ obj.extinguishant.fabrikat }}
+                {{ obj.extinguishant.type }}
+                {% if obj.extinguishant.slukkemiddel %}
+                {{ obj.extinguishant.slukkemiddel }}
+                {% endif %}
+                {% if obj.extinguishant.lengde %}
+                {{ obj.extinguishant.lengde }}
+                {% endif %}
+            </td>
+            <td>{{ obj.prodyear }}</td>
+            <td>{{ obj.sistekontroll }}</td>
+            <td>{{ obj.nestekontroll }}</td>
+            <td>{{ obj.sisteservice|date:'M. Y' }}</td>
+            <td>{{ obj.nesteservice|date:'M. Y' }}</td>
+            <td>user</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    {% endif %}
 </div>
 {% else %}
 <div class="just-padding">

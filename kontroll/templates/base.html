@@ -97,9 +97,12 @@
                 </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'index' %}?a=all">Alle kunder</a>
-                    <a class="dropdown-item disabled" href="#">Legg til kunde</a>
+                    <a class="dropdown-item" href="{% url 'index' %}">Kunder som skal kontrolleres</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/admin/kontroll/customer/add/">Legg til kunde</a>
                 </div>
             </li>
+
             <li class="nav-item active">
                 <form action="{% url 'index' %}" class="form-inline my-2" method="get">
                     <input aria-label="Search" class="form-control mr-sm-2" name="q" placeholder="Søk etter kunde..."

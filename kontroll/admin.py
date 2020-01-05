@@ -6,22 +6,17 @@ from .models import Month, Customer, Slokketype, Extinguishant, Object, ObjTr, A
 class AvvikAdmin(ImportExportModelAdmin):
     pass
 
-
 class CustomerAdmin(ImportExportModelAdmin):
     pass
-
 
 class ExtinguishantAdmin(ImportExportModelAdmin):
     pass
 
-
 class ObjectAdmin(ImportExportModelAdmin):
     pass
 
-
 class SlokketypeAdmin(ImportExportModelAdmin):
     pass
-
 
 # Register your models here.
 

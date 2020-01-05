@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime, date
+from django.utils import timezone
 # Create your models here.
 
 class Month(models.Model):
@@ -102,7 +102,7 @@ class ObjTr(models.Model):
         if not self.id:
             self.created = timezone.now()
         self.modified = timezone.now()
-        return super(Objtr, self).save(*args, **kwargs)
+        return super(ObjTr, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde

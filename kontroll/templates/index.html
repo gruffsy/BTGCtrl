@@ -4,12 +4,16 @@
 {% if not query and not all %}
 <!-- Hvis ikke søk eller alle kunder -->
 {% regroup customers by month as month_list %}
-<!-- Link til alfabetisk oversikt -->
+<!-- Link til oversikt over alle aktive kunder -->
 <div class="just-padding">
-    <h5><a class="text-dark" href="{% url 'index' %}?a=all">Vis alfabetisk</a>
+    <h5><a class="text-dark small" href="{% url 'index' %}?a=all">Vis alle kunder</a>
     </h5>
 </div>
-<!-- Kjører trekkspill-oversikt -->
+<div class="just-padding">
+    <h2>Kunder som bør kontrolleres sortert pr. måned</h2>
+    <!-- <h6><a href="?utvid=True">Utvid alle</a>  </h6> -->
+</div>
+<!-- Kjører trekkspill-oversikt over kundr so skal kontrolleres-->
 <div id="accordion">
     {% for month in month_list %}
     <div class="card">
@@ -21,7 +25,9 @@
                 {{ month.grouper }}
             </button>
         </div>
-        <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
+        <div aria-labelledby="heading{{ forloop.counter }}"
+
+             class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
             <div class="card-body table-responsive">
@@ -64,8 +70,15 @@
 {% if customers %}
 <!-- Link til månedsoversikt -->
 <div class="just-padding">
-    <h5><a class="text-dark" href="{% url 'index' %}">Vis sortert på måned</a>
+    <h5><a class="text-dark small" href="{% url 'index' %}">Vis kun kunder som bør kontrolleres</a>
     </h5>
+</div>
+<div class="just-padding">
+    {% if query %}
+    <h2>Søkeresultat</h2>
+    {% elif all %}
+    <h2>Alle kunder.</h2>
+    {% endif %}
 </div>
 <!-- Resultattabell -->
 <div class="just-padding">
@@ -126,9 +139,11 @@
 <!-- Hvis det ikke er noen treff på søk. Gi brukeren beskjed -->
 {% if not customers %}
 <div class="just-padding">
-    <div class="row">
-        <h2>Dessverre ingen treff...</h2>
-    </div>
+    <h5><a class="text-dark small" href="{% url 'index' %}?a=all">Vis alle kunder</a>
+    </h5>
+</div>
+<div class="just-padding">
+    <h2>Dessverre ingen treff...</h2>
 </div>
 {% endif %}
 {% endblock %}

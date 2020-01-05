@@ -13,40 +13,28 @@ from xhtml2pdf import pisa
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
-from django.utils import timezone
 
-def link_callback(uri, rel):
-    """
-    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-    resources
-    """
-    # use short variable names
-    sUrl = settings.STATIC_URL  # Typically /static/
-    sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
-    mUrl = settings.MEDIA_URL  # Typically /static/media/
-    mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
 
-    # convert URIs to absolute system paths
-    if uri.startswith(mUrl):
-        path = os.path.join(mRoot, uri.replace(mUrl, ""))
-    elif uri.startswith(sUrl):
-        path = os.path.join(sRoot, uri.replace(sUrl, ""))
-    else:
-        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
-
-    # make sure that file exists
-    if not os.path.isfile(path):
-        raise Exception(
-            'media URI must start with %s or %s' % (sUrl, mUrl)
-        )
-    return path
 
 
 def index(request):
-    customers = Customer.objects.all().order_by('month_id')
     query = request.GET.get("q")
     sort = request.GET.get("sort")
-    all = request.GET.get("a")
+    alle = request.GET.get("a")
+    # utvid = request.GET.get("utvid")
+    kontroll = []
+
+    dager = 150
+    time_threshold = timezone.now() - timedelta(days=dager)
+    customers = Customer.objects.filter(aktiv=True)
+    for c in customers:
+        objs = Object.objects.filter(customer=c, aktiv=True)
+        objs = objs.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
+        if objs:
+            kontroll.append(c.pk)
+    customers = customers.filter(pk__in=kontroll).order_by('month_id')
+    if alle:
+        customers = Customer.objects.filter(aktiv=True)
 
     if query:
         customers = Customer.objects.all().filter(
@@ -57,8 +45,9 @@ def index(request):
     context = {
         'customers': customers,
         'query': query,
-        'all': all,
+        'all': alle,
         'sort': sort,
+        'kontroll': kontroll,
     }
     return render(request, 'index.html', context)
 
@@ -67,6 +56,7 @@ def detail(request, pk):
     custpk = request.GET.get("custpk")
     toast = request.GET.get("toast")
     aktiv = request.GET.get('aktiv')
+    liste = request.GET.get('liste')
     avvik = request.POST.get('avvik')
 
     if custpk:
@@ -152,6 +142,7 @@ def detail(request, pk):
         'pk': pk,
         'aktiv': aktiv,
         'avvik': avvik,
+        'liste': liste,
     }
     return render(request, "detail.html", context)
 
@@ -236,7 +227,6 @@ def obj_detail(request, pk):
     return render(request, "obj_detail.html", context)
 
 
-#    objs = customer.objtr_set.all().filter(avvik=False).order_by('-kontrolldato')
 
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
@@ -255,8 +245,6 @@ def objtr(request, pk):
     return render(request, "objtr.html", context)
 
 
-def test(request):
-    return render(request, 'test.html', {})
 
 
 class Pdf(View):
@@ -290,3 +278,30 @@ class Pdf(View):
         return response
 
     # return Render.render('pdf.html', context)
+
+
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    # use short variable names
+    sUrl = settings.STATIC_URL  # Typically /static/
+    sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+    mUrl = settings.MEDIA_URL  # Typically /static/media/
+    mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+    # convert URIs to absolute system paths
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+        raise Exception(
+            'media URI must start with %s or %s' % (sUrl, mUrl)
+        )
+    return path
