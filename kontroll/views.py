@@ -72,7 +72,7 @@ def detail(request, pk):
 
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
-    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "plassering")
+    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
     objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
@@ -192,9 +192,6 @@ def avvik(request, pk):
 
         return render(request, "avvik.html", context)
 
-def nyobject(request):
-    pass
-
 
 def obj_detail(request, pk):
     obj = Object.objects.get(pk=pk)
@@ -225,8 +222,6 @@ def obj_detail(request, pk):
     }
 
     return render(request, "obj_detail.html", context)
-
-
 
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
