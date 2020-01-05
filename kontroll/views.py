@@ -72,7 +72,7 @@ def detail(request, pk):
 
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
-    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
+    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("lokasjon", "etg", "plassering")
     objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
