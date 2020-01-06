@@ -11,20 +11,6 @@
 <a class="text-dark"
    href="?liste=True">
     Liste over alle objekter</a>
-<div class="just-padding">
-    <a class="btn btn-white btn-sm"
-       data-target="#nyobject"
-       data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
-        til nytt objekt</a>
-
-    <!--  <br>
-      toast = {{toast}}<br>
-      custpk = {{custpk}}<br>
-      obj = {{obj}}<br>
-      aktiv = {{aktiv}}<br>
-      avvik = {{avvik}}
--->
-</div>
 {% endif %}
 
 
@@ -39,6 +25,15 @@
 {% endblock toast %}
 {% endif %}
 {% if not liste %}
+<br>
+Totalt å kontrollere: {{tot_ant_obj}}<br>
+Gjennstående å kontrollere: {{ant_obj}}<br>
+<div class="just-padding">
+    <a class="btn btn-white btn-sm"
+       data-target="#nyobject"
+       data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+        til nytt objekt</a>
+</div>
 <!-- Liste-meny Nivå 1  Etg-->
 <div class="lead list-group list-group-root well text-dark">
     {% regroup objects by etg as etg_list %}
@@ -163,6 +158,7 @@
             <th>Slokkeutstyr</th>
             <th>Utstyr</th>
             <th>Prod. år</th>
+            <th>Avvik</th>
             <th>Siste kontroll</th>
             <th>Neste kontroll</th>
             <th>Siste service</th>
@@ -187,21 +183,36 @@
                 {% endif %}
             </td>
             <td>{{ obj.prodyear }}</td>
-            <td>{{ obj.sistekontroll }}</td>
-            <td>{{ obj.nestekontroll }}</td>
+            <td class="float-center">
+                {% if obj.avvik == True %}
+                <a href="{% url 'avvik' customer.id %}?obj={{obj.pk}}">X</a>
+                {% else %}
+                &nbsp;
+                {% endif %}
+            </td>
+            <td>{{ obj.modified|date:'M. Y' }}</td>
+            <td>{{ obj.nestekontroll|date:'M. Y' }}</td>
             <td>{{ obj.sisteservice|date:'M. Y' }}</td>
             <td>{{ obj.nesteservice|date:'M. Y' }}</td>
             <td>user</td>
         </tr>
         {% endfor %}
     </table>
-
-
+    {% if avviks %}
+    Sjekk <a href="{% url 'avvik' customer.id %}">avviksbehandling</a> for detaljert oversikt over avvik.
     {% endif %}
+    {% endif %}
+
 </div>
 {% else %}
 <div class="just-padding">
     Kunden har ingen objekter som skal kontrolleres.
+    <div class="just-padding">
+        <a class="btn btn-white btn-sm"
+           data-target="#nyobject"
+           data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+            til nytt objekt</a>
+    </div>
 </div>
 {% endif %}
 

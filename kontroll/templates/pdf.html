@@ -38,11 +38,25 @@
             text-align: left;
         }
         tr { page-break-inside: avoid !important; }
+    table.avvik {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr.avvik {
+        border-bottom: 1px solid #ccc;
+    }
+
+    th.avvik {
+        text-align: left;
+    }
+
 
 
     </style>
 </head>
 <body>
+
 <div id="page-header">
 
     <table>
@@ -140,11 +154,8 @@
 <table width="170px">
     <tr>
         <td>Kontroller:</td>
-        <td align="right">{% for kont in kontrs %}
-            {% if forloop.last %}
-            {{forloop.counter}} stk
-            {% endif %}
-            {% endfor %}
+        <td align="right">
+            {{kontrs}} stk
         </td>
     </tr>
 
@@ -162,10 +173,25 @@
             {% endif %}
         </td>
     </tr>
-
     <tr>
         <td>Avvik:</td>
-        <td align="right">0 stk</td>
+        <td align="right">
+            {% if avviks %}
+            {{avviks}} stk
+            {% else %}
+            0 stk
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Utbedret Avvik:</td>
+        <td align="right">
+            {% if utbedret_avviks %}
+            {{utbedret_avviks}} stk
+            {% else %}
+            0 stk
+            {% endif %}
+        </td>
     </tr>
 </table>
 
@@ -173,7 +199,7 @@
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="9"><h1>Kontrollrapport</h1></td>
+        <td colspan="9"><h3>Kontrollert uten avvik</h3></td>
     </tr>
 
     <tr>
@@ -190,7 +216,8 @@
     </tr>
 
     <tr>&nbsp;</tr>
-    {% for obj in kontrs %}
+    {% for obj in objs %}
+    {% if obj.kontrolldato is not None %}
     <tr>
         <td>{{ obj.kontrolldato|date:'j. M. Y' }}</td>
         <td>{{ obj.object.etg }}</td>
@@ -211,6 +238,7 @@
         <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
         <td>user</td>
     </tr>
+    {% endif %}
     {% endfor %}
 </table>
 {% if services %}
@@ -218,7 +246,7 @@
 
     <table>
         <tr>
-            <td colspan="9"><h1>Servicerapport</h1></td>
+            <td colspan="9"><h3>Utført service</h3></td>
         </tr>
         <tr>
             <th style="width:80px">Service</th>
@@ -233,7 +261,8 @@
         </tr>
         <tr>&nbsp;</tr>
 
-        {% for obj in services %}
+        {% for obj in objs %}
+        {% if obj.servicedato is not None %}
         <tr>
             <td>{{ obj.servicedato|date:'j. M. Y' }}</td>
             <td>{{ obj.object.etg }}</td>
@@ -253,18 +282,120 @@
             <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
             <td>user</td>
         </tr>
+        {% endif %}
         {% endfor %}
         {% endif %}
     </table>
 
-    <footer>
-        <div id="footerContent">
-            Side
-            <pdf:pagenumber/>
-            av
-            <pdf:pagecount>
+    {% if utbedret_avviks %}
+    <pdf:nextpage>
 
-        </div>
-    </footer>
+        <table>
+            <tr>
+                <td colspan="9"><h3>Utbedret avvik</h3></td>
+            </tr>
+            <tr>
+                <th>Utbedret</th>
+                <th>Etg</th>
+                <th>Lokasjon</th>
+                <th>Plassering</th>
+                <th>Utstyr</th>
+                <th>Avvik</th>
+
+                <th>Prod. år</th>
+                <th>Kontrollør</th>
+            </tr>
+            <tr>&nbsp;</tr>
+
+            {% for obj in objs %}
+            {% if obj.utbedret_avvik is not None %}
+            <tr>
+                <td>{{ obj.modified|date:'j. M. Y' }}</td>
+                <td>{{ obj.object.etg }}</td>
+                <td>{{ obj.object.lokasjon }}</td>
+                <td>{{ obj.object.plassering }}</td>
+                <td>{{ obj.object.extinguishant.fabrikat }}
+                    {{ obj.object.extinguishant.type }}
+                    {% if obj.object.extinguishant.slukkemiddel %}
+                    {{ obj.object.extinguishant.slukkemiddel }}
+                    {% endif %}
+                    {% if obj.object.extinguishant.lengde %}
+                    {{ obj.object.extinguishant.lengde }}
+                    {% endif %}
+                </td>
+                <td>{{ obj.utbedret_avvik }}</td>
+                <td>{{ obj.object.prodyear }}</td>
+                <td>user</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </table>
+
+        {% if avviks %}
+        <pdf:nextpage>
+
+            <table class="avvik">
+                <tr>
+                    <td colspan="9"><h3>Avvik</h3></td>
+                </tr>
+                <tr class="avvik">
+                    <th>Utbedret</th>
+                    <th>Etg</th>
+                    <th>Lokasjon</th>
+                    <th>Plassering</th>
+                    <th>Utstyr</th>
+                    <th style="width:300px">Avvik</th>
+                    <th style="width:300px">Kommentar</th>
+                    <th>Prod. år</th>
+                    <th>Kontrollør</th>
+                </tr>
+                <tr>&nbsp;</tr>
+
+                {% for obj in objs %}
+                {% if obj.avvik.all %}
+                <tr class="avvik">
+                    <td>{{ obj.modified|date:'j. M. Y' }}</td>
+                    <td>{{ obj.object.etg }}</td>
+                    <td>{{ obj.object.lokasjon }}</td>
+                    <td>{{ obj.object.plassering }}</td>
+                    <td>{{ obj.object.extinguishant.fabrikat }}
+                        {{ obj.object.extinguishant.type }}
+                        {% if obj.object.extinguishant.slukkemiddel %}
+                        {{ obj.object.extinguishant.slukkemiddel }}
+                        {% endif %}
+                        {% if obj.object.extinguishant.lengde %}
+                        {{ obj.object.extinguishant.lengde }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <table>
+                            {% for o in obj.avvik.all %}
+                            <tr>
+                                <td>
+                                    {{o}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>{{ obj.kommentar }}</td>
+                    <td>{{ obj.object.prodyear }}</td>
+                    <td>user</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </table>
+
+            <footer>
+                <div id="footerContent">
+                    Side
+                    <pdf:pagenumber/>
+                    av
+                    <pdf:pagecount>
+
+                </div>
+            </footer>
 </body>
 </html>

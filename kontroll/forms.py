@@ -15,4 +15,4 @@ class NyObjectForm(forms.ModelForm):
 class AvvikForm(forms.ModelForm):
     class Meta:
         model = ObjTr
-        fields = ['avvik']
+        fields = ['avvik', 'kommentar']

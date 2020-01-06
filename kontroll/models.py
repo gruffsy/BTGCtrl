@@ -1,13 +1,15 @@
 from django.db import models
 from django.utils import timezone
+
+
 # Create your models here.
 
 class Month(models.Model):
     navn = models.CharField(max_length=20)
 
-
     def __str__(self):
         return self.navn
+
 
 class Customer(models.Model):
     kunde = models.CharField(max_length=255)
@@ -48,6 +50,7 @@ class Slokketype(models.Model):
     def __str__(self):
         return self.navn
 
+
 class Extinguishant(models.Model):
     fabrikat = models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(max_length=255, null=True, blank=True)
@@ -55,9 +58,9 @@ class Extinguishant(models.Model):
     slukkemiddel = models.CharField(max_length=255, null=True, blank=True)
     slokketype = models.ForeignKey(Slokketype, on_delete=models.CASCADE)
 
-
     def __str__(self):
         return self.fabrikat + ' | ' + self.type
+
 
 class Object(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -88,12 +91,31 @@ class Object(models.Model):
             self.etg) + ' | ' + self.extinguishant.fabrikat + ' | ' + str(self.aktiv)
 
 
+class Avvik(models.Model):
+    avvik = models.TextField()
+    slokketype = models.ManyToManyField('Slokketype')
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(Avvik, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.avvik)
+
 class ObjTr(models.Model):
     object = models.ForeignKey(Object, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     kontrolldato = models.DateField(null=True, blank=True)
     servicedato = models.DateField(null=True, blank=True)
-    avvik = models.ManyToManyField('Avvik', blank=True)
+    avvik = models.ManyToManyField(Avvik, blank=True)
+    kommentar = models.TextField(null=True, blank=True)
+    utbedret_avvik = models.ForeignKey(Avvik, on_delete=models.CASCADE, related_name='utbedretavvik_avvik', null=True,
+                                       blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
@@ -106,11 +128,3 @@ class ObjTr(models.Model):
 
     def __str__(self):
         return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
-
-
-class Avvik(models.Model):
-    avvik = models.TextField()
-    slokketype = models.ManyToManyField('Slokketype')
-
-    def __str__(self):
-        return str(self.avvik)

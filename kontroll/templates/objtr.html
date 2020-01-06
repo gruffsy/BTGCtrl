@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
+
+<!--kundeinfo -->
 <div class="just-padding">
 
     <table class="table w-auto">
@@ -61,31 +63,35 @@
 
     <h5 class="text-dark">Utførte kontroller og servicer</h5>
 </div>
-{% regroup kontrs by kontrolldato|date:'E Y' as date_list %}
-
+{% regroup objs by modified|date:'Y' as date_list %}
+<!-- Gruppering av kontroller -->
 <div id="accordion">
-    {% for month in date_list %}
+
+    {% for year in date_list %}
+
     <div class="card">
         <div class="bg-white" id="heading{{ forloop.counter }}">
             <button aria-controls="collapse{{ forloop.counter }}" aria-expanded="false"
                     class="chevron btn btn-link btn-lg collapsed text-dark"
                     data-target="#collapse{{ forloop.counter }}"
                     data-toggle="collapse"><i class="fa fa-chevron-right"></i>
-                {{month.grouper}}
+                {{year.grouper}}
             </button>
         </div>
         <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
             <div class="just-padding"><a class="btn btn-info"
-                                         href="{% url 'pdf' customer.id %}?month={{month.grouper}}">Skriv
+                                         href="{% url 'pdf' customer.id %}?year={{year.grouper}}">Skriv
                 rapport(PDF)</a>
 
             </div>
             <div class="card-body table-responsive">
+                <!-- kontrolloversikt -->
+                <h1>Kontrollrapport</h1><br>
                 <table class="small table w-auto">
                     <tr>
-                        <td colspan="9"><h1>Kontrollrapport</h1></td>
+                        <td colspan="9"><h3>Kontrollerte objekter uten avvik</h3></td>
                     </tr>
                     <tr>
                         <th>Kontrollert</th>
@@ -99,7 +105,8 @@
                         <th>Neste service</th>
                         <th>Kontrollør</th>
                     </tr>
-                    {% for obj in month.list %}
+                    {% for obj in year.list %}
+                    {% if obj.kontrolldato is not None %}
                     <tr>
                         <td>{{ obj.kontrolldato }}</td>
                         <td>{{ obj.object.etg }}</td>
@@ -120,13 +127,15 @@
                         <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
                         <td>user</td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
+                <!-- Serviceoversikt -->
                 <table class="small table w-auto">
-                    {% for obj in month.list %}
+                    {% for obj in year.list %}
                     {% if obj.servicedato is not None %}
                     <tr>
-                        <td colspan="9"><h1>Servicerapport</h1></td>
+                        <td colspan="9"><h3>Utført service</h3></td>
                     </tr>
                     <tr>
                         <th>Service</th>
@@ -143,7 +152,7 @@
                     {%endfor%}
                     {{'--> '}}
 
-                    {% for obj in month.list %}
+                    {% for obj in year.list %}
                     {% if obj.servicedato is not None %}
 
                     <tr>
@@ -167,6 +176,127 @@
                     {% endif %}
                     {% endfor %}
                 </table>
+
+                <!-- Utbedrede avvik -->
+                <table class="small table w-auto">
+                    {% for obj in year.list %}
+                    {% if obj.utbedret_avvik is not None %}
+                    <tr>
+                        <td colspan="9"><h3>Avvik utbedret!</h3></td>
+                    </tr>
+                    <tr>
+                        <th>Utbedret</th>
+                        <th>Etg</th>
+                        <th>Lokasjon</th>
+                        <th>Plassering</th>
+                        <th>Slokkeutstyr</th>
+                        <th>Utstyr</th>
+                        <th>Avvik</th>
+                        <th>Prod. år</th>
+                        <th>Siste service</th>
+                        <th>Neste service</th>
+                        <th>Kontrollør</th>
+                    </tr>
+
+                    {{'<!--'}}
+                    {%endif%}
+                    {%endfor%}
+                    {{'--> '}}
+
+                    {% for avvik in year.list %}
+                    {% if avvik.utbedret_avvik is not None %}
+                    <tr>
+                        <td>{{ avvik.modified|date:'d. F Y' }}</td>
+                        <td>{{ avvik.object.etg }}</td>
+                        <td>{{ avvik.object.lokasjon }}</td>
+                        <td>{{ avvik.object.plassering }}</td>
+                        <td>{{ avvik.object.extinguishant.slokketype.navn }}</td>
+                        <td>{{ avvik.object.extinguishant.fabrikat }}
+                            {{ avvik.object.extinguishant.type }}
+                            {% if avvik.object.extinguishant.slukkemiddel %}
+                            {{ avvik.object.extinguishant.slukkemiddel }}
+                            {% endif %}
+                            {% if avvik.object.extinguishant.lengde %}
+                            {{ avvik.object.extinguishant.lengde }}
+                            {% endif %}
+                        </td>
+                        </td>
+
+                        <td style="width:220px">{{ avvik.utbedret_avvik }}</td>
+                        <td>{{ avvik.object.prodyear }}</td>
+                        <td>{{ avvik.object.sisteservice|date:'M. Y' }}</td>
+                        <td>{{ avvik.object.nesteservice|date:'M. Y' }}</td>
+                        <td>user</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+
+
+                <table class="small table w-auto">
+                    {% for obj in year.list %}
+                    {% if obj.avvik.all %}
+                    <tr>
+                        <td colspan="9"><h3>Avvik IKKE utbedret!</h3></td>
+                    </tr>
+                    <tr>
+                        <th>Registrert</th>
+                        <th>Etg</th>
+                        <th>Lokasjon</th>
+                        <th>Plassering</th>
+                        <th>Slokkeutstyr</th>
+                        <th>Utstyr</th>
+                        <th>Avvik</th>
+                        <th>Kommentar</th>
+                        <th>Prod. år</th>
+                        <th>Siste service</th>
+                        <th>Neste service</th>
+                        <th>Kontrollør</th>
+                    </tr>
+                    {{'<!--'}}
+                    {%endif%}
+                    {%endfor%}
+                    {{'--> '}}
+
+                    {% for avvik in year.list %}
+                    {% if avvik.avvik.all %}
+                    <tr>
+                        <td>{{ avvik.modified|date:'d. F Y' }}</td>
+                        <td>{{ avvik.object.etg }}</td>
+                        <td>{{ avvik.object.lokasjon }}</td>
+                        <td>{{ avvik.object.plassering }}</td>
+                        <td>{{ avvik.object.extinguishant.slokketype.navn }}</td>
+                        <td>{{ avvik.object.extinguishant.fabrikat }}
+                            {{ avvik.object.extinguishant.type }}
+                            {% if avvik.object.extinguishant.slukkemiddel %}
+                            {{ avvik.object.extinguishant.slukkemiddel }}
+                            {% endif %}
+                            {% if avvik.object.extinguishant.lengde %}
+                            {{ avvik.object.extinguishant.lengde }}
+                            {% endif %}
+                        </td>
+                        <td style="width:220px">
+                            <table class="table-borderless">
+                                {% for o in avvik.avvik.all %}
+                                <tr>
+                                    <td class="borderless">
+                                        {{o}}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td style="width:220px">{{ avvik.kommentar }}</td>
+                        <td>{{ avvik.object.prodyear }}</td>
+                        <td>{{ avvik.object.sisteservice|date:'M. Y' }}</td>
+                        <td>{{ avvik.object.nesteservice|date:'M. Y' }}</td>
+                        <td>user</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+
+
             </div>
         </div>
     </div>

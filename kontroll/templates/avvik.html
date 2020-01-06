@@ -8,25 +8,53 @@ Test: {{avviks}}<br>
 -->
 
 {% if avviks != 'False'%}
-{% for avvik in avviks %}
 
-<a href="{% url 'avvik' pk %}?obj={{obj.pk}}&avvik={{avvik.pk}}&remove=yes">
-    <p>{{avvik.pk}}&nbsp;{{avvik}}</p>
-</a>
-{% endfor %}
+<div class="just-padding">
+    <p class="lead">{{obj.extinguishant.fabrikat}}&nbsp;{{obj.extinguishant.slokketype}} - {{obj.lokasjon}}&nbsp;{{obj.plassering}}&nbsp;{{obj.etg}}.
+        etg</p>
+    <ul>
+        {% for avvik in avviks %}
+
+
+        <li class="lead">{{avvik}}&nbsp;-&nbsp;
+            <a class="text-danger" href="#" onclick="fun{{avvik.pk}}()">(Fjern avvik)</a></li>
+
+        <script>
+function fun{{avvik.pk}}(){
+    var r = confirm("Er du sikker på at du vil fjerne avviket: \n {{avvik}}?");
+
+    if (r == true) {alert("Avviket: \n {{avvik}} \n blir lukket.");
+        window.location.href='{% url 'avvik' pk %}?obj={{obj.pk}}&avvik={{avvik.pk}}&remove=yes';
+        return false;
+    }
+
+    }
+
+
+        </script>
+
+        {% endfor %}
+    </ul>
+</div>
 
 {% else %}
 
 {% for obj in objtr %}
 <!-- href="{% url 'avvik' pk %}?obj={{obj.pk}}" -->
-<a href="{% url 'avvik' pk %}?obj={{obj.object.pk}}">
-    <p>{{obj.object.lokasjon}}&nbsp;{{obj.object.plassering}}&nbsp;{{obj.object.etg}}</p>
-</a>
-Avvik:
-{% for o in obj.avvik.all %}
-<p>{{o}}</p>
-{% endfor %}
+<div class="just-padding">
+    <p class="lead">
+        {{obj.object.extinguishant.fabrikat}}&nbsp;{{obj.object.extinguishant.slokketype}} -
+        {{obj.object.lokasjon}}&nbsp;{{obj.object.plassering}}&nbsp;{{obj.object.etg}}. etg -
+        <a class="text-danger" href="{% url 'avvik' pk %}?obj={{obj.object.pk}}">(Gjør endringer)</a></p>
 
+    <ul>
+        {% for avvik in obj.avvik.all %}
+        <li class="lead">{{avvik}}
+        </li>
+
+        {% endfor %}
+    </ul>
+</div>
 {% empty %}
 
 Ingen avvik!

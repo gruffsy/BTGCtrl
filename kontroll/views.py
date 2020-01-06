@@ -48,6 +48,7 @@ def index(request):
         'all': alle,
         'sort': sort,
         'kontroll': kontroll,
+
     }
     return render(request, 'index.html', context)
 
@@ -58,6 +59,7 @@ def detail(request, pk):
     aktiv = request.GET.get('aktiv')
     liste = request.GET.get('liste')
     avvik = request.POST.get('avvik')
+
 
     if custpk:
         obj = Object.objects.get(pk=pk)
@@ -73,7 +75,12 @@ def detail(request, pk):
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
     objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
-    objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
+    tot_ant_obj = objects.count()
+    ant_obj = tot_ant_obj
+    avviks = objects.exclude(avvik=None).count()
+    if not liste:
+        objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
+        ant_obj = objects.count()
     lokasjon = objects.values_list('lokasjon', flat=True).last()
     etg = objects.values_list('etg', flat=True).last()
     plassering = objects.values_list('plassering', flat=True).last()
@@ -142,30 +149,35 @@ def detail(request, pk):
         'pk': pk,
         'aktiv': aktiv,
         'avvik': avvik,
+        'avviks': avviks,
         'liste': liste,
+        'tot_ant_obj': tot_ant_obj,
+        'ant_obj': ant_obj,
     }
     return render(request, "detail.html", context)
 
 
 def avvik(request, pk):
-    # må logge avvik
 
     obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
     avvik = request.GET.get('avvik') or None
     if obj:
         obj = Object.objects.get(pk=obj)
-        objtr = ObjTr.objects.get(object=obj, kontrolldato=None)
+        objtr = ObjTr.objects.get(object=obj, kontrolldato=None, utbedret_avvik=None)
         avviks = objtr.avvik.all()
         customer = objtr.customer
 
     else:
-        objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None)
+        objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None, utbedret_avvik=None)
         avviks = 'False'
         customer = Customer.objects.get(pk=pk)
 
     if remove is not None:
         objtr.avvik.remove(avvik)
+        avvik_id = Avvik.objects.get(pk=str(avvik))
+        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer)
+        avviktr.save()
 
     context = {
         'objtr': objtr,
@@ -179,7 +191,6 @@ def avvik(request, pk):
     #alle avvik er lukket
     if not avviks:
         obj.avvik = False
-        #skal avvik også følge service?
         obj.sistekontroll = timezone.now()
         obj.save()
         objtr.delete()
@@ -192,50 +203,12 @@ def avvik(request, pk):
 
         return render(request, "avvik.html", context)
 
-
-def obj_detail(request, pk):
-    obj = Object.objects.get(pk=pk)
-    customer = obj.customer
-    kontroll = request.GET.get("kontroll")
-    service = request.GET.get("service")
-    endring = request.GET.get("endring")
-    avvik = request.GET.get("avvik")
-    if kontroll == "now":
-        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
-        objtr.save()
-        obj.sistekontroll = timezone.now().year
-        obj.save()
-
-    if service == "now":
-        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now())
-        objtr.save()
-        obj.sisteservice = timezone.now().year
-        obj.save()
-
-    context = {
-        "customer": customer,
-        "obj": obj,
-        "kontroll": kontroll,
-        "service": service,
-        "endring": endring,
-        "avvik": avvik,
-    }
-
-    return render(request, "obj_detail.html", context)
-
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
-    objs = customer.objtr_set.all().order_by('-kontrolldato')
-    # objs = objs.exclude(avvik=True)
-    kontrs = objs.exclude(kontrolldato=None)
-    services = objs.exclude(servicedato=None)
-    today = timezone.now()
+    objs = ObjTr.objects.filter(customer=customer).order_by('-modified')
     context = {
         "customer": customer,
-        "today": today,
         "objs": objs,
-        "kontrs": kontrs,
-        "services": services,
     }
     return render(request, "objtr.html", context)
 
@@ -245,20 +218,24 @@ def objtr(request, pk):
 class Pdf(View):
 
     def get(self, request, pk):
-        month = request.GET.get("month")
-        month = month[-4:]
+        year = request.GET.get("year")
+        # year = year[-4:]
         customer = Customer.objects.get(pk=pk)
-        objs = customer.objtr_set.all().filter(kontrolldato__year=month)
-        kontrs = objs.exclude(kontrolldato=None)
+        objs = ObjTr.objects.filter(customer=customer)
+        objs = objs.filter(modified__year=year)
         services = objs.exclude(servicedato=None)
-        today = timezone.now()
+        kontrs = objs.exclude(kontrolldato=None).count()
+        avviks = objs.exclude(avvik=None).count()
+        utbedret_avviks = objs.exclude(utbedret_avvik=None).count()
+
         context = {
             "customer": customer,
-            "today": today,
             "objs": objs,
-            "kontrs": kontrs,
+            "year": year,
             "services": services,
-            "month": month,
+            "kontrs": kontrs,
+            "avviks": avviks,
+            "utbedret_avviks": utbedret_avviks,
         }
         template_path = 'pdf.html'
 
