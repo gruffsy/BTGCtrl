@@ -89,7 +89,7 @@ def detail(request, pk):
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
         objtr.save()
         obj.sistekontroll = timezone.now()
-        # nestekontroll spør pappa om den ikke alltid er hvert år
+        obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
     if toast == "endring":
@@ -106,7 +106,8 @@ def detail(request, pk):
         objtr.save()
         obj.sisteservice = timezone.now()
         obj.sistekontroll = timezone.now()
-        obj.nesteservice = date(timezone.now().year + 5, timezone.now().month, timezone.now().day)
+        obj.nesteservice = date(timezone.now().year + obj.extinguishant.slokketype.intervall, timezone.now().month,
+                                timezone.now().day)
         # trengs nestekontroll?
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
