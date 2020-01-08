@@ -49,12 +49,20 @@
                    href="">
                     Endringer</a>
                 {% if obj.extinguishant.slokketype.navn != 'Brannpost' %}
-                <a class="btn btn-success"
+                <!--  <a class="btn btn-success"
                    data-dismiss="modal"
                    data-target="#kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
                    data-toggle="modal"
                    href="">
-                    Kontroll</a>
+                    Kontroll</a>-->
+                <form action="{% url 'detail' obj.pk %}" method="get">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-lg" name="detalj" type="submit"
+                            value="kontroll">Utfør kontroll
+                    </button>
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+
+                </form>
                 {% endif %}
                 <a class="btn btn-warning"
                    data-dismiss="modal"

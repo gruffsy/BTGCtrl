@@ -15,8 +15,6 @@ from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
 
 
-
-
 def index(request):
     query = request.GET.get("q")
     sort = request.GET.get("sort")
@@ -59,7 +57,7 @@ def detail(request, pk):
     aktiv = request.GET.get('aktiv')
     liste = request.GET.get('liste')
     avvik = request.POST.get('avvik')
-
+    detalj = request.GET.get('detalj')
 
     if custpk:
         obj = Object.objects.get(pk=pk)
@@ -154,12 +152,12 @@ def detail(request, pk):
         'liste': liste,
         'tot_ant_obj': tot_ant_obj,
         'ant_obj': ant_obj,
+        'detalj': detalj,
     }
     return render(request, "detail.html", context)
 
 
 def avvik(request, pk):
-
     obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
     avvik = request.GET.get('avvik') or None
@@ -189,7 +187,7 @@ def avvik(request, pk):
 
     }
 
-    #alle avvik er lukket
+    # alle avvik er lukket
     if not avviks:
         obj.avvik = False
         obj.sistekontroll = timezone.now()
@@ -204,6 +202,7 @@ def avvik(request, pk):
 
         return render(request, "avvik.html", context)
 
+
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
     objs = ObjTr.objects.filter(customer=customer).order_by('-modified')
@@ -212,8 +211,6 @@ def objtr(request, pk):
         "objs": objs,
     }
     return render(request, "objtr.html", context)
-
-
 
 
 class Pdf(View):

@@ -13,6 +13,8 @@ class NyObjectForm(forms.ModelForm):
         fields = ['extinguishant', 'prodyear', 'lokasjon', 'plassering', 'etg']
 
 class AvvikForm(forms.ModelForm):
+    avvik = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple)
+
     class Meta:
         model = ObjTr
         fields = ['avvik', 'kommentar']
