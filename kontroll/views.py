@@ -59,6 +59,10 @@ def detail(request, pk):
     avvik = request.POST.get('avvik')
     detalj = request.GET.get('detalj')
 
+    if avvik is None and toast == 'avvik':
+        toast = 'kontroll'
+
+
     if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
@@ -113,6 +117,7 @@ def detail(request, pk):
     if request.method == 'POST':
         if avvik is not None:
             avvikform = AvvikForm(request.POST or None)
+
             objform = avvikform.save(commit=False)
             objform.customer = obj.customer
             objform.object = obj

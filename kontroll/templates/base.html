@@ -132,8 +132,8 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/admin/kontroll/customer/{{customer.id}}/change/">Rediger kunde</a>
         </div>
-        {% if kontroll %}
-        {{obj}}
+        {% if detalj %}
+        <br> {{obj.etg}}. etg > {{obj.lokasjon}} > {{obj.plassering}} > {{obj.extinguishant.fabrikat}} > {{obj.extinguishant.type}}
         {%endif%}
         {%endif%}
 

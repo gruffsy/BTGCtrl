@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from .models import Slokketype, Object, Customer, ObjTr, Avvik
 from django.utils import timezone
-from django.forms.widgets import CheckboxSelectMultiple, SelectMultiple
-
+from django.forms.widgets import CheckboxSelectMultiple, SelectMultiple, Textarea
+from django.utils.safestring import mark_safe
 
 
 class NyObjectForm(forms.ModelForm):
@@ -12,9 +12,19 @@ class NyObjectForm(forms.ModelForm):
         model = Object
         fields = ['extinguishant', 'prodyear', 'lokasjon', 'plassering', 'etg']
 
-class AvvikForm(forms.ModelForm):
-    avvik = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple)
 
+class AvvikForm(forms.ModelForm):
     class Meta:
         model = ObjTr
         fields = ['avvik', 'kommentar']
+        widgets = {
+            'avvik': CheckboxSelectMultiple(
+                attrs={
+                    'checked': 'checked'
+                }),
+            'kommentar': Textarea(
+                attrs={
+                    'rows': 4, 'cols': 50
+                })
+        }
+

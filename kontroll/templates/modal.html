@@ -57,7 +57,7 @@
                     Kontroll</a>-->
                 <form action="{% url 'detail' obj.pk %}" method="get">
                     {% csrf_token %}
-                    <button class="btn btn-success btn-lg" name="detalj" type="submit"
+                    <button class="btn btn-success" name="detalj" type="submit"
                             value="kontroll">Utfør kontroll
                     </button>
                     <input name="custpk" type="hidden" value="{{ customer.pk }}">
@@ -70,12 +70,12 @@
                    data-toggle="modal"
                    href="">
                     Service</a>
-                <a class="btn btn-danger"
+               <!-- <a class="btn btn-danger"
                    data-dismiss="modal"
                    data-target="#avvik{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
                    data-toggle="modal"
                    href="">
-                    Avvik </a>
+                    Avvik </a> -->
                 <a class="btn btn-dark"
                    href="/admin/kontroll/object/{{obj.id}}/change/">
                     Rediger objekt </a>

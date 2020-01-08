@@ -3,20 +3,33 @@
 {% block body %}
 
 <div class="just-padding">
-    <h2>Registrer Avvik</h2>
+    <h2>Kontroller for avvik</h2>
     <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}&toast=avvik" method="post">
         {% csrf_token %}
-    <table>
-        {{avvikform}}
-    </table>
-        <div class="modal-footer bg-light">
-            <div class="form-group">
-                <button class="btn btn-success" type="submit">
-                    <span class="fa fa-ok"></span> Registrer
-                </button>
-                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
-            </div>
+
+
+        {% for hidden in avvikform.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+
+        {% for field in avvikform.visible_fields %}
+        <div class="form-group">
+            <label class="lead" for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+            {{ field }}
+
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
         </div>
+        {% endfor %}
+
     </form>
+
+    <button class="btn btn-success" type="submit">
+        <span class="fa fa-ok"></span> Registrer
+    </button>
+    <a class="btn btn-danger" href="{% url 'detail' customer.pk %}">Avbryt</a>
 </div>
+
+
 {% endblock %}

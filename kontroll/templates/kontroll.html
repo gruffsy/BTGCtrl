@@ -1,19 +1,8 @@
 {% load widget_tweaks %}
 {% block kontroll %}
 
-<h4 class="">{{obj.fabrikat}}</h4>
 
-<div class="just-padding">
-    <h1>Kontroll</h1>
-    <h3>Kontrollrutine</h3>
-    <p>Kontroller</p>
-</div>
-<br>
-Kontroll: {{kontroll}}<br>
-Custpk:{{custpk}}<br>
-obj:{{obj}}<br>
-
-{{avvikform}}
+{% include 'forms_avvik.html' %}
 
 
 {% endblock kontroll %}<br>
