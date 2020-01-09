@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% block body %}
-<!-- Avvik: {{avvik}}
+<!--
+Avvik:
+{% for a in avvik %}
+{{a}}
+{{a.slokketype_set}}
+{% endfor %}
 custpk = {{custpk}}
 toast = {{toast}}
+obj = {{obj}}
 -->
 {% if detalj == 'kontroll' %}
+{{ obj.extinguishant.slokketype }}
 <div>
     {% include 'kontroll.html' %}
     {% block kontroll %}

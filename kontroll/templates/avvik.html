@@ -9,9 +9,12 @@ Test: {{avviks}}<br>
 
 {% if avviks != 'False'%}
 
+
 <div class="just-padding">
     <p class="lead">{{obj.extinguishant.fabrikat}}&nbsp;{{obj.extinguishant.slokketype}} - {{obj.lokasjon}}&nbsp;{{obj.plassering}}&nbsp;{{obj.etg}}.
         etg</p>
+
+
     <ul>
         {% for avvik in avviks %}
 
@@ -31,10 +34,19 @@ function fun{{avvik.pk}}(){
     }
 
 
+
+
         </script>
 
         {% endfor %}
+
     </ul>
+    <p class="lead">Kommentar: </p>
+    <form action="{% url 'avvik' pk %}?obj={{obj.pk}}" method="post">
+         {% csrf_token %}
+        <textarea name="kommentar" rows="4" cols="50">{{objtr.kommentar}}</textarea><br>
+        <input type="submit" value="Registrer kommentar">
+    </form>
 </div>
 
 {% else %}
@@ -51,9 +63,9 @@ function fun{{avvik.pk}}(){
         {% for avvik in obj.avvik.all %}
         <li class="lead">{{avvik}}
         </li>
-
         {% endfor %}
     </ul>
+
 </div>
 {% empty %}
 

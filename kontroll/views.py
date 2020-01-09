@@ -62,7 +62,6 @@ def detail(request, pk):
     if avvik is None and toast == 'avvik':
         toast = 'kontroll'
 
-
     if custpk:
         obj = Object.objects.get(pk=pk)
         customer = obj.customer
@@ -83,9 +82,7 @@ def detail(request, pk):
     if not liste:
         objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
         ant_obj = objects.count()
-    lokasjon = objects.values_list('lokasjon', flat=True).last()
-    etg = objects.values_list('etg', flat=True).last()
-    plassering = objects.values_list('plassering', flat=True).last()
+
 
     if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
@@ -113,11 +110,14 @@ def detail(request, pk):
         # trengs nestekontroll?
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
+    slettet = Object.objects.filter(customer=customer, aktiv=False).order_by("modified")
+    lokasjon = slettet.values_list('lokasjon', flat=True).last()
+    etg = slettet.values_list('etg', flat=True).last()
+    plassering = slettet.values_list('plassering', flat=True).last()
 
     if request.method == 'POST':
         if avvik is not None:
             avvikform = AvvikForm(request.POST or None)
-
             objform = avvikform.save(commit=False)
             objform.customer = obj.customer
             objform.object = obj
@@ -135,12 +135,17 @@ def detail(request, pk):
                 objform = nyform.save(commit=False)
                 objform.customer = customer
                 objform.save()
+
     else:
         nyform = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
                      'prodyear': int(timezone.now().year)})
         avvikform = AvvikForm()
-        # avvikform.fields["avvik"].queryset = Avvik.objects.filter(slokketype=objects.extinguishant.slokketype)
+        if obj is not None:
+            avvikform.fields["avvik"].queryset = Avvik.objects.filter(slokketype=obj.extinguishant.slokketype).order_by(
+                'id')
+
+
 
     context = {
         "customer": customer,

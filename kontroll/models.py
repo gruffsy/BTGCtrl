@@ -59,7 +59,13 @@ class Extinguishant(models.Model):
     slokketype = models.ForeignKey(Slokketype, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.fabrikat + ' | ' + self.type
+        resultat = self.fabrikat + ' ' + self.type
+        if self.lengde is not None:
+            resultat = resultat + ' ' + self.lengde
+        if self.slukkemiddel is not None:
+            resultat = resultat + ' ' + self.slukkemiddel
+
+        return resultat
 
 
 class Object(models.Model):

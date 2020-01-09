@@ -15,6 +15,7 @@
         {% for field in avvikform.visible_fields %}
         <div class="form-group">
             <label class="lead" for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+
             {{ field }}
 
             {% for error in field.errors %}
@@ -23,12 +24,13 @@
         </div>
         {% endfor %}
 
-    </form>
+
 
     <button class="btn btn-success" type="submit">
         <span class="fa fa-ok"></span> Registrer
     </button>
     <a class="btn btn-danger" href="{% url 'detail' customer.pk %}">Avbryt</a>
+         </form>
 </div>
 
 
