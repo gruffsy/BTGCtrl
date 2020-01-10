@@ -53,6 +53,8 @@
 
 
 
+
+
     </style>
 </head>
 <body>
@@ -234,168 +236,175 @@
             {% endif %}
         </td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>{{ obj.object.sisteservice|date:'M. Y' }}</td>
-        <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
+        <td>{% if obj.object.sisteservice is not None %}
+            {{ obj.object.sisteservice|date:'M. Y' }}
+            {% else %}
+            &nbsp;
+            {% endif %}
+        </td>
+        <td>{% if obj.object.nesteservice is not None %}
+            {{ obj.object.nesteservice|date:'M. Y' }}
+            {% else %}
+            &nbsp;
+            {% endif %}
+        </td>
         <td>user</td>
     </tr>
     {% endif %}
     {% endfor %}
 </table>
 {% if services %}
-<pdf:nextpage>
+<pdf:nextpage/>
+<table repeat="3">
+    <tr>
+        <td colspan="9"><h3>Utført service</h3></td>
+    </tr>
+    <tr>
+        <th style="width:80px">Service</th>
+        <th style="width:25px">Etg</th>
+        <th style="width:125px">Lokasjon</th>
+        <th style="width:250px">Plassering</th>
+        <th style="width:80px">Slokkeutstyr</th>
+        <th style="width:250px">Utstyr</th>
+        <th style="width:50px">Prod. år</th>
+        <th style="width:80px">Neste service</th>
+        <th style="width:125px">Kontrollør</th>
+    </tr>
+    <tr>&nbsp;</tr>
 
-    <table>
-        <tr>
-            <td colspan="9"><h3>Utført service</h3></td>
-        </tr>
-        <tr>
-            <th style="width:80px">Service</th>
-            <th style="width:25px">Etg</th>
-            <th style="width:125px">Lokasjon</th>
-            <th style="width:250px">Plassering</th>
-            <th style="width:80px">Slokkeutstyr</th>
-            <th style="width:250px">Utstyr</th>
-            <th style="width:50px">Prod. år</th>
-            <th style="width:80px">Neste service</th>
-            <th style="width:125px">Kontrollør</th>
-        </tr>
-        <tr>&nbsp;</tr>
-
-        {% for obj in objs %}
-        {% if obj.servicedato is not None %}
-        <tr>
-            <td>{{ obj.servicedato|date:'j. M. Y' }}</td>
-            <td>{{ obj.object.etg }}</td>
-            <td>{{ obj.object.lokasjon }}</td>
-            <td>{{ obj.object.plassering }}</td>
-            <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
-            <td>{{ obj.object.extinguishant.fabrikat }}
-                {{ obj.object.extinguishant.type }}
-                {% if obj.object.extinguishant.slukkemiddel %}
-                {{ obj.object.extinguishant.slukkemiddel }}
-                {% endif %}
-                {% if obj.object.extinguishant.lengde %}
-                {{ obj.object.extinguishant.lengde }}
-                {% endif %}
-            </td>
-            <td>{{ obj.object.prodyear }}</td>
-            <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
-            <td>user</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-    </table>
-
-    {% if utbedret_avviks %}
-    <pdf:nextpage>
-
-        <table>
-            <tr>
-                <td colspan="9"><h3>Utbedret avvik</h3></td>
-            </tr>
-            <tr>
-                <th>Utbedret</th>
-                <th>Etg</th>
-                <th>Lokasjon</th>
-                <th>Plassering</th>
-                <th>Utstyr</th>
-                <th>Avvik</th>
-
-                <th>Prod. år</th>
-                <th>Kontrollør</th>
-            </tr>
-            <tr>&nbsp;</tr>
-
-            {% for obj in objs %}
-            {% if obj.utbedret_avvik is not None %}
-            <tr>
-                <td>{{ obj.modified|date:'j. M. Y' }}</td>
-                <td>{{ obj.object.etg }}</td>
-                <td>{{ obj.object.lokasjon }}</td>
-                <td>{{ obj.object.plassering }}</td>
-                <td>{{ obj.object.extinguishant.fabrikat }}
-                    {{ obj.object.extinguishant.type }}
-                    {% if obj.object.extinguishant.slukkemiddel %}
-                    {{ obj.object.extinguishant.slukkemiddel }}
-                    {% endif %}
-                    {% if obj.object.extinguishant.lengde %}
-                    {{ obj.object.extinguishant.lengde }}
-                    {% endif %}
-                </td>
-                <td>{{ obj.utbedret_avvik }}</td>
-                <td>{{ obj.object.prodyear }}</td>
-                <td>user</td>
-            </tr>
+    {% for obj in objs %}
+    {% if obj.servicedato is not None %}
+    <tr>
+        <td>{{ obj.servicedato|date:'j. M. Y' }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.slokketype.navn }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
             {% endif %}
-            {% endfor %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
             {% endif %}
-        </table>
+        </td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
+        <td>user</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</table>
+{% if utbedret_avviks %}
+<pdf:nextpage/>
+<table class="avvik" repeat="3">
+    <tr>
+        <td colspan="9"><h3>Utbedret avvik</h3></td>
+    </tr>
+    <tr class="avvik">
+        <th>Utbedret</th>
+        <th>Etg</th>
+        <th>Lokasjon</th>
+        <th>Plassering</th>
+        <th>Utstyr</th>
+        <th>Avvik</th>
+        <th>Prod. år</th>
+        <th>Kontrollør</th>
+    </tr>
+    <tr>&nbsp;</tr>
 
-        {% if avviks %}
-        <pdf:nextpage>
+    {% for obj in objs %}
+    {% if obj.utbedret_avvik is not None %}
+    <tr class="avvik">
+        <td>{{ obj.modified|date:'j. M. Y' }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
+            {% endif %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
+            {% endif %}
+        </td>
+        <td>{{ obj.utbedret_avvik }}</td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>user</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</table>
+{% if avviks %}
+<pdf:nextpage/>
+<table class="avvik" repeat="3">
+    <tr>
+        <td colspan="9"><h3>Avvik</h3></td>
+    </tr>
+    <tr class="avvik">
+        <th>Utbedret</th>
+        <th>Etg</th>
+        <th>Lokasjon</th>
+        <th>Plassering</th>
+        <th>Utstyr</th>
+        <th style="width:300px">Avvik</th>
+        <th style="width:300px">Kommentar</th>
+        <th>Prod. år</th>
+        <th>Kontrollør</th>
+    </tr>
+    <tr>&nbsp;</tr>
 
-            <table class="avvik">
+    {% for obj in objs %}
+    {% if obj.avvik.all %}
+    <tr class="avvik">
+        <td>{{ obj.modified|date:'j. M. Y' }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
+            {% endif %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
+            {% endif %}
+        </td>
+        <td>
+            <table>
+                {% for o in obj.avvik.all %}
                 <tr>
-                    <td colspan="9"><h3>Avvik</h3></td>
-                </tr>
-                <tr class="avvik">
-                    <th>Utbedret</th>
-                    <th>Etg</th>
-                    <th>Lokasjon</th>
-                    <th>Plassering</th>
-                    <th>Utstyr</th>
-                    <th style="width:300px">Avvik</th>
-                    <th style="width:300px">Kommentar</th>
-                    <th>Prod. år</th>
-                    <th>Kontrollør</th>
-                </tr>
-                <tr>&nbsp;</tr>
-
-                {% for obj in objs %}
-                {% if obj.avvik.all %}
-                <tr class="avvik">
-                    <td>{{ obj.modified|date:'j. M. Y' }}</td>
-                    <td>{{ obj.object.etg }}</td>
-                    <td>{{ obj.object.lokasjon }}</td>
-                    <td>{{ obj.object.plassering }}</td>
-                    <td>{{ obj.object.extinguishant.fabrikat }}
-                        {{ obj.object.extinguishant.type }}
-                        {% if obj.object.extinguishant.slukkemiddel %}
-                        {{ obj.object.extinguishant.slukkemiddel }}
-                        {% endif %}
-                        {% if obj.object.extinguishant.lengde %}
-                        {{ obj.object.extinguishant.lengde }}
-                        {% endif %}
-                    </td>
                     <td>
-                        <table>
-                            {% for o in obj.avvik.all %}
-                            <tr>
-                                <td>
-                                    {{o}}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                        {{o}}
                     </td>
-                    <td>{{ obj.kommentar }}</td>
-                    <td>{{ obj.object.prodyear }}</td>
-                    <td>user</td>
                 </tr>
-                {% endif %}
                 {% endfor %}
-                {% endif %}
             </table>
+        </td>
+        <td>{% if obj.kommentar_text %}
+            {{ obj.kommentar }}
+            {% else %}
+            &nbsp;
+            {% endif %}</td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>user</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</table>
+<footer>
+    <div id="footerContent">
+        Side
+        <pdf:pagenumber/>
+        av
+        <pdf:pagecount/>
 
-            <footer>
-                <div id="footerContent">
-                    Side
-                    <pdf:pagenumber/>
-                    av
-                    <pdf:pagecount>
-
-                </div>
-            </footer>
+    </div>
+</footer>
 </body>
 </html>
