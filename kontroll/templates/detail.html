@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-<!--
+
 Avvik:
 {% for a in avvik %}
 {{a}}
@@ -9,233 +9,278 @@ Avvik:
 custpk = {{custpk}}
 toast = {{toast}}
 obj = {{obj}}
--->
-{% if detalj == 'kontroll' %}
-{{ obj.extinguishant.slokketype }}
-<div>
-    {% include 'kontroll.html' %}
-    {% block kontroll %}
-    {% endblock kontroll %}
-</div>
+utsett service til år: {{utsett}}
+nyobject: {{nyobject}}
 
+<!-- sjekke for Kontroll -->
+<div>
+    {% if detalj == 'kontroll' %}
+    {{ obj.extinguishant.slokketype }}
+    <div>
+        {% include 'kontroll.html' %}
+        {% block kontroll %}
+        {% endblock kontroll %}
+    </div>
+</div>
+<!-- hvis ikke kontroll -->
 {% else %}
 <div>
-    <div class="just-padding">
-        {% if liste == "True" %}
-        <a class="text-dark"
-           href="./">
-            Objekter som skal kontrolleres</a>
-    </div>
-    {% else %}
-    <a class="text-dark"
-       href="?liste=True">
-        Liste over alle objekter</a>
-    {% endif %}
+    <div>
+        <!-- Knaperad på toppen -->
+        <div class="just-padding">
+            <table>
+                <tr>
+                    <td style="padding: 5px">
+                        <a class="btn btn-success btn-sm" href="{% url 'detail' customer.id %}">
+                            Objekter som gjenstår å kontrollere
+                        </a></td>
+                    <td style="padding: 5px">
+                        <a class="btn btn-info btn-sm" href="{% url 'detail' customer.id %}?liste=Alle">
+                            Liste over alle objekter
+                        </a></td>
+                    <td style="padding: 5px">
+                        <a class="btn btn-warning btn-sm" href="{% url 'detail' customer.id %}?liste=Service">
+                            5/10-års kontroll-liste
+                        </a></td>
 
-
-    {% include 'forms_modal.html' %}
-    {% block nyobject %}
-    {% endblock nyobject %}
-    {% if objects %}
-    <!-- Toast -->
-    {% if toast %}
-    {% include 'toast.html' %}
-    {% block toast %}
-    {% endblock toast %}
-    {% endif %}
-    {% if not liste %}
-    <br>
-    Totalt å kontrollere: {{tot_ant_obj}}<br>
-    Gjennstående å kontrollere: {{ant_obj}}<br>
-    <div class="just-padding">
-        <a class="btn btn-white btn-sm"
-           data-target="#nyobject"
-           data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
-            til nytt objekt</a>
-    </div>
-    <!-- Liste-meny Nivå 1  Etg-->
-    <div class="lead list-group list-group-root well text-dark">
-        {% regroup objects by etg as etg_list %}
-        {% for e in etg_list %}
-        <a class="list-group-item  text-dark" href="#">
-            {{ e.grouper }}. etasje</a>
-        <!-- Liste-meny Nivå 2  Loaksjon -->
-        <div class="list-group in text-dark" id="item-{{ forloop.counter }}">
-            {% regroup e.list by lokasjon as lokasjon_list %}
-            {% for l in lokasjon_list %}
-            <a class="chevron list-group-item text-dark" data-toggle="collapse"
-               href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                <i class="fa fa-chevron-right"></i>&nbsp; Lokasjon: {{ l.grouper }}</a>
-            <!-- Liste-meny Nivå 3  plassering -->
-            <div class="list-group collapse text-dark" id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                {%regroup l.list by plassering as plassering_list %}
-                {% for p in plassering_list %}
-                <a class="chevron list-group-item text-dark"
-                   data-toggle="collapse"
-                   href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                    <i class="fa fa-chevron-right"></i>&nbsp; Plassering: {{ p.grouper }}</a>
-                <div class="list-group collapse"
-                     id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                    {% for obj in p.list %}
-                    <div class="row list-group-item d-flex justify-content-around">
-                        <!-- Button to Open the Modal -->
-
-                        {% if obj.avvik == True %}
-                        <a class="btn btn-lg btn-danger" href="{% url 'avvik' customer.pk %}?obj={{obj.pk}}">
-                            {% else %}
-                            <a class="btn btn-lg btn-light"
-                               data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                               data-toggle="modal">
-                                {% endif %}
-
-                                Objekt:
-                                {{obj.extinguishant.fabrikat}}
-                                {{obj.extinguishant.type}}
-                                {% if obj.extinguishant.lengde is not None %}
-                                {{obj.extinguishant.lengde}}
-                                {% endif %}
-                                {% if obj.extinguishant.slukkemiddel is not None %}
-                                {{obj.extinguishant.slukkemiddel}}
-                                {% endif %}</a>
-                    </div>
-                    <!-- Modaler -->
-                    {% include 'modal.html' %}
-                    {% block modal %}
-                    {% endblock modal %}
-                    {% endfor %}
-                </div>
-                {% endfor %}
-            </div>
-            {% endfor %}
+                </tr>
+            </table>
         </div>
-        {% endfor %}
-    </div>
 
-    {% else %}
-    <div class="just-padding">
-        <a class="text-dark" href="javascript:window.print()">
-            <i aria-hidden="true" class="fa fa-print"></i>&nbsp;Print
-        </a>
-    </div>
-    <!-- viser all info -->
-    <div class="just-padding">
-        <h2>EIERINFORMASJON</h2>
-        <table class="small w-auto">
-            <tr>
-                <td>Navn:</td>
-                <td>{{customer.kunde}}</td>
-                <td>Kundenummer:</td>
-                <td>{{customer.tripletex}}</td>
-            </tr>
-            <tr>
-                <td>Oppdragsadresse:</td>
-                <td>{{customer.badresse}}</td>
-                <td>Fakturaadresse:</td>
-                <td>{% if customer.fadresse is not None %}
-                    {{customer.fadresse}}
-                    {% else %}
-                    {{customer.badresse}}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td style="width:120px">Postnr./-sted:</td>
-                <td style="width:220px">{{customer.bpostnr}} {{customer.bpoststed}}</td>
-                <td style="width:120px">Fakturapostnr./-sted:</td>
-                <td style="width:220px">{% if customer.fpostnr is not None %}
-                    {{customer.fpostnr}}
-                    {{customer.fpoststed}}
-                    {% else %}
-                    {{customer.bpostnr}}
-                    {{customer.bpoststed}}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>Kontaktperson:</td>
-                <td>{{customer.kontaktperson}}</td>
-                <td>Telefonnr:</td>
-                <td>{{customer.tlf1}}
-                    {% if customer.tlf2 is not None %}
-                    /
-                    {{customer.tlf2}}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>E-post:</td>
-                <td><a class="text-dark" href="mailto:{{customer.email}}">{{customer.email}}</a></td>
-            </tr>
-        </table>
-        <br>
-        <h2>Objekter</h2>
-        <table class="small table w-auto">
-            <tr>
+        {% include 'forms_modal.html' %}
+        {% block nyobject %}
+        {% endblock nyobject %}
 
-                <th>Etg</th>
-                <th>Lokasjon</th>
-                <th>Plassering</th>
-                <th>Slokkeutstyr</th>
-                <th>Utstyr</th>
-                <th>Prod. år</th>
-                <th>Avvik</th>
-                <th>Siste kontroll</th>
-                <th>Neste kontroll</th>
-                <th>Siste service</th>
-                <th>Neste service</th>
-                <th>Kontrollør</th>
-            </tr>
-            {% for obj in objects %}
+        {% if nyobject == 'False' %}
+        <script type="text/javascript">
+    $(document).ready(function(){
+        $('#nyobject').modal('show');
+    });
 
-            <tr>
-
-                <td>{{ obj.etg }}</td>
-                <td>{{ obj.lokasjon }}</td>
-                <td>{{ obj.plassering }}</td>
-                <td>{{ obj.extinguishant.slokketype.navn }}</td>
-                <td>{{ obj.extinguishant.fabrikat }}
-                    {{ obj.extinguishant.type }}
-                    {% if obj.extinguishant.slukkemiddel %}
-                    {{ obj.extinguishant.slukkemiddel }}
-                    {% endif %}
-                    {% if obj.extinguishant.lengde %}
-                    {{ obj.extinguishant.lengde }}
-                    {% endif %}
-                </td>
-                <td>{{ obj.prodyear }}</td>
-                <td class="float-center">
-                    {% if obj.avvik == True %}
-                    <a href="{% url 'avvik' customer.id %}?obj={{obj.pk}}">X</a>
-                    {% else %}
-                    &nbsp;
-                    {% endif %}
-                </td>
-                <td>{{ obj.sistekontroll|date:'M. Y' }}</td>
-                <td>{{ obj.nestekontroll|date:'M. Y' }}</td>
-                <td>{{ obj.sisteservice|date:'M. Y' }}</td>
-                <td>{{ obj.nesteservice|date:'M. Y' }}</td>
-                <td>user</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% if avviks %}
-        Sjekk <a href="{% url 'avvik' customer.id %}">avviksbehandling</a> for detaljert oversikt over avvik.
-        {% endif %}
+        </script>
         {% endif %}
 
-    </div>
-    {% else %}
-    <div class="just-padding">
-        Kunden har ingen objekter som skal kontrolleres.
+
+        {% if objects %}
+
+        <!-- Toast -->
+        {% if toast %}
+        <div>
+            {% include 'toast.html' %}
+            {% block toast %}
+            {% endblock toast %}
+        </div>
+        {% else %}
+        {% if not liste %}
+        <div class="just-padding">
+            Totalt å kontrollere: {{tot_ant_obj}}<br>
+            Gjennstående å kontrollere: {{ant_obj}}<br>
+        </div>
         <div class="just-padding">
             <a class="btn btn-white btn-sm"
                data-target="#nyobject"
                data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
                 til nytt objekt</a>
         </div>
+        <!-- Liste-meny Nivå 1  Etg-->
+        <div class="lead list-group list-group-root well text-dark">
+            {% regroup objects by etg as etg_list %}
+            {% for e in etg_list %}
+            <a class="list-group-item  text-dark" href="#">
+                {{ e.grouper }}. etasje</a>
+            <!-- Liste-meny Nivå 2  Loaksjon -->
+            <div class="list-group in text-dark" id="item-{{ forloop.counter }}">
+                {% regroup e.list by lokasjon as lokasjon_list %}
+                {% for l in lokasjon_list %}
+                <a class="chevron list-group-item text-dark" data-toggle="collapse"
+                   href="#item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                    <i class="fa fa-chevron-right"></i>&nbsp; Lokasjon: {{ l.grouper }}</a>
+                <!-- Liste-meny Nivå 3  plassering -->
+                <div class="list-group collapse text-dark"
+                     id="item-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                    {%regroup l.list by plassering as plassering_list %}
+                    {% for p in plassering_list %}
+                    <a class="chevron list-group-item text-dark"
+                       data-toggle="collapse"
+                       href="#item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                        <i class="fa fa-chevron-right"></i>&nbsp; Plassering: {{ p.grouper }}</a>
+                    <div class="list-group collapse"
+                         id="item-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                        {% for obj in p.list %}
+                        <div class="row list-group-item d-flex justify-content-around">
+                            <!-- Button to Open the Modal -->
+                            {% if obj.avvik == True %}
+                            <a class="btn btn-lg btn-danger"
+                               data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                               data-toggle="modal"
+                               href="">
+                                {% else %}
+                                <a class="btn btn-lg btn-light"
+                                   data-target="#myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                                   data-toggle="modal">
+                                    {% endif %}
+                                    Objekt:
+                                    {{obj.extinguishant.fabrikat}}
+                                    {{obj.extinguishant.type}}
+                                    {% if obj.extinguishant.lengde is not None %}
+                                    {{obj.extinguishant.lengde}}
+                                    {% endif %}
+                                    {% if obj.extinguishant.slukkemiddel is not None %}
+                                    {{obj.extinguishant.slukkemiddel}}
+                                    {% endif %}</a>
+                        </div>
+                        <!-- Modaler -->
+                        {% include 'modal.html' %}
+                        {% block modal %}
+                        {% endblock modal %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- viser all info -->
+        <div class="just-padding">
+            <h2>EIERINFORMASJON</h2>
+            <table class="small w-auto">
+                <tr>
+                    <td>Navn:</td>
+                    <td>{{customer.kunde}}</td>
+                    <td>Kundenummer:</td>
+                    <td>{{customer.tripletex}}</td>
+                </tr>
+                <tr>
+                    <td>Oppdragsadresse:</td>
+                    <td>{{customer.badresse}}</td>
+                    <td>Fakturaadresse:</td>
+                    <td>{% if customer.fadresse is not None %}
+                        {{customer.fadresse}}
+                        {% else %}
+                        {{customer.badresse}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:120px">Postnr./-sted:</td>
+                    <td style="width:220px">{{customer.bpostnr}} {{customer.bpoststed}}</td>
+                    <td style="width:120px">Fakturapostnr./-sted:</td>
+                    <td style="width:220px">{% if customer.fpostnr is not None %}
+                        {{customer.fpostnr}}
+                        {{customer.fpoststed}}
+                        {% else %}
+                        {{customer.bpostnr}}
+                        {{customer.bpoststed}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kontaktperson:</td>
+                    <td>{{customer.kontaktperson}}</td>
+                    <td>Telefonnr:</td>
+                    <td>{{customer.tlf1}}
+                        {% if customer.tlf2 is not None %}
+                        /
+                        {{customer.tlf2}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>E-post:</td>
+                    <td><a class="text-dark" href="mailto:{{customer.email}}">{{customer.email}}</a></td>
+                </tr>
+            </table>
+            <br>
+            <h2>Objekter</h2>
+            <table class="small table w-auto">
+                <tr>
+                    {% if liste == 'Alle' %}
+                    <th>Etg</th>
+                    {% endif %}
+                    <th>Lokasjon</th>
+                    <th>Plassering</th>
+                    {% if liste == 'Alle' %}
+                    <th>Slokkeutstyr</th>
+                    {% endif %}
+                    <th>Utstyr</th>
+                    {% if liste == 'Alle' %}
+                    <th>Prod. år</th>
+                    <th>Avvik</th>
+                    <th>Siste 1-års kontroll</th>
+                    <th>Neste 1-års kontroll</th>
+                    <th>Siste 5/10-års kontroll</th>
+                    {% endif %}
+                    <th>Neste 5/10-års kontroll</th>
+                    {% if liste == 'Alle' %}
+                    <th>Kontrollør</th>
+                    {% endif %}
+                </tr>
+                {% for obj in objects %}
+
+                <tr>
+
+                    {% if liste == 'Alle' %}
+                    <td>{{ obj.etg }}</td>
+                    {% endif %}
+                    <td>{{ obj.lokasjon }}</td>
+                    <td>{{ obj.plassering }}</td>
+                    {% if liste == 'Alle' %}
+                    <td>{{ obj.extinguishant.slokketype.navn }}</td>
+                    {% endif %}
+                    <td>{{ obj.extinguishant.fabrikat }}
+                        {{ obj.extinguishant.type }}
+                        {% if obj.extinguishant.slukkemiddel %}
+                        {{ obj.extinguishant.slukkemiddel }}
+                        {% endif %}
+                        {% if obj.extinguishant.lengde %}
+                        {{ obj.extinguishant.lengde }}
+                        {% endif %}
+                    </td>
+                    {% if liste == 'Alle' %}
+                    <td>{{ obj.prodyear }}</td>
+                    <td class="float-center">
+                        {% if obj.avvik == True %}
+                        <a href="{% url 'avvik' customer.id %}?obj={{obj.pk}}">X</a>
+                        {% else %}
+                        &nbsp;
+                        {% endif %}
+                    </td>
+                    <td>{{ obj.sistekontroll|date:'M. Y' }}</td>
+                    <td>{{ obj.nestekontroll|date:'M. Y' }}</td>
+                    <td>{{ obj.sisteservice|date:'M. Y' }}</td>
+                    {% endif %}
+                    <td>{{ obj.nesteservice|date:'M. Y' }}</td>
+                    {% if liste == 'Alle' %}
+                    <td>user</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+            {% if avviks %}
+            Sjekk <a href="{% url 'avvik' customer.id %}">avviksbehandling</a> for detaljert oversikt over avvik.
+            {% endif %}{% endif %}
+            <br><br><br><br><br><br><br>
+            <br>
+            <br>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="just-padding">
+            Kunden har ingen objekter som skal kontrolleres.
+            <div class="just-padding">
+                <a class="btn btn-white btn-sm"
+                   data-target="#nyobject"
+                   data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+                    til nytt objekt</a>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
     {% endif %}
 </div>
-{% endif %}
 {% endblock %}
 

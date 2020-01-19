@@ -23,12 +23,9 @@ class AvvikForm(forms.ModelForm):
         fields = ['avvik', 'kommentar']
         widgets = {
             'avvik': CheckboxSelectMultiple(
-                attrs={
-                    'checked': 'checked'
-                }),
+            ),
             'kommentar': Textarea(
                 attrs={
                     'rows': 4, 'cols': 50
                 })
         }
-

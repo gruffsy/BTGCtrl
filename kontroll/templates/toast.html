@@ -1,63 +1,80 @@
 {% block toast %}
 <div class="just-padding">
-    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false">
-        <div class="{% if toast == 'kontroll' %}
+    <div aria-atomic="true" aria-live="assertive" class="toast" data-autohide="false" role="alert">
+        <!-- Toast Header -->
+        <div>
+            <div class="{% if toast == 'kontroll' %}
         bg-success
         {% elif toast == 'endring' %}
         bg-info
         {% elif toast == 'service' %}
         bg-warning
         {% elif toast == 'avvik' %}
+        bg-primary
+        {% elif toast == 'slette' %}
         bg-danger
+        {% elif toast == 'nyobject' %}
+        bg-dark
         {% endif %}
         toast-header text-white">
-        <strong class="mr-auto">{% if toast == "kontroll" %}
-            Kontroll
-            {% elif toast == "endring" %}
-            Endring
-            {% elif toast == "service" %}
-            Service
-            {% elif toast == "avvik" %}
-            Avvik
+                <strong class="mr-auto">{% if toast == "kontroll" %}
+                    Kontroll
+                    {% elif toast == "endring" %}
+                    Endring
+                    {% elif toast == "service" %}
+                    Service
+                    {% elif toast == "avvik" %}
+                    Avvik
+                    {% endif %}
+                </strong>
+                <small>Objekt:
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slufkkemiddel}}
+                    {% endif %}
+                </small>
+                <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+                    <span aria-hidden="true"><a class="text-light"
+                                                href="{% url 'detail' customer.id %}">&times;</a></span>
+                </button>
+            </div>
+        </div>
+        <!-- Toast Body -->
+        <div class="toast-body">
+            Da er objektet
+            {% if toast == "kontroll" %}
+            kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
             {% endif %}
-        </strong>
-        <small>Objekt:
-            {{obj.extinguishant.fabrikat}}
-            {{obj.extinguishant.type}}
-            {% if obj.extinguishant.lengde is not None %}
-            {{obj.extinguishant.lengde}}
+            {% if toast == "endring" %}
+            oppdatert og endret.{% endif %}
+            {% if toast == "nyobject" %}
+            lagt til{% endif %}
+            {% if toast == "service" %}
+            fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
             {% endif %}
-            {% if obj.extinguishant.slukkemiddel is not None %}
-            {{obj.extinguishant.slufkkemiddel}}
+            {% if toast == "avvik" %}
+            registrert med avvik og kan behandles i <a href="{% url 'avvik' customer.id %}">avviksbehandlingen</a>
             {% endif %}
-        </small>
-        <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
+            {% if toast == "slette" %}
+            slettet fra brukeren. <a href="/admin/kontroll/object/{{obj.id}}/change/">Logg inn</a> som administrator for
+            å omgjøre endringen.<br>
+            Ønker du å opprette et nytt objekt?<br>
+            <div class="just-padding">
+                <a class="btn btn-success btn-sm"
+                   href="{% url 'detail' customer.id %}?nyobject=False">
+                    <i class="fa fa-plus fa-xs"></i>&nbsp;Legg
+                    til nytt objekt</a>
+            </div>
+            {% endif %}
+        </div>
+        <!-- Toast Body -->
+        <div class="toast-body">
+            <a href="{% url 'detail' customer.id %}">Lukk</a>
+        </div>
     </div>
-    <!-- Toast Body -->
-    <div class="toast-body">
-        Da er objekt {{obj.extinguishant.fabrikat}}
-        {{obj.extinguishant.type}}
-        {% if obj.extinguishant.lengde is not None %}
-        {{obj.extinguishant.lengde}}
-        {% endif %}
-        {% if obj.extinguishant.slukkemiddel is not None %}
-        {{obj.extinguishant.slukkemiddel}},
-        {% endif %}
-        {% if toast == "kontroll" %}
-        kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
-        {% endif %}
-        {% if toast == "endring" %}
-        oppdatert og endret{% endif %}{% if aktiv is not None%}/slettet
-        {% endif %}
-        {% if toast == "service" %}
-        fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
-        {% endif %}
-        {% if toast == "avvik" %}
-        registrert med avvik og kan behandles i <a href="{% url 'avvik' customer.id %}">avviksbehandlingen</a>
-        {% endif %}
-    </div>
-</div>
 </div>
 {% endblock %}

@@ -122,6 +122,8 @@ class ObjTr(models.Model):
     kommentar = models.TextField(null=True, blank=True)
     utbedret_avvik = models.ForeignKey(Avvik, on_delete=models.CASCADE, related_name='utbedretavvik_avvik', null=True,
                                        blank=True)
+    deleted = models.BooleanField(default=False)
+    added = models.BooleanField(default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 

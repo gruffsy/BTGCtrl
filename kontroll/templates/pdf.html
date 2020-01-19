@@ -51,10 +51,6 @@
         text-align: left;
     }
 
-
-
-
-
     </style>
 </head>
 <body>
@@ -95,8 +91,8 @@
             <td>www.btg.as</td>
         </tr>
         <tr>
-            <td>Mobilnr.:</td>
-            <td>975 01 062</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
         </tr>
     </table>
     <hr>
@@ -153,17 +149,23 @@
     </tr>
 </table>
 <hr>
-<table width="170px">
+<table>
     <tr>
-        <td>Kontroller:</td>
-        <td align="right">
+        <td>Totalt antall kontrollert:</td>
+        <td>
+            {{totkontr}} stk
+        </td>
+    </tr>
+    <tr>
+        <td>Antall 1-års kontroller:</td>
+        <td>
             {{kontrs}} stk
         </td>
     </tr>
 
     <tr>
-        <td>Service:</td>
-        <td align="right">
+        <td>Antall 5/10-års kontroller:</td>
+        <td>
             {% if services %}
             {% for service in services %}
             {% if forloop.last %}
@@ -176,8 +178,8 @@
         </td>
     </tr>
     <tr>
-        <td>Avvik:</td>
-        <td align="right">
+        <td>Antall objekter med avvik:</td>
+        <td>
             {% if avviks %}
             {{avviks}} stk
             {% else %}
@@ -186,10 +188,30 @@
         </td>
     </tr>
     <tr>
-        <td>Utbedret Avvik:</td>
-        <td align="right">
+        <td>Antall avvik utbedret:</td>
+        <td>
             {% if utbedret_avviks %}
             {{utbedret_avviks}} stk
+            {% else %}
+            0 stk
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Antall nye objekter innstallert:</td>
+        <td>
+            {% if added %}
+            {{added}} stk
+            {% else %}
+            0 stk
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Antall objekter fjernet</td>
+        <td>
+            {% if deleted %}
+            {{deleted}} stk
             {% else %}
             0 stk
             {% endif %}
@@ -201,19 +223,19 @@
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="9"><h3>Kontrollert uten avvik</h3></td>
+        <td colspan="9"><h2>Utførte 1-års kontroller uten avvik</h2></td>
     </tr>
 
     <tr>
-        <th style="width:80px">Kontrollert</th>
+        <th style="width:80px">Kontrolldato</th>
         <th style="width:25px">Etg</th>
         <th style="width:180px">Lokasjon</th>
         <th style="width:180px">Plassering</th>
         <th style="width:80px">Slokkeutstyr</th>
         <th style="width:180px">Utstyr</th>
         <th style="width:50px">Prod. år</th>
-        <th style="width:80px">Siste service</th>
-        <th style="width:80px">Neste service</th>
+        <th style="width:80px">Siste 5/10-års kontroll</th>
+        <th style="width:80px">Neste 5/10-års kontroll</th>
         <th style="width:125px">Kontrollør</th>
     </tr>
 
@@ -257,17 +279,17 @@
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="9"><h3>Utført service</h3></td>
+        <td colspan="9"><h2>Utførte 5/10-års kontroller</h2></td>
     </tr>
     <tr>
-        <th style="width:80px">Service</th>
+        <th style="width:80px">Kontrolldato</th>
         <th style="width:25px">Etg</th>
         <th style="width:125px">Lokasjon</th>
         <th style="width:250px">Plassering</th>
         <th style="width:80px">Slokkeutstyr</th>
         <th style="width:250px">Utstyr</th>
         <th style="width:50px">Prod. år</th>
-        <th style="width:80px">Neste service</th>
+        <th style="width:80px">Neste 5/10-års kontroll</th>
         <th style="width:125px">Kontrollør</th>
     </tr>
     <tr>&nbsp;</tr>
@@ -301,10 +323,10 @@
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="9"><h3>Utbedret avvik</h3></td>
+        <td colspan="9"><h2>Registrerte avvik som er utbedret</h2></td>
     </tr>
     <tr class="avvik">
-        <th>Utbedret</th>
+        <th>Utbedret dato</th>
         <th>Etg</th>
         <th>Lokasjon</th>
         <th>Plassering</th>
@@ -343,10 +365,10 @@
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="9"><h3>Avvik</h3></td>
+        <td colspan="9"><h2>Objekter med avvik</h2></td>
     </tr>
     <tr class="avvik">
-        <th>Utbedret</th>
+        <th>Kontrolldato</th>
         <th>Etg</th>
         <th>Lokasjon</th>
         <th>Plassering</th>
@@ -389,7 +411,8 @@
             {{ obj.kommentar }}
             {% else %}
             &nbsp;
-            {% endif %}</td>
+            {% endif %}
+        </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>user</td>
     </tr>
@@ -397,6 +420,98 @@
     {% endfor %}
     {% endif %}
 </table>
+<!-- Objekter som er fjernet -->
+
+{% if added %}
+<pdf:nextpage/>
+
+<table repeat="3">
+    <tr>
+        <td colspan="6"><h2>Objekter lagt til</h2></td>
+    </tr>
+
+    <tr>
+        <th>Dato</th>
+        <th>Etg</th>
+        <th>Lokasjon</th>
+        <th>Plassering</th>
+        <th>Utstyr</th>
+        <th>Prod. år</th>
+        <th>Kontrollør</th>
+    </tr>
+
+    <tr>&nbsp;</tr>
+
+    {% for obj in objs %}
+    {% if obj.added %}
+    <tr>
+        <td>{{ obj.created|date:'j. M. Y' }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
+            {% endif %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
+            {% endif %}
+        </td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>user</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+</table>
+{% if deleted %}
+<pdf:nextpage/>
+
+<table repeat="3">
+    <tr>
+        <td colspan="6"><h2>Objekter fjernet</h2></td>
+    </tr>
+
+    <tr>
+        <th>Dato</th>
+        <th>Etg</th>
+        <th>Lokasjon</th>
+        <th>Plassering</th>
+        <th>Utstyr</th>
+        <th>Prod. år</th>
+        <th>Kontrollør</th>
+    </tr>
+
+    <tr>&nbsp;</tr>
+
+    {% for obj in objs %}
+    {% if obj.deleted %}
+    <tr>
+        <td>{{ obj.modified|date:'j. M. Y' }}</td>
+        <td>{{ obj.object.etg }}</td>
+        <td>{{ obj.object.lokasjon }}</td>
+        <td>{{ obj.object.plassering }}</td>
+        <td>{{ obj.object.extinguishant.fabrikat }}
+            {{ obj.object.extinguishant.type }}
+            {% if obj.object.extinguishant.slukkemiddel %}
+            {{ obj.object.extinguishant.slukkemiddel }}
+            {% endif %}
+            {% if obj.object.extinguishant.lengde %}
+            {{ obj.object.extinguishant.lengde }}
+            {% endif %}
+        </td>
+        <td>{{ obj.object.prodyear }}</td>
+        <td>user</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+</table>
+
+
 <footer>
     <div id="footerContent">
         Side

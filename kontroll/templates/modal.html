@@ -1,4 +1,5 @@
 {% block modal %}
+
 <!-- Hoved Modal -->
 <div class="modal fade"
      id="myModal{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
@@ -6,7 +7,18 @@
         <div class="modal-content modal-xl modal-dialog-scrollable">
             <!-- Modal Header -->
             <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat }}</h4>
+                <h4 class="modal-title">{{obj.etg}}. etg,
+                    {{obj.lokasjon}},
+                    {{obj.plassering}}
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}
+                </h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
@@ -41,34 +53,34 @@
                 <br>
             </div>
             <!-- Modal footer -->
-            <div class="modal-footer bg-light">
-                <a class="btn btn-info"
-                   data-dismiss="modal"
-                   data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                   data-toggle="modal"
-                   href="">
-                    Endringer</a>
-
-
-                <form action="{% url 'detail' obj.pk %}" method="get">
-                    {% csrf_token %}
-                    <button class="btn btn-success" name="detalj" type="submit"
-                            value="kontroll">Utfør kontroll
+            <div class="modal-footer bg-light justify-content-between">
+                <div>
+                    <button class="btn btn-info"
+                            data-dismiss="modal"
+                            data-target="#endringer{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                            data-toggle="modal"
+                            href="">
+                        Endre objektinformasjon
                     </button>
-                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
-
-                </form>
-
-                <a class="btn btn-warning"
-                   data-dismiss="modal"
-                   data-target="#service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
-                   data-toggle="modal"
-                   href="">
-                    Service</a>
-
-                <a class="btn btn-dark"
-                   href="/admin/kontroll/object/{{obj.id}}/change/">
-                    Rediger objekt </a>
+                    <button class="btn btn-success"
+                            data-dismiss="modal"
+                            data-target="#kontroll{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                            data-toggle="modal"
+                            href="">Utfør kontroll
+                    </button>
+                    <button class="btn btn-danger"
+                            data-dismiss="modal"
+                            data-target="#slette{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                            data-toggle="modal"
+                            href="">
+                        Slette objekt
+                    </button>
+                    <a class="btn btn-dark"
+                       href="/admin/kontroll/object/{{obj.id}}/change/">
+                        Rediger objekt
+                    </a>
+                </div>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
             </div>
         </div>
     </div>
@@ -79,8 +91,19 @@
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content modal-xl modal-dialog-scrollable">
             <!-- Modal Header -->
-            <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat}}</h4>
+            <div class="modal-header bg-info text-light">
+                <h4 class="modal-title">{{obj.etg}}. etg,
+                    {{obj.lokasjon}},
+                    {{obj.plassering}}
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}
+                </h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
@@ -101,26 +124,19 @@
                                name="plassering" placeholder="{{ obj.plassering }}"
                                type="text" value="{{obj.plassering}}">
                         <label for="etg">Etasje</label>
-                        <input class="form-control" id="etg" name="etg" placeholder="{{ obj.etg }}"
+                        <input class="form-control" id="etg" name="etg" placeholder="{{obj.etg}}"
                                type="number" value="{{obj.etg}}">
-                        <div class="form-check">
-                            <input class="form-check-input" id="aktiv" name="aktiv" type="checkbox">
-                            <label class="form-check-label">Slett objekt!</label>
-                        </div>
                     </div>
 
             </div>
-            <div class="modal-footer bg-light">
+            <div class="modal-footer bg-light justify-content-between">
 
-
-                <button class="btn btn-success btn-lg" name="toast" type="submit"
+                <button class="btn btn-success" name="toast" type="submit"
                         value="endring">Utfør endringer
                 </button>
                 <input name="custpk" type="hidden" value="{{ customer.pk }}">
                 </form>
-
-
-                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
             </div>
         </div>
     </div>
@@ -131,26 +147,114 @@
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <!-- Modal Header -->
-            <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat}}</h4>
+            <div class="modal-header bg-success text-light">
+                <h4 class="modal-title">{{obj.etg}}. etg,
+                    {{obj.lokasjon}},
+                    {{obj.plassering}}
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}
+                </h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h1>Kontroll</h1>
-                <h3>Kontrollrutine</h3>
-                <p>Kontroller</p>
+                <div class="table-responsive">
+                    <table class="lead table" style="border">
+                        <tr>
+                            <td>Produksjonsår: [{{obj.prodyear}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Sist kontrollert: [{{obj.sistekontroll}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Siste service: [{{obj.sisteservice}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Neste service: [{{obj.nesteservice}}]</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <!-- Modal footer -->
-            <div class="modal-footer bg-light">
+            <div class="modal-footer bg-light justify-content-between">
                 <form action="{% url 'detail' obj.pk %}" method="get">
                     {% csrf_token %}
-                    <button class="btn btn-success btn-lg" name="toast" type="submit"
-                            value="kontroll">Utfør kontroll
+
+                    {% if obj.sistekontroll|date:"Y"|add:0 < today or obj.sistekontroll is None %}
+                    {% if obj.avvik != True %}
+                    <button class="btn btn-success mr-auto" name="toast" type="submit"
+                            value="kontroll">1-års kontroll utført uten avvik
+                    </button>
+                    {% endif %}
+                    {% if obj.avvik == True %}
+                    <a class="btn btn-primary mr-auto" href="{% url 'avvik' customer.pk %}?obj={{obj.pk}}">Behandle
+                        avvik</a>
+                    {% else %}
+                    <button class="btn btn-primary mr-auto" name="detalj" type="submit"
+                            value="kontroll">
+                        Registrere avvik
+                    </button>
+                    {% endif %}
+                    {% endif %}
+                    {% if today >= obj.nesteservice|date:"Y"|add:0 %}
+                    <a class="btn btn-warning mr-auto"
+                       data-dismiss="modal"
+                       data-target="#service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}"
+                       data-toggle="modal"
+                       href="">5/10-årskontroll
+                    </a>
+                    {% endif %}
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+
+                </form>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Slette Modal -->
+<div class="modal fade"
+     id="slette{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-light">
+                <h4 class="modal-title">{{obj.etg}}. etg,
+                    {{obj.lokasjon}},
+                    {{obj.plassering}}
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}
+                </h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Advarsel!</h1>
+                Du har valgt å slette dette objektet!
+                Er du sikker?
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer bg-light justify-content-between">
+                <form action="{% url 'detail' obj.pk %}" method="get">
+                    {% csrf_token %}
+                    <button class="btn btn-success" name="toast" type="submit"
+                            value="slette">Slett objekt
                     </button>
                     <input name="custpk" type="hidden" value="{{ customer.pk }}">
                 </form>
-                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
             </div>
         </div>
     </div>
@@ -158,48 +262,63 @@
 <!-- Service Modal -->
 <div class="modal fade"
      id="service{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable"> <!-- modal-xl -->
-        <div class="modal-content modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
             <!-- Modal Header -->
-            <div class="modal-header bg-light">
-                <h4 class="modal-title">{{obj.fabrikat}}</h4>
+            <div class="modal-header bg-warning text-light">
+                <h4 class="modal-title">{{obj.etg}}. etg,
+                    {{obj.lokasjon}},
+                    {{obj.plassering}}
+                    {{obj.extinguishant.fabrikat}}
+                    {{obj.extinguishant.type}}
+                    {% if obj.extinguishant.lengde is not None %}
+                    {{obj.extinguishant.lengde}}
+                    {% endif %}
+                    {% if obj.extinguishant.slukkemiddel is not None %}
+                    {{obj.extinguishant.slukkemiddel}}
+                    {% endif %}
+                </h4>
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h1>Service</h1>
-                <h3>Servicerutine</h3>
-                <p>Service</p>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer bg-light">
+                <div class="table-responsive">
+                    <table class="lead table" style="border">
+                        <tr>
+                            <td>Produksjonsår: [{{obj.prodyear}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Siste service: [{{obj.sisteservice}}]</td>
+                        </tr>
+                        <tr>
+                            <td>Neste service: [{{obj.nesteservice}}]</td>
+                        </tr>
+                    </table>
+                </div>
+                Utsette service til valgt år?
                 <form action="{% url 'detail' obj.pk %}" method="get">
-                    {% csrf_token %}
-                    <button class="btn btn-success btn-lg" name="toast" type="submit"
-                            value="service">Utfør service
+                    <input max="{{obj.nesteservice|date:'Y'|add:5}}" min="{{obj.nesteservice|date:'Y'|add:1}}"
+                           name="utsett"
+                           onkeydown="return false" type="number"
+                           value="{{obj.nesteservice|date:'Y'|add:1}}"><br>
+                    <button class="btn btn-danger btn-sm" name="toast" type="submit"
+                            value="utsett">Utsett
                     </button>
                     <input name="custpk" type="hidden" value="{{ customer.pk }}">
                 </form>
-                <a class="btn btn-danger btn-lg" data-dismiss="modal" href="">Avbryt</a>
             </div>
-        </div>
-    </div>
-</div>
-<!-- Avvik Modal -->
-<div class="modal fade"
-     id="avvik{{forloop.parentloop.parentloop.parentloop.counter}}{{forloop.parentloop.parentloop.counter}}{{forloop.parentloop.counter}}{{forloop.counter}}">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
-        <div class="modal-content modal-xl modal-dialog-scrollable">
-            <!-- Modal Header -->
-            <div class="modal-header bg-light">
-                <h4 class="modal-title">avvik overskrift {{obj.pk}}</h4>
-                <button class="close" data-dismiss="modal" type="button">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
+            <!-- Modal footer -->
+            <div class="modal-footer bg-light justify-content-between">
+                <form action="{% url 'detail' obj.pk %}" method="get">
+                    {% csrf_token %}
 
-                {% include 'forms_avvik.html' %}
-
+                    <button class="btn btn-success btn-sm" name="toast" type="submit"
+                            value="service">5/10-årskontroll utført uten avvik
+                    </button>
+                    <input name="custpk" type="hidden" value="{{ customer.pk }}">
+                </form>
+                <br>
+                <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
             </div>
         </div>
     </div>

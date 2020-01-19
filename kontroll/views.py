@@ -1,16 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from .models import Customer, Object, ObjTr, Avvik
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import os
 from django.conf import settings
 from django.http import HttpResponse
-from django.template import Context
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
 
@@ -58,6 +56,12 @@ def detail(request, pk):
     liste = request.GET.get('liste')
     avvik = request.POST.get('avvik')
     detalj = request.GET.get('detalj')
+    today = int(timezone.now().year)
+    utsett = request.GET.get('utsett')
+    nyobject = request.GET.get('nyobject')
+
+    if nyobject:
+        toast = 'nyobject'
 
     if avvik is None and toast == 'avvik':
         toast = 'kontroll'
@@ -80,9 +84,9 @@ def detail(request, pk):
     ant_obj = tot_ant_obj
     avviks = objects.exclude(avvik=None).count()
     if not liste:
-        objects = objects.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
+        objects = objects.filter(
+            Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None) | Q(nesteservice__lte=time_threshold))
         ant_obj = objects.count()
-
 
     if toast == "kontroll":
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
@@ -96,20 +100,31 @@ def detail(request, pk):
         obj.lokasjon = request.GET['lokasjon']
         obj.plassering = request.GET['plassering']
         obj.prodyear = request.GET['prodyear']
-        if aktiv:
-            obj.aktiv = False
+        obj.save()
+
+    if toast == "slette":
+        obj.aktiv = False
+        obj.save()
+        objtr = ObjTr(object=obj, customer=obj.customer, deleted=True)
+        objtr.save()
+
+    if toast == 'utsett':
+        obj.nesteservice = date(int(utsett), timezone.now().month, timezone.now().day)
         obj.save()
 
     if toast == "service":
-        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), kontrolldato=timezone.now())
+        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now())
         objtr.save()
         obj.sisteservice = timezone.now()
-        obj.sistekontroll = timezone.now()
         obj.nesteservice = date(timezone.now().year + obj.extinguishant.slokketype.intervall, timezone.now().month,
                                 timezone.now().day)
         # trengs nestekontroll?
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
+
+    if toast == 'nyobject':
+        pass
+
     slettet = Object.objects.filter(customer=customer, aktiv=False).order_by("modified")
     lokasjon = slettet.values_list('lokasjon', flat=True).last()
     etg = slettet.values_list('etg', flat=True).last()
@@ -134,7 +149,14 @@ def detail(request, pk):
             if nyform.is_valid():
                 objform = nyform.save(commit=False)
                 objform.customer = customer
+                # lagrer informasjon om neste service
+                objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
+                    timezone.now().month) + '-01'
                 objform.save()
+                objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True)
+                objtr.save()
+                nyobject = True
+                toast = 'nyobject'
 
     else:
         nyform = NyObjectForm(
@@ -163,6 +185,9 @@ def detail(request, pk):
         'tot_ant_obj': tot_ant_obj,
         'ant_obj': ant_obj,
         'detalj': detalj,
+        'today': today,
+        'utsett': utsett,
+        'nyobject': nyobject,
     }
     return render(request, "detail.html", context)
 
@@ -171,16 +196,24 @@ def avvik(request, pk):
     obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
     avvik = request.GET.get('avvik') or None
+    kommentar = request.POST.get('kommentar') or None
+
     if obj:
-        obj = Object.objects.get(pk=obj)
-        objtr = ObjTr.objects.get(object=obj, kontrolldato=None, utbedret_avvik=None)
+        obj = Object.objects.get(pk=obj, aktiv=True)
+        objtr = ObjTr.objects.get(object=obj, kontrolldato=None, utbedret_avvik=None, object__aktiv=True, deleted=False,
+                                  added=False, servicedato=None)
         avviks = objtr.avvik.all()
         customer = objtr.customer
 
     else:
-        objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None, utbedret_avvik=None)
+        objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None, utbedret_avvik=None, object__aktiv=True,
+                                     deleted=False, added=False, servicedato=None)
         avviks = 'False'
         customer = Customer.objects.get(pk=pk)
+
+    if kommentar:
+        objtr.kommentar = kommentar
+        objtr.save()
 
     if remove is not None:
         objtr.avvik.remove(avvik)
@@ -194,6 +227,7 @@ def avvik(request, pk):
         'pk': pk,
         'avviks': avviks,
         "customer": customer,
+        'kommentar': kommentar,
 
     }
 
@@ -235,15 +269,20 @@ class Pdf(View):
         kontrs = objs.exclude(kontrolldato=None).count()
         avviks = objs.exclude(avvik=None).count()
         utbedret_avviks = objs.exclude(utbedret_avvik=None).count()
-
+        totkontr = avviks + kontrs
+        added = objs.exclude(added=False).count()
+        deleted = objs.exclude(deleted=False).count()
         context = {
             "customer": customer,
             "objs": objs,
             "year": year,
             "services": services,
             "kontrs": kontrs,
+            'totkontr': totkontr,
             "avviks": avviks,
             "utbedret_avviks": utbedret_avviks,
+            "added": added,
+            "deleted": deleted,
         }
         template_path = 'pdf.html'
 
