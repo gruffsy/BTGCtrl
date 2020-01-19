@@ -54,7 +54,7 @@
             {% if toast == "endring" %}
             oppdatert og endret.{% endif %}
             {% if toast == "nyobject" %}
-            lagt til{% endif %}
+            opprettet.{% endif %}
             {% if toast == "utsett" %}
             utsatt 5/10-års kontrollen til {{utsett}}{% endif %}
             {% if toast == "service" %}
@@ -64,7 +64,7 @@
             registrert med avvik og kan behandles i <a href="{% url 'avvik' customer.id %}">avviksbehandlingen</a>
             {% endif %}
             {% if toast == "slette" %}
-            slettet fra brukeren. <a href="/admin/kontroll/object/{{obj.id}}/change/">Logg inn</a> som administrator for
+            slettet av brukeren. <a href="/admin/kontroll/object/{{obj.id}}/change/">Logg inn</a> som administrator for
             å omgjøre endringen.<br>
             Ønker du å opprette et nytt objekt?<br>
             <div class="just-padding">

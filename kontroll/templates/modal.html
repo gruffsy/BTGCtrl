@@ -297,10 +297,10 @@
                 </div>
                 Utsette service til valgt år?
                 <form action="{% url 'detail' obj.pk %}" method="get">
-                    <input max="{{obj.nesteservice|date:'Y'|add:5}}" min="{{obj.nesteservice|date:'Y'|add:1}}"
+                    <input max="{{obj.nesteservice|date:'Y'|add:5}}" min="{{today}}"
                            name="utsett"
                            onkeydown="return false" type="number"
-                           value="{{obj.nesteservice|date:'Y'|add:1}}"><br>
+                           value="{{today}}"><br>
                     <button class="btn btn-danger btn-sm" name="toast" type="submit"
                             value="utsett">Utsett
                     </button>

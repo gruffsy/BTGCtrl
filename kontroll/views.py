@@ -85,7 +85,7 @@ def detail(request, pk):
     avviks = objects.exclude(avvik=None).count()
     if not liste:
         objects = objects.filter(
-            Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None) | Q(nesteservice__lte=time_threshold))
+            Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None) | Q(nesteservice__lte=timezone.now()))
         ant_obj = objects.count()
 
     if toast == "kontroll":
