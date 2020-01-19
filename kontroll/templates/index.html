@@ -147,4 +147,9 @@
     <h2>Dessverre ingen treff...</h2>
 </div>
 {% endif %}
+{% if looser %}
+{% include 'login.html' %}
+{% block login %}
+{% endblock login %}
+{% endif %}
 {% endblock %}
