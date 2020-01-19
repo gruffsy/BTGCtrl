@@ -13,6 +13,8 @@
         bg-primary
         {% elif toast == 'slette' %}
         bg-danger
+        {% elif toast == 'utsett' %}
+        bg-info
         {% elif toast == 'nyobject' %}
         bg-dark
         {% endif %}
@@ -53,6 +55,8 @@
             oppdatert og endret.{% endif %}
             {% if toast == "nyobject" %}
             lagt til{% endif %}
+            {% if toast == "utsett" %}
+            utsatt 5/10-års kontrollen til {{utsett}}{% endif %}
             {% if toast == "service" %}
             fått utført service og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
             {% endif %}
