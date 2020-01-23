@@ -11,8 +11,10 @@ from xhtml2pdf import pisa
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='/accounts/login/')
 def index(request):
     query = request.GET.get("q")
     sort = request.GET.get("sort")
@@ -49,6 +51,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+@login_required(login_url='/accounts/login/')
 def detail(request, pk):
     custpk = request.GET.get("custpk")
     toast = request.GET.get("toast")
@@ -89,8 +92,10 @@ def detail(request, pk):
         ant_obj = objects.count()
 
     if toast == "kontroll":
-        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
+        # lagrer kontrolldato i objektTransaksjoner
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), user=request.user)
         objtr.save()
+        # oppdaterer objektet med nye kontrolldatoer
         obj.sistekontroll = timezone.now()
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
@@ -105,7 +110,7 @@ def detail(request, pk):
     if toast == "slette":
         obj.aktiv = False
         obj.save()
-        objtr = ObjTr(object=obj, customer=obj.customer, deleted=True)
+        objtr = ObjTr(object=obj, customer=obj.customer, deleted=True, user=request.user)
         objtr.save()
 
     if toast == 'utsett':
@@ -113,7 +118,7 @@ def detail(request, pk):
         obj.save()
 
     if toast == "service":
-        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now())
+        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), user=request.user)
         objtr.save()
         obj.sisteservice = timezone.now()
         obj.nesteservice = date(timezone.now().year + obj.extinguishant.slokketype.intervall, timezone.now().month,
@@ -136,6 +141,7 @@ def detail(request, pk):
             objform = avvikform.save(commit=False)
             objform.customer = obj.customer
             objform.object = obj
+            objform.user = request.user
             objform.save()
             obj.avvik = True
             obj.save()
@@ -153,7 +159,7 @@ def detail(request, pk):
                 objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
                     timezone.now().month) + '-01'
                 objform.save()
-                objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True)
+                objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True, user=request.user)
                 objtr.save()
                 nyobject = True
                 toast = 'nyobject'
@@ -192,6 +198,7 @@ def detail(request, pk):
     return render(request, "detail.html", context)
 
 
+@login_required(login_url='/accounts/login/')
 def avvik(request, pk):
     obj = request.GET.get('obj') or None
     remove = request.GET.get('remove')
@@ -218,7 +225,7 @@ def avvik(request, pk):
     if remove is not None:
         objtr.avvik.remove(avvik)
         avvik_id = Avvik.objects.get(pk=str(avvik))
-        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer)
+        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer, user=request.user)
         avviktr.save()
 
     context = {
@@ -247,6 +254,7 @@ def avvik(request, pk):
         return render(request, "avvik.html", context)
 
 
+@login_required(login_url='/accounts/login/')
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
     objs = ObjTr.objects.filter(customer=customer).order_by('-modified')
@@ -256,9 +264,7 @@ def objtr(request, pk):
     }
     return render(request, "objtr.html", context)
 
-
 class Pdf(View):
-
     def get(self, request, pk):
         year = request.GET.get("year")
         # year = year[-4:]
@@ -297,7 +303,6 @@ class Pdf(View):
         return response
 
     # return Render.render('pdf.html', context)
-
 
 def link_callback(uri, rel):
     """

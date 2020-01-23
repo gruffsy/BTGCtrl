@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>{% block title %}FireCtrl{% endblock %}</title>
+    {% load staticfiles %}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css"/>
+    <style id="compiled-css" type="text/css">
+.just-padding {
+    padding: 15px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+    padding-left: 45px;
+}
+
+.list-group-item .glyphicon {
+    margin-right: 5px;
+}
+
+
+
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+
+    <script type="text/javascript">
+            $(document).ready(function(){
+                $('.toast').toast('show');
+            });
+
+            $(document).ready(function() {
+                $(this).on("click", ".chevron", function() {
+                    $(this).find($(".fa")).toggleClass( "fa-chevron-right" ).toggleClass( "fa-chevron-down" );
+
+                });
+            });
+
+
+
+    </script>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="/">FireCtrl</a>
+</nav>
+<div class="just-padding">
+    <h2>Logg inn</h2>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table}}
+            </table>
+            <button class="btn btn-success" type="submit">Logg inn</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -126,6 +126,7 @@ class ObjTr(models.Model):
     added = models.BooleanField(default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
+    user = models.CharField(null=False, blank=False, default='user', max_length=255)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

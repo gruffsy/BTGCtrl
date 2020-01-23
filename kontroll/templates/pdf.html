@@ -150,8 +150,8 @@
 </table>
 <hr>
 <table>
-    <tr>
-        <td>Totalt antall kontrollert:</td>
+    <tr><!-- Disse må deles opp -->
+        <td>Totalt antall objekter kontrollert:</td>
         <td>
             {{totkontr}} stk
         </td>
@@ -198,7 +198,7 @@
         </td>
     </tr>
     <tr>
-        <td>Antall nye objekter innstallert:</td>
+        <td>Antall nye objekter montert:</td>
         <td>
             {% if added %}
             {{added}} stk
@@ -270,7 +270,7 @@
             &nbsp;
             {% endif %}
         </td>
-        <td>user</td>
+        <td>{{ obj.user }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -313,7 +313,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
-        <td>user</td>
+        <td>{{ obj.user }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -355,7 +355,7 @@
         </td>
         <td>{{ obj.utbedret_avvik }}</td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>user</td>
+        <td>{{obj.user}}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -365,7 +365,7 @@
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="9"><h2>Objekter med avvik</h2></td>
+        <td colspan="9"><h1 class="lead"><font color="red">Objekter med avvik</font></h1></td>
     </tr>
     <tr class="avvik">
         <th>Kontrolldato</th>
@@ -407,14 +407,14 @@
                 {% endfor %}
             </table>
         </td>
-        <td>{% if obj.kommentar_text %}
+        <td>{% if obj.kommentar %}
             {{ obj.kommentar }}
             {% else %}
             &nbsp;
             {% endif %}
         </td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>user</td>
+        <td>{{obj.user}}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -459,7 +459,7 @@
             {% endif %}
         </td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>user</td>
+        <td>{{obj.user}}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -503,7 +503,7 @@
             {% endif %}
         </td>
         <td>{{ obj.object.prodyear }}</td>
-        <td>user</td>
+        <td>{{obj.user}}</td>
     </tr>
     {% endif %}
     {% endfor %}
