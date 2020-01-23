@@ -271,6 +271,7 @@ class Pdf(View):
         customer = Customer.objects.get(pk=pk)
         objs = ObjTr.objects.filter(customer=customer)
         objs = objs.filter(modified__year=year)
+        objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)
         kontrs = objs.exclude(kontrolldato=None).count()
         avviks = objs.exclude(avvik=None).count()
