@@ -54,6 +54,11 @@
     </style>
 </head>
 <body>
+{{ sec.books_set.count }}
+kontrs: {{kontrs}}<br>
+kontrslokkere: {{kontrslokkere}}<br>
+kontrbrannposter: {{kontrbrannposter}}<br>
+avviks: {{avviks}}
 
 <div id="page-header">
 
@@ -219,7 +224,6 @@
     </tr>
 </table>
 
-<hr>
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
@@ -319,7 +323,7 @@
         <td>{{ obj.object.prodyear }}</td>
         <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
         <td>{{ obj.user }}</td>
-         <td>{{ obj.object.id }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -363,7 +367,7 @@
         <td>{{ obj.utbedret_avvik }}</td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
-         <td>{{ obj.object.id }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -424,7 +428,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
-         <td>{{ obj.object.id }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -471,7 +475,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
-         <td>{{ obj.object.id }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -517,7 +521,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
-         <td>{{ obj.object.id }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
