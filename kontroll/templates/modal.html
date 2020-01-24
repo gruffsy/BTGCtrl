@@ -126,12 +126,12 @@
                         <label for="etg">Etasje</label>
                         <input class="form-control" id="etg" name="etg" placeholder="{{obj.etg}}"
                                type="number" value="{{obj.etg}}">
-                        <label for="nesteservice">Siste 5/10-års kontroll [{{obj.sisteservice}}]</label>
-                        <input placeholder="{{obj.sisteservice}}" class="form-control" type="text"
+                        <label for="sisteservice">Siste 5/10-års kontroll [{{obj.sisteservice}}]</label>
+                        <input class="form-control text-n" placeholder="{{obj.sisteservice}}" type="text"
                                onfocus="(this.type='date')" onblur="(this.type='text')"
                                id="sisteservice" name="sisteservice">
                         <label for="nesteservice">Neste 5/10-års kontroll [{{obj.nesteservice}}]</label>
-                        <input placeholder="{{obj.nesteservice}}" class="form-control" type="text"
+                        <input class="form-control text-n" placeholder="{{obj.nesteservice}}" type="text"
                                onfocus="(this.type='date')" onblur="(this.type='text')"
                                id="nesteservice" name="nesteservice">
                     </div>
