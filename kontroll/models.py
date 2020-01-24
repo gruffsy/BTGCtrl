@@ -84,6 +84,7 @@ class Object(models.Model):
     gml_kid = models.TextField(null=True, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
+    status = models.PositiveSmallIntegerField(default=1)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -127,6 +128,8 @@ class ObjTr(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     user = models.CharField(null=False, blank=False, default='user', max_length=255)
+    status = models.PositiveSmallIntegerField(default=1)
+
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
