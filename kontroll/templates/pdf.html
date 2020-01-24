@@ -54,6 +54,11 @@
     </style>
 </head>
 <body>
+{{ sec.books_set.count }}
+kontrs: {{kontrs}}<br>
+kontrslokkere: {{kontrslokkere}}<br>
+kontrbrannposter: {{kontrbrannposter}}<br>
+avviks: {{avviks}}
 
 <div id="page-header">
 
@@ -219,14 +224,14 @@
     </tr>
 </table>
 
-<hr>
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="9"><h2>Utførte 1-års kontroller uten avvik</h2></td>
+        <td colspan="10"><h2>Utførte 1-års kontroller uten avvik</h2></td>
     </tr>
 
     <tr>
+
         <th style="width:80px">Kontrolldato</th>
         <th style="width:25px">Etg</th>
         <th style="width:180px">Lokasjon</th>
@@ -237,12 +242,14 @@
         <th style="width:80px">Siste 5/10-års kontroll</th>
         <th style="width:80px">Neste 5/10-års kontroll</th>
         <th style="width:125px">Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
 
     <tr>&nbsp;</tr>
     {% for obj in objs %}
     {% if obj.kontrolldato is not None %}
     <tr>
+
         <td>{{ obj.kontrolldato|date:'j. M. Y' }}</td>
         <td>{{ obj.object.etg }}</td>
         <td>{{ obj.object.lokasjon }}</td>
@@ -271,6 +278,7 @@
             {% endif %}
         </td>
         <td>{{ obj.user }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -279,7 +287,7 @@
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="9"><h2>Utførte 5/10-års kontroller</h2></td>
+        <td colspan="10"><h2>Utførte 5/10-års kontroller</h2></td>
     </tr>
     <tr>
         <th style="width:80px">Kontrolldato</th>
@@ -291,6 +299,7 @@
         <th style="width:50px">Prod. år</th>
         <th style="width:80px">Neste 5/10-års kontroll</th>
         <th style="width:125px">Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
     <tr>&nbsp;</tr>
 
@@ -314,6 +323,7 @@
         <td>{{ obj.object.prodyear }}</td>
         <td>{{ obj.object.nesteservice|date:'M. Y' }}</td>
         <td>{{ obj.user }}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -323,7 +333,7 @@
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="9"><h2>Registrerte avvik som er utbedret</h2></td>
+        <td colspan="10"><h2>Registrerte avvik som er utbedret</h2></td>
     </tr>
     <tr class="avvik">
         <th>Utbedret dato</th>
@@ -334,6 +344,7 @@
         <th>Avvik</th>
         <th>Prod. år</th>
         <th>Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
     <tr>&nbsp;</tr>
 
@@ -356,6 +367,7 @@
         <td>{{ obj.utbedret_avvik }}</td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -365,7 +377,7 @@
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="9"><h1 class="lead"><font color="red">Objekter med avvik</font></h1></td>
+        <td colspan="10"><h1 class="lead"><font color="red">Objekter med avvik</font></h1></td>
     </tr>
     <tr class="avvik">
         <th>Kontrolldato</th>
@@ -377,6 +389,7 @@
         <th style="width:300px">Kommentar</th>
         <th>Prod. år</th>
         <th>Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
     <tr>&nbsp;</tr>
 
@@ -415,6 +428,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -427,7 +441,7 @@
 
 <table repeat="3">
     <tr>
-        <td colspan="6"><h2>Objekter lagt til</h2></td>
+        <td colspan="7"><h2>Objekter lagt til</h2></td>
     </tr>
 
     <tr>
@@ -438,6 +452,7 @@
         <th>Utstyr</th>
         <th>Prod. år</th>
         <th>Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
 
     <tr>&nbsp;</tr>
@@ -460,6 +475,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -471,7 +487,7 @@
 
 <table repeat="3">
     <tr>
-        <td colspan="6"><h2>Objekter fjernet</h2></td>
+        <td colspan="7"><h2>Objekter fjernet</h2></td>
     </tr>
 
     <tr>
@@ -482,6 +498,7 @@
         <th>Utstyr</th>
         <th>Prod. år</th>
         <th>Kontrollør</th>
+        <th style="width:25px">ID</th>
     </tr>
 
     <tr>&nbsp;</tr>
@@ -504,6 +521,7 @@
         </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
+        <td>{{ obj.object.id }}</td>
     </tr>
     {% endif %}
     {% endfor %}

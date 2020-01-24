@@ -267,14 +267,19 @@ def objtr(request, pk):
 class Pdf(View):
     def get(self, request, pk):
         year = request.GET.get("year")
-        # year = year[-4:]
         customer = Customer.objects.get(pk=pk)
         objs = ObjTr.objects.filter(customer=customer)
         objs = objs.filter(modified__year=year)
+        objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)
-        kontrs = objs.exclude(kontrolldato=None).count()
+        kontr = objs.filter(servicedato=None, utbedret_avvik=None)
+        kontr = kontr.exclude(Q(added=True) | Q(deleted=True))
+        kontrs = kontr.count()
+        kontrslokkere = kontr.exclude(object__extinguishant__slokketype=1).count()
+        kontrbrannposter = kontrs - kontrslokkere
         avviks = objs.exclude(avvik=None).count()
         utbedret_avviks = objs.exclude(utbedret_avvik=None).count()
+        # totalt kontrollerte objekter er objekter med avvik og alle kontrollerte
         totkontr = avviks + kontrs
         added = objs.exclude(added=False).count()
         deleted = objs.exclude(deleted=False).count()
@@ -289,6 +294,8 @@ class Pdf(View):
             "utbedret_avviks": utbedret_avviks,
             "added": added,
             "deleted": deleted,
+            "kontrslokkere": kontrslokkere,
+            "kontrbrannposter": kontrbrannposter,
         }
         template_path = 'pdf.html'
 
