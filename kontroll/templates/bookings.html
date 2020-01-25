@@ -6,24 +6,21 @@
     <br><br>
     <table class="table">
         <tr>
-            <th style="width:25px">Id</th>
-            <th style="width:25px">Etg</th>
-            <th style="width:200px">Lokasjon</th>
-            <th style="width:200px">Plassering</th>
-            <th style="width:200px">Objekt</th>
-            <th style="width:80px">Utført?</th>
-            <th style="width:80px">Angre?</th>
-            <th style="width:80px">Godta?</th>
+            <th>Id</th>
+            <th>Utført?</th>
+            <th>Angre?</th>
+            <th>Godta?</th>
+            <th>Etg</th>
+            <th>Lokasjon</th>
+            <th>Plassering</th>
+            <th>Objekt</th>
+
             <th>&nbsp;</th>
         </tr>
 
         {% for objtr in bookings %}
         <tr>
             <td>{{objtr.id}}</td>
-            <td>{{objtr.object.etg}}</td>
-            <td>{{objtr.object.lokasjon}}</td>
-            <td>{{objtr.object.plassering}}</td>
-            <td>{{objtr.object.extinguishant}}</td>
             <!-- Gå igjennom alle de ulike typene i ObjTr -->
             <td>
                 {% if objtr.kontrolldato %}
@@ -55,6 +52,11 @@
                 {% endif %}
 
             </td>
+            <td>{{objtr.object.etg}}</td>
+            <td>{{objtr.object.lokasjon}}</td>
+            <td>{{objtr.object.plassering}}</td>
+            <td>{{objtr.object.extinguishant}}</td>
+
         </tr>
         {% endfor %}
     </table>
