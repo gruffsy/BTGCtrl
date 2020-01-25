@@ -1,0 +1,62 @@
+{% block bookings %}
+<div class="just-padding">
+    <h2>Følgende handlinger har blitt utført</h2>
+    <p>Gå igjennom punkt for punkt eller godta alle</p>
+    <a class="btn btn-success btn-lg" href="?liste=bookings">Godkjenn alle</a>
+    <br><br>
+    <table class="table">
+        <tr>
+            <th style="width:25px">Id</th>
+            <th style="width:25px">Etg</th>
+            <th style="width:100px">Lokasjon</th>
+            <th style="width:100px">Plassering</th>
+            <th style="width:180px">Objekt</th>
+            <th style="width:80px">Utført?</th>
+            <th style="width:80px">Angre?</th>
+            <th style="width:80px">Godta?</th>
+            <th>&nbsp;</th>
+        </tr>
+
+        {% for objtr in bookings %}
+        <tr>
+            <td>{{objtr.id}}</td>
+            <td>{{objtr.object.etg}}</td>
+            <td>{{objtr.object.lokasjon}}</td>
+            <td>{{objtr.object.plassering}}</td>
+            <td>{{objtr.object.extinguishant}}</td>
+            <!-- Gå igjennom alle de ulike typene i ObjTr -->
+            <td>
+                {% if objtr.kontrolldato %}
+                1-års kontroll utført
+                {% endif %}
+                {% if objtr.servicedato %}
+                5/10-års kontroll utført
+                {% endif %}
+                {% if objtr.avvik.all %}
+                Avvik registrert
+                {% endif %}
+                {% if objtr.utbedret_avvik %}
+                Avvik utbedret
+                {% endif %}
+                {% if objtr.added %}
+                Ny
+                {% endif %}
+                {% if objtr.deleted %}
+                Fjernet
+                {% endif %}
+
+
+            </td>
+            <td><a class="btn btn-danger btn-sm" href="#">Slett</a></td>
+            <td><a class="btn btn-success btn-sm" href="#">Godkjenn</a></td>
+            <td>
+                {% if objtr.avvik.all %}
+                <a class="btn btn-primary btn-sm" href="#">Behandle avvik</a>
+                {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

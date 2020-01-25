@@ -11,7 +11,10 @@ toast = {{toast}}
 obj = {{obj}}
 utsett service til år: {{utsett}}
 nyobject: {{nyobject}}
+notbooked: {{bookings.count}}<br>
+Avviks: {{avviks}}
 -->
+
 <!-- sjekke for Kontroll -->
 <div>
     {% if detalj == 'kontroll' %}
@@ -26,7 +29,7 @@ nyobject: {{nyobject}}
 {% else %}
 <div>
     <div>
-        <!-- Knaperad på toppen -->
+        <!-- Knapperad på toppen -->
         <div class="just-padding">
             <table>
                 <tr>
@@ -34,6 +37,12 @@ nyobject: {{nyobject}}
                         <a class="btn btn-success btn-sm" href="{% url 'detail' customer.id %}">
                             Objekter som gjenstår å kontrollere
                         </a></td>
+                    <!--  {% if bookings %}
+                      <td style="padding: 5px">
+                          <a class="btn btn-primary btn-sm" href="{% url 'detail' customer.id %}?liste=bookings">
+                              Gå igjennom utførte kontroller
+                          </a></td>
+                      {% endif %} -->
                     <td style="padding: 5px">
                         <a class="btn btn-info btn-sm" href="{% url 'detail' customer.id %}?liste=Alle">
                             Liste over alle objekter
@@ -129,6 +138,10 @@ nyobject: {{nyobject}}
                                     {{obj.extinguishant.slukkemiddel}}
                                     {% endif %}</a>
                         </div>
+
+                        <div>
+
+                        </div>
                         <!-- Modaler -->
                         {% include 'modal.html' %}
                         {% block modal %}
@@ -142,6 +155,11 @@ nyobject: {{nyobject}}
             {% endfor %}
         </div>
 
+        {% elif liste == 'bookings' %}
+        <div>
+            {% include 'bookings.html' %}
+
+        </div>
         {% else %}
         <!-- viser all info -->
         <div class="just-padding">
