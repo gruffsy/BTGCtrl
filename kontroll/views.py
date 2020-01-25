@@ -82,7 +82,8 @@ def detail(request, pk):
 
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
-    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
+    objects = Object.objects.filter(customer=customer, aktiv=True, status=1).order_by("etg", "lokasjon", "plassering")
+    bookings = ObjTr.objects.filter(customer=customer, status=2).order_by('-pk')
     tot_ant_obj = objects.count()
     ant_obj = tot_ant_obj
     avviks = objects.exclude(avvik=None).count()
@@ -93,9 +94,10 @@ def detail(request, pk):
 
     if toast == "kontroll":
         # lagrer kontrolldato i objektTransaksjoner
-        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), user=request.user)
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), user=request.user, status=2)
         objtr.save()
         # oppdaterer objektet med nye kontrolldatoer
+        obj.status = 2
         obj.sistekontroll = timezone.now()
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
@@ -111,8 +113,9 @@ def detail(request, pk):
 
     if toast == "slette":
         obj.aktiv = False
+        obj.status = 2
         obj.save()
-        objtr = ObjTr(object=obj, customer=obj.customer, deleted=True, user=request.user)
+        objtr = ObjTr(object=obj, customer=obj.customer, deleted=True, user=request.user, status=2)
         objtr.save()
 
     if toast == 'utsett':
@@ -120,8 +123,9 @@ def detail(request, pk):
         obj.save()
 
     if toast == "service":
-        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), user=request.user)
+        objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), user=request.user, status=2)
         objtr.save()
+        obj.status = 2
         obj.sisteservice = timezone.now()
         obj.nesteservice = date(timezone.now().year + obj.extinguishant.slokketype.intervall, timezone.now().month,
                                 timezone.now().day)
@@ -144,7 +148,9 @@ def detail(request, pk):
             objform.customer = obj.customer
             objform.object = obj
             objform.user = request.user
+            objform.status = 2
             objform.save()
+            obj.status = 2
             obj.avvik = True
             obj.save()
             avvikform.save_m2m()
@@ -161,7 +167,7 @@ def detail(request, pk):
                 objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
                     timezone.now().month) + '-01'
                 objform.save()
-                objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True, user=request.user)
+                objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True, user=request.user, status=2)
                 objtr.save()
                 nyobject = True
                 toast = 'nyobject'
@@ -196,6 +202,7 @@ def detail(request, pk):
         'today': today,
         'utsett': utsett,
         'nyobject': nyobject,
+        'bookings': bookings,
     }
     return render(request, "detail.html", context)
 
@@ -227,7 +234,7 @@ def avvik(request, pk):
     if remove is not None:
         objtr.avvik.remove(avvik)
         avvik_id = Avvik.objects.get(pk=str(avvik))
-        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer, user=request.user)
+        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer, user=request.user, status=2)
         avviktr.save()
 
     context = {
@@ -244,9 +251,10 @@ def avvik(request, pk):
     if not avviks:
         obj.avvik = False
         obj.sistekontroll = timezone.now()
+        obj.status = 2
         obj.save()
         objtr.delete()
-        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now())
+        objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), status=2)
         objtr.save()
         url = '../' + str(pk)
 
