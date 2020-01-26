@@ -1,15 +1,16 @@
 {% block bookings %}
+{% load define_action %}
 <div class="just-padding">
     <h2>Følgende handlinger har blitt utført</h2>
     <p>Gå igjennom punkt for punkt eller godta alle</p>
-    <a class="btn btn-success btn-lg" href="?liste=bookings">Godkjenn alle</a>
+    <a class="btn btn-success btn-lg" href="?liste=bookings&book=all">Godkjenn alle</a>
     <br><br>
     <table class="table">
         <tr>
             <th>Id</th>
             <th>Utført?</th>
             <th>Angre?</th>
-            <th>Godta?</th>
+            <th>Godkjenn?</th>
             <th>Behandle</th>
             <th>Etg</th>
             <th>Lokasjon</th>
@@ -21,32 +22,40 @@
 
         {% for objtr in bookings %}
         <tr>
-            <td>{{objtr.id}}</td>
+            <td>{{objtr.object.id}}</td>
             <!-- Gå igjennom alle de ulike typene i ObjTr -->
             <td>
                 {% if objtr.kontrolldato %}
                 1-års kontroll utført
+                {% define "kontroll" as action %}
                 {% endif %}
                 {% if objtr.servicedato %}
+                {% define "service" as action %}
                 5/10-års kontroll utført
                 {% endif %}
                 {% if objtr.avvik.all %}
+                {% define "avvik" as action %}
                 Avvik registrert
                 {% endif %}
                 {% if objtr.utbedret_avvik %}
+                {% define "utbedret" as action %}
                 Avvik utbedret
                 {% endif %}
                 {% if objtr.added %}
+                {% define "added" as action %}
                 Ny
                 {% endif %}
                 {% if objtr.deleted %}
+                {% define "deleted" as action %}
                 Fjernet
                 {% endif %}
 
-
             </td>
-            <td><a class="btn btn-danger btn-sm" href="#">Slett</a></td>
-            <td><a class="btn btn-success btn-sm" href="#">Godkjenn</a></td>
+            <td><a class="btn btn-danger btn-sm"
+                   href="{% url 'detail' customer.id %}?liste=bookings&objtrid={{objtr.id}}&book=no&action={{action}}">Angre</a>
+            </td>
+            <td><a class="btn btn-success btn-sm"
+                   href="{% url 'detail' customer.id %}?liste=bookings&objtrid={{objtr.id}}&book=yes">Godkjenn</a></td>
             <td>
                 {% if objtr.avvik.all %}
                 <a class="btn btn-primary btn-sm" href="#">Behandle avvik</a>

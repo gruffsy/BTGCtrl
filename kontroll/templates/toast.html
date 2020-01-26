@@ -50,6 +50,7 @@
             Da er objektet
             {% if toast == "kontroll" %}
             kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
+            <a href="{% url 'objtr' customer.id %}?objtrid={{objtr.id}}&book=no&action=kontroll">Angre?</a>
             {% endif %}
             {% if toast == "endring" %}
             oppdatert og endret.{% endif %}

@@ -62,6 +62,9 @@ def detail(request, pk):
     today = int(timezone.now().year)
     utsett = request.GET.get('utsett')
     nyobject = request.GET.get('nyobject')
+    book = request.GET.get('book')
+    objtrid = request.GET.get('objtrid')
+    action = request.GET.get('action')
 
     if nyobject:
         toast = 'nyobject'
@@ -82,7 +85,7 @@ def detail(request, pk):
 
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
-    objects = Object.objects.filter(customer=customer, aktiv=True, status=1).order_by("etg", "lokasjon", "plassering")
+    objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
     bookings = ObjTr.objects.filter(customer=customer, status=2).order_by('-pk')
     tot_ant_obj = objects.count()
     ant_obj = tot_ant_obj
@@ -97,7 +100,6 @@ def detail(request, pk):
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), user=request.user, status=2)
         objtr.save()
         # oppdaterer objektet med nye kontrolldatoer
-        obj.status = 2
         obj.sistekontroll = timezone.now()
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
@@ -125,7 +127,6 @@ def detail(request, pk):
     if toast == "service":
         objtr = ObjTr(object=obj, customer=obj.customer, servicedato=timezone.now(), user=request.user, status=2)
         objtr.save()
-        obj.status = 2
         obj.sisteservice = timezone.now()
         obj.nesteservice = date(timezone.now().year + obj.extinguishant.slokketype.intervall, timezone.now().month,
                                 timezone.now().day)
@@ -133,8 +134,28 @@ def detail(request, pk):
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
-    if toast == 'nyobject':
-        pass
+    if book == "yes":
+        ObjTr.objects.filter(pk=objtrid).update(status=1)
+    elif book == "no":
+        objtrbooking = ObjTr.objects.get(pk=objtrid)
+        if action == 'kontroll':
+            objtrbooking.object.sistekontroll = date(timezone.now().year - 1, timezone.now().month, timezone.now().day)
+        if action == 'service':
+            objtrbooking.object.sisteservice = date(timezone.now().year - 1, timezone.now().month, timezone.now().day)
+            objtrbooking.object.nesteservice = timezone.now()
+        if action == 'avvik':
+            objtrbooking.object.avvik = False
+        if action == 'utbedret':
+            pass
+        if action == 'added':
+            objtrbooking.object.aktiv = False
+        if action == 'deleted':
+            objtrbooking.object.aktiv = True
+        objtrbooking.object.save()
+        objtrbooking.delete()
+    elif book == 'all':
+        ob = ObjTr.objects.filter(customer=customer, status=2)
+        ob.update(status=1)
 
     slettet = Object.objects.filter(customer=customer, aktiv=False).order_by("modified")
     lokasjon = slettet.values_list('lokasjon', flat=True).last()
@@ -150,7 +171,6 @@ def detail(request, pk):
             objform.user = request.user
             objform.status = 2
             objform.save()
-            obj.status = 2
             obj.avvik = True
             obj.save()
             avvikform.save_m2m()
@@ -251,7 +271,6 @@ def avvik(request, pk):
     if not avviks:
         obj.avvik = False
         obj.sistekontroll = timezone.now()
-        obj.status = 2
         obj.save()
         objtr.delete()
         objtr = ObjTr(object=obj, customer=obj.customer, kontrolldato=timezone.now(), status=2)

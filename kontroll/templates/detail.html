@@ -37,12 +37,12 @@ Avviks: {{avviks}}
                         <a class="btn btn-success btn-sm" href="{% url 'detail' customer.id %}">
                             Objekter som gjenstår å kontrollere
                         </a></td>
-                    <!--  {% if bookings %}
-                      <td style="padding: 5px">
+                    {% if bookings %}
+                    <td style="padding: 5px">
                           <a class="btn btn-primary btn-sm" href="{% url 'detail' customer.id %}?liste=bookings">
                               Gå igjennom utførte kontroller
                           </a></td>
-                      {% endif %} -->
+                    {% endif %}
                     <td style="padding: 5px">
                         <a class="btn btn-info btn-sm" href="{% url 'detail' customer.id %}?liste=Alle">
                             Liste over alle objekter
