@@ -50,7 +50,6 @@
             Da er objektet
             {% if toast == "kontroll" %}
             kontrollert og lagt til i <a href="{% url 'objtr' customer.id %}">kontrollrapporten</a>
-            <a href="{% url 'objtr' customer.id %}?objtrid={{objtr.id}}&book=no&action=kontroll">Angre?</a>
             {% endif %}
             {% if toast == "endring" %}
             oppdatert og endret.{% endif %}
@@ -68,6 +67,7 @@
             slettet av brukeren. <a href="/admin/kontroll/object/{{obj.id}}/change/">Logg inn</a> som administrator for
             å omgjøre endringen.<br>
             Ønker du å opprette et nytt objekt?<br>
+
             <div class="just-padding">
                 <a class="btn btn-success btn-sm"
                    href="{% url 'detail' customer.id %}?nyobject=False">
@@ -78,7 +78,15 @@
         </div>
         <!-- Toast Body -->
         <div class="toast-body">
-            <a href="{% url 'detail' customer.id %}">Lukk</a>
+            <table class="table">
+                <tr>
+                    <td>
+                        <a href="{% url 'detail' customer.id %}">Lukk</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'detail' customer.id %}?liste=bookings">Angre?</a></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

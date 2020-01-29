@@ -84,7 +84,6 @@ class Object(models.Model):
     gml_kid = models.TextField(null=True, blank=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
-    status = models.PositiveSmallIntegerField(default=1)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

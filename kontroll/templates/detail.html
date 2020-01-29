@@ -9,11 +9,22 @@ Avvik:
 custpk = {{custpk}}
 toast = {{toast}}
 obj = {{obj}}
+objects: {{objects}}
 utsett service til år: {{utsett}}
 nyobject: {{nyobject}}
 notbooked: {{bookings.count}}<br>
 Avviks: {{avviks}}
+
+<br>
+Test:
+{% if objects %}
+Ja, objects
+{% if toast %}
+Ja, Toast
+{% endif %}
+{% endif %}
 -->
+
 
 <!-- sjekke for Kontroll -->
 <div>
@@ -40,7 +51,7 @@ Avviks: {{avviks}}
                     {% if bookings %}
                     <td style="padding: 5px">
                           <a class="btn btn-primary btn-sm" href="{% url 'detail' customer.id %}?liste=bookings">
-                              Gå igjennom utførte kontroller
+                              Gå igjennom utførte handlinger
                           </a></td>
                     {% endif %}
                     <td style="padding: 5px">

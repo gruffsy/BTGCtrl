@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 
 @login_required(login_url='/accounts/login/')
@@ -133,6 +134,7 @@ def detail(request, pk):
         # trengs nestekontroll?
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
+
 
     if book == "yes":
         ObjTr.objects.filter(pk=objtrid).update(status=1)
@@ -287,9 +289,11 @@ def avvik(request, pk):
 def objtr(request, pk):
     customer = Customer.objects.get(pk=pk)
     objs = ObjTr.objects.filter(customer=customer).order_by('-modified')
+    bookings = ObjTr.objects.filter(customer=customer, status=2)
     context = {
         "customer": customer,
         "objs": objs,
+        "bookings": bookings,
     }
     return render(request, "objtr.html", context)
 
@@ -297,7 +301,7 @@ class Pdf(View):
     def get(self, request, pk):
         year = request.GET.get("year")
         customer = Customer.objects.get(pk=pk)
-        objs = ObjTr.objects.filter(customer=customer)
+        objs = ObjTr.objects.filter(customer=customer, status=1)
         objs = objs.filter(modified__year=year)
         objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)

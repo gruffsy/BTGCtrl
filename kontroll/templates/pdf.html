@@ -50,15 +50,21 @@
     th.avvik {
         text-align: left;
     }
+h1.farge {
+    color: red;
+}
+
+
 
     </style>
 </head>
 <body>
+<!--
 kontrs: {{kontrs}}<br>
 kontrslokkere: {{kontrslokkere}}<br>
 kontrbrannposter: {{kontrbrannposter}}<br>
 avviks: {{avviks}}
-
+-->
 <div id="page-header">
 
     <table>
@@ -161,11 +167,17 @@ avviks: {{avviks}}
         </td>
     </tr>
     <tr>
-        <td>Antall 1-års kontroller:</td>
-        <td>
-            {{kontrs}} stk
-        </td>
+        <td>Antall godkjente 1-års kontroller:</td>
+        <td>&nbsp;</td>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Brannposter</td>
+        <td>{{kontrbrannposter}} stk</td>
     </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Brannslukkere</td>
+        <td>{{kontrslokkere}} stk</td>
+    </tr>
+
 
     <tr>
         <td>Antall 5/10-års kontroller:</td>
@@ -226,7 +238,7 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="10"><h2>Utførte 1-års kontroller uten avvik</h2></td>
+        <td colspan="10"><h1 class="lead farge">Utførte 1-års kontroller uten avvik</h1></td>
     </tr>
 
     <tr>
@@ -286,7 +298,7 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table repeat="3">
     <tr>
-        <td colspan="10"><h2>Utførte 5/10-års kontroller</h2></td>
+        <td colspan="10"><h1 class="lead farge">Utførte 5/10-års kontroller</h1></td>
     </tr>
     <tr>
         <th style="width:80px">Kontrolldato</th>
@@ -332,7 +344,7 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="10"><h2>Registrerte avvik som er utbedret</h2></td>
+        <td colspan="10"><h1 class="lead farge">Registrerte avvik som er utbedret</h1></td>
     </tr>
     <tr class="avvik">
         <th>Utbedret dato</th>
@@ -376,7 +388,7 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="10"><h1 class="lead"><font color="red">Objekter med avvik</font></h1></td>
+        <td colspan="10"><h1 class="lead farge">Objekter med avvik</h1></td>
     </tr>
     <tr class="avvik">
         <th>Kontrolldato</th>
@@ -440,7 +452,7 @@ avviks: {{avviks}}
 
 <table repeat="3">
     <tr>
-        <td colspan="7"><h2>Objekter lagt til</h2></td>
+        <td colspan="7"><h1 class="lead farge">Objekter lagt til</h1></td>
     </tr>
 
     <tr>
@@ -486,7 +498,7 @@ avviks: {{avviks}}
 
 <table repeat="3">
     <tr>
-        <td colspan="7"><h2>Objekter fjernet</h2></td>
+        <td colspan="7"><h1 class="lead farge">Objekter fjernet</h1></td>
     </tr>
 
     <tr>

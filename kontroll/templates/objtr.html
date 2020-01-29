@@ -60,7 +60,11 @@
      <p>{{o.pk}}{{o}}</p>
      {% endfor %}
  -->
-
+    {% if bookings %}
+    <h3><font color="red">Det finnes handlinger som ikke er kvittert ut.
+        <a href="{% url 'detail' customer.id %}?liste=bookings">Kontroller
+            her</a></font></h3>
+    {% endif %}
     <h5 class="text-dark">Utførte kontroller</h5>
 </div>
 {% regroup objs by modified|date:'Y' as date_list %}
@@ -83,7 +87,7 @@
              id="collapse{{ forloop.counter }}">
             <div class="just-padding"><a class="btn btn-info"
                                          href="{% url 'pdf' customer.id %}?year={{year.grouper}}" target="_blank">Skriv
-                rapport(PDF)</a>
+                rapport(PDF)</a><br>
 
             </div>
         </div>

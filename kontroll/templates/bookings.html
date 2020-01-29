@@ -1,5 +1,6 @@
 {% block bookings %}
 {% load define_action %}
+{% if bookings %}
 <div class="just-padding">
     <h2>Følgende handlinger har blitt utført</h2>
     <p>Gå igjennom punkt for punkt eller godta alle</p>
@@ -71,4 +72,10 @@
         {% endfor %}
     </table>
 </div>
+{% else %}
+<div class="just-padding">
+    <h2>Ingenting å behandle. </h2>
+    <a href="{% url 'objtr' customer.id %}">Kontrollrapport</a>
+</div>
+{% endif %}
 {% endblock %}
