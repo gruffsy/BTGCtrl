@@ -67,6 +67,7 @@
     {% endif %}
     <h5 class="text-dark">Utførte kontroller</h5>
 </div>
+{% if objs %}
 {% regroup objs by modified|date:'Y' as date_list %}
 <!-- Gruppering av kontroller -->
 <div id="accordion">
@@ -95,5 +96,5 @@
     {% endfor %}
 </div>
 
-
+{% endif %}
 {% endblock %}
