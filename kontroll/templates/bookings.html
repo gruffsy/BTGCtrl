@@ -59,7 +59,8 @@
                    href="{% url 'detail' customer.id %}?liste=bookings&objtrid={{objtr.id}}&book=yes">Godkjenn</a></td>
             <td>
                 {% if objtr.avvik.all %}
-                <a class="btn btn-primary btn-sm" href="{% url 'avvik' customer.pk %}?obj={{obj.pk}}">Behandle avvik</a>
+                <a class="btn btn-primary btn-sm" href="{% url 'avvik' customer.pk %}?obj={{objtr.id}}">Behandle
+                    avvik</a>
                 {% endif %}
 
             </td>
