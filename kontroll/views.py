@@ -12,7 +12,6 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
 
 
 @login_required(login_url='/accounts/login/')
@@ -312,8 +311,6 @@ class Pdf(View):
         kontrbrannposter = kontrs - kontrslokkere
         avviks = objs.exclude(avvik=None).count()
         utbedret_avviks = objs.exclude(utbedret_avvik=None).count()
-        # totalt kontrollerte objekter er objekter med avvik og alle kontrollerte
-        totkontr = avviks + kontrs
         added = objs.exclude(added=False).count()
         deleted = objs.exclude(deleted=False).count()
         context = {
@@ -322,7 +319,6 @@ class Pdf(View):
             "year": year,
             "services": services,
             "kontrs": kontrs,
-            'totkontr': totkontr,
             "avviks": avviks,
             "utbedret_avviks": utbedret_avviks,
             "added": added,
