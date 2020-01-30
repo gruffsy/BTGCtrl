@@ -307,9 +307,8 @@ class Pdf(View):
         services = objs.exclude(servicedato=None)
         kontr = objs.filter(servicedato=None, utbedret_avvik=None)
         kontr = kontr.exclude(Q(added=True) | Q(deleted=True))
-        kontrslokkere = objs.filter(object__extinguishant__slokketype=3)
         kontrs = kontr.count()
-
+        kontrslokkere = kontr.exclude(object__extinguishant__slokketype=3).count()
         kontrbrannposter = kontrs - kontrslokkere
         avviks = objs.exclude(avvik=None).count()
         utbedret_avviks = objs.exclude(utbedret_avvik=None).count()
