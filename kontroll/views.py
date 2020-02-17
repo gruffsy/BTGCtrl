@@ -234,6 +234,7 @@ def avvik(request, pk):
     remove = request.GET.get('remove')
     avvik = request.GET.get('avvik') or None
     kommentar = request.POST.get('kommentar') or None
+    oppdatert = request.GET.get('oppdatert') or None
 
     if obj:
         obj = Object.objects.get(pk=obj, aktiv=True)
@@ -241,6 +242,9 @@ def avvik(request, pk):
                                   added=False, servicedato=None)
         avviks = objtr.avvik.all()
         customer = objtr.customer
+        if kommentar is None:
+            kommentar = objtr.kommentar
+            oppdatert = None
 
     else:
         objtr = ObjTr.objects.filter(customer=pk, kontrolldato=None, utbedret_avvik=None, object__aktiv=True,
@@ -252,10 +256,12 @@ def avvik(request, pk):
         objtr.kommentar = kommentar
         objtr.save()
 
+
     if remove is not None:
         objtr.avvik.remove(avvik)
         avvik_id = Avvik.objects.get(pk=str(avvik))
-        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer, user=request.user, status=2)
+        avviktr = ObjTr(object=obj, utbedret_avvik=avvik_id, customer=customer, kommentar=kommentar, user=request.user,
+                        status=2)
         avviktr.save()
 
     context = {
@@ -265,7 +271,7 @@ def avvik(request, pk):
         'avviks': avviks,
         "customer": customer,
         'kommentar': kommentar,
-
+        'oppdatert': oppdatert,
     }
 
     # alle avvik er lukket

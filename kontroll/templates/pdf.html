@@ -338,7 +338,7 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
     <tr>
-        <td colspan="10"><h1 class="lead farge">Registrerte avvik som er utbedret</h1></td>
+        <td colspan="11"><h1 class="lead farge">Registrerte avvik som er utbedret</h1></td>
     </tr>
     <tr class="avvik">
         <th>Utbedret dato</th>
@@ -347,6 +347,7 @@ avviks: {{avviks}}
         <th>Plassering</th>
         <th>Utstyr</th>
         <th>Avvik</th>
+        <th>Kommentar</th>
         <th>Prod. år</th>
         <th>Kontrollør</th>
         <th style="width:25px">ID</th>
@@ -370,6 +371,7 @@ avviks: {{avviks}}
             {% endif %}
         </td>
         <td>{{ obj.utbedret_avvik }}</td>
+        <td>{{ obj.kommentar }}</td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
         <td>{{ obj.object.id }}</td>
