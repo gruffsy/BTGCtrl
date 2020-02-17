@@ -371,7 +371,12 @@ avviks: {{avviks}}
             {% endif %}
         </td>
         <td>{{ obj.utbedret_avvik }}</td>
-        <td>{{ obj.kommentar }}</td>
+        <td>{% if obj.kommentar %}
+            {{ obj.kommentar }}
+            {% else %}
+            &nbsp;
+            {% endif %}
+        </td>
         <td>{{ obj.object.prodyear }}</td>
         <td>{{obj.user}}</td>
         <td>{{ obj.object.id }}</td>
