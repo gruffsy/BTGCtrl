@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-<--
+<!--
 PK:{{pk}}<br>
 Obj:{{obj}}<br>
 Objtr:{{objtr}}<br>
@@ -11,7 +11,8 @@ oppdatert: {{oppdatert}}
 -->
 {% if avviks != 'False'%}
 <div class="just-padding">
-    <p class="lead">{{obj.extinguishant.fabrikat}}&nbsp;{{obj.extinguishant.slokketype}} - {{obj.lokasjon}}&nbsp;{{obj.plassering}}&nbsp;{{obj.etg}}.
+    <p class="lead">{{obj.extinguishant.fabrikat}}&nbsp;{{obj.extinguishant.slokketype}} - {{obj.lokasjon}}&nbsp;
+        {{obj.plassering}}&nbsp;{{obj.etg}}.
         etg</p>
     <ul>
         {% for avvik in avviks %}
@@ -25,7 +26,6 @@ function fun{{avvik.pk}}(){
         window.location.href='{% url 'avvik' pk %}?obj={{obj.pk}}&avvik={{avvik.pk}}&remove=yes';
         return false;
     }
-
     }
 
         </script>
@@ -37,8 +37,11 @@ function fun{{avvik.pk}}(){
     <form action="{% url 'avvik' pk %}?obj={{obj.pk}}&oppdatert=1" method="post">
         {% csrf_token %}
         <textarea name="kommentar" rows="4" cols="50">{{objtr.kommentar}}</textarea><br>
-        <input type="submit" value="Registrer kommentar"> {% if oppdatert %}<font color="red">Oppdatert!</font>{% endif
-        %}
+        <input type="submit" value="Registrer kommentar">
+        {% if oppdatert %}
+        <font color="red">
+            Oppdatert!</font>
+        {% endif %}
 
     </form>
 </div>
