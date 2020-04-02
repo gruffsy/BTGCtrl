@@ -1,4 +1,4 @@
-from .models import Customer, Object, ObjTr, Avvik
+from .models import Object, ObjTr, Avvik, Customer, Month, Slokketype, Extinguishant
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
@@ -12,6 +12,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import NyObjectForm, AvvikForm
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializer import ObjectSerializer, ObjTrSerializer, AvvikSerializer, CustomerSerializer, MonthSerializer, \
+    SlokketypeSerializer, ExtinguishantSerializer
 
 
 @login_required(login_url='/accounts/login/')
@@ -371,3 +375,45 @@ def link_callback(uri, rel):
             'media URI must start with %s or %s' % (sUrl, mUrl)
         )
     return path
+
+
+class ObjectViewSet(viewsets.ModelViewSet):
+    queryset = Object.objects.all()
+    serializer_class = ObjectSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class ObjTrViewSet(viewsets.ModelViewSet):
+    queryset = ObjTr.objects.all()
+    serializer_class = ObjTrSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class MonthViewSet(viewsets.ModelViewSet):
+    queryset = Month.objects.all()
+    serializer_class = MonthSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class AvvikViewSet(viewsets.ModelViewSet):
+    queryset = Avvik.objects.all()
+    serializer_class = AvvikSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class SlokketypeViewSet(viewsets.ModelViewSet):
+    queryset = Slokketype.objects.all()
+    serializer_class = SlokketypeSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class ExtinguishanttViewSet(viewsets.ModelViewSet):
+    queryset = Extinguishant.objects.all()
+    serializer_class = ExtinguishantSerializer
+    # permission_classes = [permissions.IsAuthenticated]
