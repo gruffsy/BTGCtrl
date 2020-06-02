@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <title>Dokumentasjon {{customer.kunde}}</title>
@@ -236,6 +236,9 @@ avviks: {{avviks}}
 
 <table ref="1 år" repeat="3">
     <tr>
+        <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
+    </tr>
+    <tr>
         <td colspan="10"><h1 class="lead blue">Utførte 1-års kontroller uten avvik</h1></td>
     </tr>
 
@@ -296,6 +299,9 @@ avviks: {{avviks}}
 {% if avviks %}
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
+    <tr>
+        <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
+    </tr>
     <tr>
         <td colspan="10"><h1 class="lead red">Utførte 1-årskontroller med avvik</h1></td>
     </tr>
@@ -360,6 +366,9 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 <table ref=" service kontroller" repeat="3">
     <tr>
+        <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
+    </tr>
+    <tr>
         <td colspan="10"><h1 class="lead blue">Utførte 5/10-års kontroller</h1></td>
     </tr>
     <tr>
@@ -405,6 +414,9 @@ avviks: {{avviks}}
 {% if utbedret_avviks %}
 <pdf:nextpage/>
 <table class="avvik" repeat="3">
+    <tr>
+        <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
+    </tr>
     <tr>
         <td colspan="11"><h1 class="lead blue">Registrerte avvik som er utbedret</h1></td>
     </tr>
@@ -508,6 +520,9 @@ avviks: {{avviks}}
 <pdf:nextpage/>
 
 <table repeat="3">
+    <tr>
+        <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
+    </tr>
     <tr>
         <td colspan="7"><h1 class="lead red">Objekter fjernet</h1></td>
     </tr>
