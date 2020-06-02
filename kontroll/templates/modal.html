@@ -109,7 +109,8 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <h1>Utfør endringer</h1>
-                <form action="{% url 'detail' obj.pk %}" method="get">
+                <form action="{% url 'detail' obj.pk %}" method="post">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="lokasjon">Produksjonsår</label>
                         <input class="form-control" id="prodyear"
@@ -191,7 +192,7 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer bg-light justify-content-between">
-                <form action="{% url 'detail' obj.pk %}" method="get">
+                <form action="{% url 'detail' obj.pk %}" method="post">
                     {% csrf_token %}
 
                     {% if obj.sistekontroll|date:"Y"|add:0 < today or obj.sistekontroll is None %}
@@ -201,8 +202,9 @@
                     </button>
                     {% endif %}
                     {% if obj.avvik == True %}
-                    <a class="btn btn-primary mr-auto" href="{% url 'avvik' customer.pk %}?obj={{obj.pk}}">Behandle
+                    <a class="btn btn-primary mr-auto" href="{% url 'avvik' customer.pk %}">Behandle
                         avvik</a>
+                    <input name="obj" type="hidden" value="{{ obj.pk }}">
                     {% else %}
                     <button class="btn btn-primary mr-auto" name="detalj" type="submit"
                             value="kontroll">
@@ -255,7 +257,7 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer bg-light justify-content-between">
-                <form action="{% url 'detail' obj.pk %}" method="get">
+                <form action="{% url 'detail' obj.pk %}" method="post">
                     {% csrf_token %}
                     <button class="btn btn-success" name="toast" type="submit"
                             value="slette">Slett objekt
@@ -304,7 +306,8 @@
                     </table>
                 </div>
                 Utsette service til valgt år?
-                <form action="{% url 'detail' obj.pk %}" method="get">
+                <form action="{% url 'detail' obj.pk %}" method="post">
+                    {% csrf_token %}
                     <input max="{{obj.nesteservice|date:'Y'|add:5}}" min="{{today}}"
                            name="utsett"
                            onkeydown="return false" type="number"
@@ -317,7 +320,7 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer bg-light justify-content-between">
-                <form action="{% url 'detail' obj.pk %}" method="get">
+                <form action="{% url 'detail' obj.pk %}" method="post">
                     {% csrf_token %}
 
                     <button class="btn btn-success btn-sm" name="toast" type="submit"

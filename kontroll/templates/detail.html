@@ -1,29 +1,28 @@
 {% extends 'base.html' %}
 {% block body %}
-<!--
+
 Avvik:
 {% for a in avvik %}
 {{a}}
 {{a.slokketype_set}}
-{% endfor %}
-custpk = {{custpk}}
-toast = {{toast}}
-obj = {{obj}}
-objects: {{objects}}
-utsett service til år: {{utsett}}
-nyobject: {{nyobject}}
-notbooked: {{bookings.count}}<br>
-Avviks: {{avviks}}
+{% endfor %} <br>
+custpk = {{custpk}} <br>
+toast = {{toast}} <br>
+obj = {{obj}} <br>
+
+utsett service til år: {{utsett}} <br>
+nyobject: {{nyobject}} <br>
+bookings: {{bookings.count}}<br>
+Avviks: {{avviks}} <br>
 
 <br>
-Test:
+Objects eller toast:
 {% if objects %}
-Ja, objects
+Ja, objects<br>
 {% if toast %}
-Ja, Toast
+Ja, Toast<br>
 {% endif %}
 {% endif %}
--->
 
 
 <!-- sjekke for Kontroll -->

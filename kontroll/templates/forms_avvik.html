@@ -4,7 +4,7 @@
 
 <div class="just-padding">
     <h2>Kontroller for avvik</h2>
-    <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}&toast=avvik" method="post">
+    <form action="{% url 'detail' customer.pk %}?obj={{obj.pk}}" method="post">
         {% csrf_token %}
 
 
@@ -25,11 +25,11 @@
         {% endfor %}
 
 
+        <button class="btn btn-success" name="toast" type="submit" value="avvik">
+            <span class="fa fa-ok"></span> Registrer
+        </button>
 
-    <button class="btn btn-success" type="submit">
-        <span class="fa fa-ok"></span> Registrer
-    </button>
-    <a class="btn btn-danger" href="{% url 'detail' customer.pk %}">Avbryt</a>
+        <a class="btn btn-danger" href="{% url 'detail' customer.pk %}">Avbryt</a>
          </form>
 </div>
 

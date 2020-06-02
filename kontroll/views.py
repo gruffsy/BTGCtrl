@@ -57,14 +57,16 @@ def index(request):
 
 @login_required(login_url='/accounts/login/')
 def detail(request, pk):
-    custpk = request.GET.get("custpk")
-    toast = request.GET.get("toast")
+    custpk = request.POST.get("custpk")
+    # Henter custpk fra endringer gjort med objekt. Ingen endringer. Custpk=pk fra url
+    toast = request.POST.get("toast")
+    avvik = request.POST.get('avvik')
+    detalj = request.POST.get('detalj')
+    utsett = request.POST.get('utsett')
+
     aktiv = request.GET.get('aktiv')
     liste = request.GET.get('liste')
-    avvik = request.POST.get('avvik')
-    detalj = request.GET.get('detalj')
     today = int(timezone.now().year)
-    utsett = request.GET.get('utsett')
     nyobject = request.GET.get('nyobject')
     book = request.GET.get('book')
     objtrid = request.GET.get('objtrid')
@@ -93,6 +95,7 @@ def detail(request, pk):
     bookings = ObjTr.objects.filter(customer=customer, status=2).order_by('-pk')
     tot_ant_obj = objects.count()
     ant_obj = tot_ant_obj
+    # Usikker på hva avviks brukes til, kan kanskje slettes
     avviks = objects.exclude(avvik=None).count()
     if not liste:
         objects = objects.filter(
@@ -109,12 +112,12 @@ def detail(request, pk):
         obj.save()
 
     if toast == "endring":
-        obj.etg = request.GET['etg']
-        obj.lokasjon = request.GET['lokasjon']
-        obj.plassering = request.GET['plassering']
-        obj.prodyear = request.GET['prodyear']
-        obj.sisteservice = request.GET['sisteservice'] or None
-        obj.nesteservice = request.GET['nesteservice'] or None
+        obj.etg = request.POST['etg']
+        obj.lokasjon = request.POST['lokasjon']
+        obj.plassering = request.POST['plassering']
+        obj.prodyear = request.POST['prodyear']
+        obj.sisteservice = request.POST['sisteservice'] or None
+        obj.nesteservice = request.POST['nesteservice'] or None
         obj.save()
 
     if toast == "slette":
