@@ -4,5 +4,7 @@ venv/
 # Specific files #
 ##################
 btgsite/settings.py
+
+=======
 *.pyc
 

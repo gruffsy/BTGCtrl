@@ -191,7 +191,7 @@ def detail(request, pk):
             if nyform.is_valid():
                 objform = nyform.save(commit=False)
                 objform.customer = customer
-                # lagrer informasjon om neste service
+                # lagrer informasjon om neste service !!!!VIKTIG!!!
                 objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
                     timezone.now().month) + '-01'
                 objform.save()
