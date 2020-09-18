@@ -6,14 +6,19 @@ from django.utils import timezone
 from django.forms.widgets import CheckboxSelectMultiple, SelectMultiple, Textarea
 from django.utils.safestring import mark_safe
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class NyObjectForm(forms.ModelForm):
     extinguishant = forms.ModelChoiceField(queryset=Extinguishant.objects.order_by('fabrikat', 'type', 'slukkemiddel', 'lengde'))
 
     class Meta:
         model = Object
-        fields = ['extinguishant', 'prodyear', 'lokasjon', 'plassering', 'etg']
-
+        fields = ['extinguishant', 'prodyear', 'sisteservice','nesteservice', 'lokasjon', 'plassering', 'etg']
+        widgets = {
+            'sisteservice': DateInput,
+            'nesteservice': DateInput
+        }
 
 class AvvikForm(forms.ModelForm):
 

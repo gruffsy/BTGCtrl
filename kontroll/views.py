@@ -169,6 +169,8 @@ def detail(request, pk):
     lokasjon = slettet.values_list('lokasjon', flat=True).last()
     etg = slettet.values_list('etg', flat=True).last()
     plassering = slettet.values_list('plassering', flat=True).last()
+    nesteservice = slettet.values_list('nesteservice', flat=True).last()
+    sisteservice = slettet.values_list('sisteservice', flat=True).last()
 
     if request.method == 'POST':
         if avvik is not None:
@@ -183,8 +185,8 @@ def detail(request, pk):
             obj.save()
             avvikform.save_m2m()
             nyform = NyObjectForm(
-                initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
-                         'prodyear': int(timezone.now().year)})
+                initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
+                         'prodyear': int(timezone.now().year)} )
         else:
             nyform = NyObjectForm(request.POST or None)
             avvikform = AvvikForm()
@@ -192,8 +194,8 @@ def detail(request, pk):
                 objform = nyform.save(commit=False)
                 objform.customer = customer
                 # lagrer informasjon om neste service !!!!VIKTIG!!!
-                objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
-                    timezone.now().month) + '-01'
+                #objform.nesteservice = str(objform.prodyear + objform.extinguishant.slokketype.intervall) + '-' + str(
+                #timezone.now().month) + '-01'
                 objform.save()
                 objtr = ObjTr(object=Object.objects.last(), customer=customer, added=True, user=request.user, status=2)
                 objtr.save()
@@ -202,7 +204,7 @@ def detail(request, pk):
 
     else:
         nyform = NyObjectForm(
-            initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering,
+            initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
                      'prodyear': int(timezone.now().year)})
         avvikform = AvvikForm()
         if obj is not None:
