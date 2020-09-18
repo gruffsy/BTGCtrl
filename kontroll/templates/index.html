@@ -5,7 +5,7 @@
 <!-- Hvis ikke søk eller alle kunder -->
 {% regroup customers by month as month_list %}
 <!-- Link til oversikt over alle aktive kunder -->
-<div class="px-1">
+<div class="px-2">
   <h5>
     <a class="text-primary small" href="{% url 'index' %}?a=all"
       >Vis alle kunder</a
@@ -122,7 +122,7 @@
 <!-- Hvis det er søkt etter kunder eller bedt om alle kunder -->
 {% if customers %}
 <!-- Link til månedsoversikt -->
-<div class="px-1">
+<div class="px-2">
   <h5>
     <a class="text-success small" href="{% url 'index' %}"
       >Vis kunder som skal kontrolleres</a
