@@ -31,6 +31,7 @@ class Customer(models.Model):
     aktiv = models.BooleanField(default=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
+    
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -102,7 +103,7 @@ class Avvik(models.Model):
     slokketype = models.ManyToManyField('Slokketype')
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
-
+    
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:

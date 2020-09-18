@@ -8,3 +8,5 @@ btgsite/settings.py
 =======
 *.pyc
 
+kontroll/migrations/0047_customer_avviks.py
+kontroll/migrations/0048_remove_customer_avviks.py

@@ -23,14 +23,20 @@ def index(request):
     query = request.GET.get("q")
     sort = request.GET.get("sort")
     alle = request.GET.get("a")
+    medavvik = request.GET.get("medavvik")
+    if medavvik == 'true':
+        medavvik = True
+    else:
+        medavvik = False
+
     # utvid = request.GET.get("utvid")
     kontroll = []
-
+    
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
     customers = Customer.objects.filter(aktiv=True)
     for c in customers:
-        objs = Object.objects.filter(customer=c, aktiv=True)
+        objs = Object.objects.filter(customer=c, aktiv=True, avvik=medavvik)
         objs = objs.filter(Q(sistekontroll__lte=time_threshold) | Q(sistekontroll=None))
         if objs:
             kontroll.append(c.pk)
@@ -50,6 +56,7 @@ def index(request):
         'all': alle,
         'sort': sort,
         'kontroll': kontroll,
+        'medavvik': medavvik,
 
     }
     return render(request, 'index.html', context)
@@ -63,7 +70,7 @@ def detail(request, pk):
     avvik = request.POST.get('avvik')
     detalj = request.POST.get('detalj')
     utsett = request.POST.get('utsett')
-
+    
     aktiv = request.GET.get('aktiv')
     liste = request.GET.get('liste')
     today = int(timezone.now().year)

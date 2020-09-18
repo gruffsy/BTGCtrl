@@ -1,152 +1,277 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "base.html" %} {% block body %} {% for c in customeravvik %}
+{{c.kunde}} {{c.month}} {% endfor %}
 <!-- Sjekker om det er søk eller oversikt over alle kunder -->
 {% if not query and not all %}
 <!-- Hvis ikke søk eller alle kunder -->
 {% regroup customers by month as month_list %}
 <!-- Link til oversikt over alle aktive kunder -->
-<div class="just-padding">
-    <h5><a class="text-dark small" href="{% url 'index' %}?a=all">Vis alle kunder</a>
-    </h5>
+<div class="px-1">
+  <h5>
+    <a class="text-primary small" href="{% url 'index' %}?a=all"
+      >Vis alle kunder</a
+    >
+  </h5>
 </div>
-<div class="just-padding">
-    <h2>Kunder som skal kontrolleres sortert pr. måned</h2>
+{% if medavvik == False %}
+<div class="px-2">
+  <h5>
+    <a class="text-danger small" href="{% url 'index' %}?medavvik=true"
+      >Vis kunder med avvik som ikke er lukket</a
+    >
+  </h5>
+</div>
+<div class="p-2">
+  <h2 class="text-success">Kunder som skal kontrolleres</h2>
+</div>
+{% else %}
+<div class="px-2">
+  <h5>
+    <a class="text-success small" href="{% url 'index' %}"
+      >Vis kunder som skal kontrolleres</a
+    >
+  </h5>
+</div>
+<div class="p-2">
+  <h2 class="text-danger">Kunder med avvik</h2>
+</div>
+{% endif %}
 
-    <!-- <h6><a href="?utvid=True">Utvid alle</a>  </h6> -->
-</div>
 <!-- Kjører trekkspill-oversikt over kundr so skal kontrolleres-->
 <div id="accordion">
-    {% for month in month_list %}
-    <div class="card">
-        <div class="bg-white" id="heading{{ forloop.counter }}">
-            <button aria-controls="collapse{{ forloop.counter }}" aria-expanded="false"
-                    class="chevron btn btn-link btn-lg collapsed text-dark"
-                    data-target="#collapse{{ forloop.counter }}"
-                    data-toggle="collapse"><i class="fa fa-chevron-right"></i>
-                {{ month.grouper }}
-            </button>
-        </div>
-        <div aria-labelledby="heading{{ forloop.counter }}"
-
-             class="collapse"
-             data-parent="#accordion"
-             id="collapse{{ forloop.counter }}">
-            <div class="card-body table-responsive">
-                <table class="lead table w-auto table-hover">
-                    <thead>
-                    <tr>
-                        <th>Kundenr</th>
-                        <th>Kunde</th>
-                        <th>Adresse</th>
-                        <th>Sted</th>
-                        <th>Kontakt</th>
-                        <th>Telefon</th>
-                        <th>Epost</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for kunde in month.list %}
-                    <tr>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kontaktperson }}</a></td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{kunde.tlf1}}/{{kunde.tlf2}}</a>
-                        </td>
-                        <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.email }}</a></td>
-
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  {% for month in month_list %}
+  <div class="card">
+    <div class="bg-white" id="heading{{ forloop.counter }}">
+      <button
+        aria-controls="collapse{{ forloop.counter }}"
+        aria-expanded="false"
+        class="chevron btn btn-link btn-lg collapsed text-dark"
+        data-target="#collapse{{ forloop.counter }}"
+        data-toggle="collapse"
+      >
+        <i class="fa fa-chevron-right"></i>
+        {{ month.grouper }}
+      </button>
     </div>
-    {% endfor %}
+    <div
+      aria-labelledby="heading{{ forloop.counter }}"
+      class="collapse"
+      data-parent="#accordion"
+      id="collapse{{ forloop.counter }}"
+    >
+      <div class="card-body table-responsive">
+        <table class="lead table w-auto table-hover">
+          <thead>
+            <tr>
+              <th>Kundenr</th>
+              <th>Kunde</th>
+              <th>Adresse</th>
+              <th>Sted</th>
+              <th>Kontakt</th>
+              <th>Telefon</th>
+              <th>Epost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for kunde in month.list %}
+            <tr>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.tripletex }}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.kunde }}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.badresse }}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.bpoststed }}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.kontaktperson }}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{kunde.tlf1}}/{{kunde.tlf2}}</a
+                >
+              </td>
+              <td>
+                <a class="text-dark" href="{% url 'detail' kunde.id %}"
+                  >{{ kunde.email }}</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 {% else %}
 <!-- Hvis det er søkt etter kunder eller bedt om alle kunder -->
 {% if customers %}
 <!-- Link til månedsoversikt -->
-<div class="just-padding">
-    <h5><a class="text-dark small" href="{% url 'index' %}">Vis kun kunder som skal kontrolleres</a>
-    </h5>
+<div class="px-1">
+  <h5>
+    <a class="text-success small" href="{% url 'index' %}"
+      >Vis kunder som skal kontrolleres</a
+    >
+  </h5>
 </div>
-<div class="just-padding">
-    {% if query %}
-    <h2>Søkeresultat</h2>
-    {% elif all %}
-    <h2>Alle kunder.</h2>
-    {% endif %}
+<div class="p-2">
+  {% if query %}
+  <h2>Søkeresultat</h2>
+  {% elif all %}
+  <h2 class="text-primary">Alle kunder</h2>
+  {% endif %}
 </div>
 <!-- Resultattabell -->
 <div class="just-padding">
-    <div class="row table-responsive">
-        <table class="lead table w-auto table-hover">
-            <thead>
-            <tr>
-
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tripletex' %}-{% endif %}tripletex">Kundenr</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kunde' %}-{% endif %}kunde">Kunde</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'badresse' %}-{% endif %}badresse">Adresse</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpostnr' %}-{% endif %}bpostnr">Postnr</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpoststed' %}-{% endif %}bpoststed">Sted</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kontaktperson' %}-{% endif %}kontaktperson">Kontakt</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tlf1' %}-{% endif %}tlf1">Telefon</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'email' %}-{% endif %}email">Epost</a>
-                </th>
-                <th><a class="text-dark"
-                       href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'month' %}-{% endif %}month">Kontrollmnd</a>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for kunde in customers %}
-            <tr>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tripletex }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kunde }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.badresse }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpostnr }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.bpoststed }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.kontaktperson }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.tlf1 }}/{{ kunde.tlf2 }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.email }}</a></td>
-                <td><a class="text-dark" href="{% url 'detail' kunde.id %}">{{ kunde.month }}</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-    {% endif %}
+  <div class="row table-responsive">
+    <table class="lead table w-auto table-hover">
+      <thead>
+        <tr>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tripletex' %}-{% endif %}tripletex"
+              >Kundenr</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kunde' %}-{% endif %}kunde"
+              >Kunde</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'badresse' %}-{% endif %}badresse"
+              >Adresse</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpostnr' %}-{% endif %}bpostnr"
+              >Postnr</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'bpoststed' %}-{% endif %}bpoststed"
+              >Sted</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'kontaktperson' %}-{% endif %}kontaktperson"
+              >Kontakt</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'tlf1' %}-{% endif %}tlf1"
+              >Telefon</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'email' %}-{% endif %}email"
+              >Epost</a
+            >
+          </th>
+          <th>
+            <a
+              class="text-dark"
+              href="?{% if query %}q={{query}}{% elif all %}a=all{% endif %}&sort={% if sort == 'month' %}-{% endif %}month"
+              >Kontrollmnd</a
+            >
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for kunde in customers %}
+        <tr>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.tripletex }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.kunde }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.badresse }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.bpostnr }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.bpoststed }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.kontaktperson }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.tlf1 }}/{{ kunde.tlf2 }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.email }}</a
+            >
+          </td>
+          <td>
+            <a class="text-dark" href="{% url 'detail' kunde.id %}"
+              >{{ kunde.month }}</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %} {% endif %}
 </div>
 <!-- Hvis det ikke er noen treff på søk. Gi brukeren beskjed -->
 {% if not customers %}
 <div class="just-padding">
-    <h5><a class="text-dark small" href="{% url 'index' %}?a=all">Vis alle kunder</a>
-    </h5>
+  <h5>
+    <a class="text-dark small" href="{% url 'index' %}?a=all"
+      >Vis alle kunder</a
+    >
+  </h5>
 </div>
 <div class="just-padding">
-    <h2>Dessverre ingen treff...</h2>
+  <h2>Dessverre ingen treff...</h2>
 </div>
-{% endif %}
-
-
-{% endblock %}
+{% endif %} {% endblock %}
