@@ -1,140 +1,195 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>{% block title %}FireCtrl{% endblock %}</title>
     {% load staticfiles %}
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Satisfy"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
     <style id="compiled-css" type="text/css">
-.just-padding {
-    padding: 15px;
-}
+      .just-padding {
+        padding: 15px;
+      }
 
-.list-group.list-group-root {
-    padding: 0;
-    overflow: hidden;
-}
+      .list-group.list-group-root {
+        padding: 0;
+        overflow: hidden;
+      }
 
-.list-group.list-group-root .list-group {
-    margin-bottom: 0;
-}
+      .list-group.list-group-root .list-group {
+        margin-bottom: 0;
+      }
 
-.list-group.list-group-root .list-group-item {
-    border-radius: 0;
-    border-width: 1px 0 0 0;
-}
+      .list-group.list-group-root .list-group-item {
+        border-radius: 0;
+        border-width: 1px 0 0 0;
+      }
 
-.list-group.list-group-root > .list-group-item:first-child {
-    border-top-width: 0;
-}
+      .list-group.list-group-root > .list-group-item:first-child {
+        border-top-width: 0;
+      }
 
-.list-group.list-group-root > .list-group > .list-group-item {
-    padding-left: 30px;
-}
+      .list-group.list-group-root > .list-group > .list-group-item {
+        padding-left: 30px;
+      }
 
-.list-group.list-group-root > .list-group > .list-group > .list-group-item {
-    padding-left: 45px;
-}
+      .list-group.list-group-root
+        > .list-group
+        > .list-group
+        > .list-group-item {
+        padding-left: 45px;
+      }
 
-.list-group-item .glyphicon {
-    margin-right: 5px;
-}
-
-
-
+      .list-group-item .glyphicon {
+        margin-right: 5px;
+      }
     </style>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 
-
     <script type="text/javascript">
-            $(document).ready(function(){
-                $('.toast').toast('show');
-            });
+      $(document).ready(function () {
+        $(".toast").toast("show");
+      });
 
-            $(document).ready(function() {
-                $(this).on("click", ".chevron", function() {
-                    $(this).find($(".fa")).toggleClass( "fa-chevron-right" ).toggleClass( "fa-chevron-down" );
-
-                });
-            });
-
-
+      $(document).ready(function () {
+        $(this).on("click", ".chevron", function () {
+          $(this)
+            .find($(".fa"))
+            .toggleClass("fa-chevron-right")
+            .toggleClass("fa-chevron-down");
+        });
+      });
     </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <a class="navbar-brand" href="/">FireCtrl</a>
 
-</head>
-<body>
-
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="navbar-brand" href="/">FireCtrl</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown pr-4 active">
-                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                   href="#"
-                   id="navbarDropdown" role="button">
-                    Kunder
-                </a>
-                <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'index' %}?a=all">Alle kunder</a>
-                    <a class="dropdown-item" href="{% url 'index' %}">Kunder som skal kontrolleres</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/admin/kontroll/customer/add/">Legg til kunde</a>
-                </div>
-            </li>
+          <li class="nav-item dropdown pr-4 active">
+            <a
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="nav-link dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+            >
+              Kunder
+            </a>
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'index' %}?a=all"
+                >Alle kunder</a
+              >
+              <a class="dropdown-item" href="{% url 'index' %}"
+                >Kunder som skal kontrolleres</a
+              >
+              <a class="dropdown-item" href="{% url 'index' %}?medavvik=true"
+                >Vis kunder med avvik som ikke er lukket</a
+              >
 
-            <li class="nav-item active">
-                <form action="{% url 'index' %}" class="form-inline my-2" method="get">
-                    <input aria-label="Search" class="form-control mr-sm-2" name="q" placeholder="Søk etter kunde..."
-                           type="search">
-                </form>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link pl-4" href="{% url 'logout' %}"><i aria-hidden="true" class="fa fa-power-off"></i>&nbsp;Logg
-                    ut {{ user.get_username }}</a>
-            </li>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/kontroll/customer/add/"
+                >Legg til kunde</a
+              >
+            </div>
+          </li>
+
+          <li class="nav-item active">
+            <form
+              action="{% url 'index' %}"
+              class="form-inline my-2"
+              method="get"
+            >
+              <input
+                aria-label="Search"
+                class="form-control mr-sm-2"
+                name="q"
+                placeholder="Søk etter kunde..."
+                type="search"
+              />
+            </form>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pl-4" href="{% url 'logout' %}"
+              ><i aria-hidden="true" class="fa fa-power-off"></i>&nbsp;Logg ut
+              {{ user.get_username }}</a
+            >
+          </li>
         </ul>
-    </div>
+      </div>
+    </nav>
+    <!-- History -->
+    {% if customer %}
+    <div class="just-padding">
+      <h5>
+        <a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
 
-</nav>
-<!-- History -->
-{% if customer %}
-<div class="just-padding">
-    <h5><a class="text-dark" href="{% url 'index' %}?a=all"> Alle kunder ></a>
-
-        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle text-dark" data-toggle="dropdown" href="#"
-           id="historyDropdown" role="button">
-            {{ customer.kunde }}
+        <a
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle text-dark"
+          data-toggle="dropdown"
+          href="#"
+          id="historyDropdown"
+          role="button"
+        >
+          {{ customer.kunde }}
         </a>
         <div aria-labelledby="historyDropdown" class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'objtr' customer.id %}">Kontrollrapporter</a>
-            <a class="dropdown-item" href="{% url 'avvik' customer.id %}">Avviksbehandling</a>
-            <a class="dropdown-item" href="{% url 'detail' customer.id %}">Alle objekter</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/admin/kontroll/customer/{{customer.id}}/change/" target="_blank">Rediger
-                kunde</a>
+          <a class="dropdown-item" href="{% url 'objtr' customer.id %}"
+            >Kontrollrapporter</a
+          >
+          <a class="dropdown-item" href="{% url 'avvik' customer.id %}"
+            >Avviksbehandling</a
+          >
+          <a class="dropdown-item" href="{% url 'detail' customer.id %}"
+            >Alle objekter</a
+          >
+          <div class="dropdown-divider"></div>
+          <a
+            class="dropdown-item"
+            href="/admin/kontroll/customer/{{customer.id}}/change/"
+            target="_blank"
+            >Rediger kunde</a
+          >
         </div>
         {% if detalj %}
-        <br> {{obj.etg}}. etg > {{obj.lokasjon}} > {{obj.plassering}} > {{obj.extinguishant.fabrikat}} >
-        {{obj.extinguishant.type}}
+        <br />
+        {{obj.etg}}. etg > {{obj.lokasjon}} > {{obj.plassering}} >
+        {{obj.extinguishant.fabrikat}} > {{obj.extinguishant.type}} {%endif%}
         {%endif%}
-        {%endif%}
+      </h5>
+    </div>
 
-    </h5>
-</div>
-
-{% block body %}
-{% endblock %}
-
-</body>
+    {% block body %} {% endblock %}
+  </body>
 </html>
