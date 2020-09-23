@@ -45,7 +45,7 @@ def index(request):
         customers = Customer.objects.filter(aktiv=True)
 
     if query:
-        customers = Custo.objects.all().filter(
+        customers = Customer.objects.all().filter(
             Q(kunde__icontains=query), aktiv=True).order_by('month_id', 'kunde', 'bpoststed')
     if sort:
         customers = customers.order_by(sort)
