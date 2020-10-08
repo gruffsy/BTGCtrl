@@ -16,8 +16,8 @@
                 margin-right: 1cm;
                 height: 0.5cm;
                 }
-@frame footer i {
-                -pdf-frame-content: footerContent;
+        @frame footer {
+                -pdf-frame-content: requiredText;
                 bottom: 0cm;
                 margin-left: 1cm;
                 height: 0.5cm;
@@ -575,9 +575,9 @@ avviks: {{avviks}}
 
 
 <footer>
-
+    <div class="requiredText"><i>Service/vedlikehold utføres i henhold til NS-EN 671-3 og/eller NS 3910, tillegg B eller C</i></div>
     <div id="footerContent">
-     <i>Service/vedlikehold utføres i henhold til NS-EN 671-3 og/eller NS 3910, tillegg B eller C</i>
+     
         Side
         <pdf:pagenumber/>
         av
