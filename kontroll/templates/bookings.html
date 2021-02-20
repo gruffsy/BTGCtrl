@@ -2,9 +2,12 @@
 {% load define_action %}
 {% if bookings %}
 <div class="just-padding">
-    <h2>Følgende handlinger har blitt utført</h2>
+    <h4>Se igjennom kontrollrapporten før godkjenning</h4>
+    <a class="btn btn-info" href="{% url 'pdf' customer.id %}?status=2&year=2021" target="_blank">Se igjennom</a><br>
+    <br>
+    <h4>Følgende handlinger har blitt utført</h4>
     <p>Gå igjennom punkt for punkt eller godta alle</p>
-    <a class="btn btn-success btn-lg" href="?liste=bookings&book=all">Godkjenn alle</a>
+    <a class="btn btn-success" href="?liste=bookings&book=all">Godkjenn alle</a>
     <br><br>
     <table class="table">
         <tr>

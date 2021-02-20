@@ -320,10 +320,12 @@ def objtr(request, pk):
 
 class Pdf(View):
     def get(self, request, pk):
+        status = request.GET.get("status")
         year = request.GET.get("year")
         customer = Customer.objects.get(pk=pk)
-        objs = ObjTr.objects.filter(customer=customer, status=1)
-        objs = objs.filter(modified__year=year)
+        objs = ObjTr.objects.filter(customer=customer, status=status)
+        if year is not None:
+            objs = objs.filter(modified__year=year)
         objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)
         kontr = objs.filter(servicedato=None, utbedret_avvik=None)
@@ -336,6 +338,7 @@ class Pdf(View):
         added = objs.exclude(added=False).count()
         deleted = objs.exclude(deleted=False).count()
         context = {
+            "status": status,
             "customer": customer,
             "objs": objs,
             "year": year,

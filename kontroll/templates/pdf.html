@@ -125,11 +125,11 @@ avviks: {{avviks}}
     <hr>
 </div>
 
-
-
-
-
-
+{% if status != "1" %}
+<h1>IKKE FULLSTENDIG GODKJENT</h1>
+<h3>Må ikke sendes kunde</h3>
+{% endif %}
+{% if status != "2" %}
 <img alt="image" height="100%" src="{% static 'kontroll/images/btg.png'%}" width="100%"/>
 <h1>DOKUMENTASJON PÅ UTFØRT KONTROLL AV BRANNSLOKKEUTSTYR</h1>
 <h6>Service/vedlikehold utføres i henhold til NS-EN 671-3 og/eller NS 3910, tillegg B eller C</h6>
@@ -179,7 +179,7 @@ avviks: {{avviks}}
     <tr>
         <td>E-post:</td>
         <td>{{customer.email}}</td>
-    </tr>
+    </tr>{% endif %}
 </table>
 <hr>
 <table>
