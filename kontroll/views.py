@@ -322,7 +322,7 @@ class Pdf(View):
     def get(self, request, pk):
         year = request.GET.get("year")
         customer = Customer.objects.get(pk=pk)
-        objs = ObjTr.objects.filter(customer=customer, status=2)
+        objs = ObjTr.objects.filter(customer=customer, status=1)
         objs = objs.filter(modified__year=year)
         objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)
