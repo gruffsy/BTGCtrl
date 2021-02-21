@@ -38,7 +38,22 @@ Ja, Toast<br>
 <!-- hvis ikke kontroll -->
 {% else %}
 <div>
-    <div>
+    <div><div class="pl-3"><a class="text-dark" data-toggle="collapse" href="#collapseInfo"> Kundeinfo</a>
+        {% if customer.kundeinformasjon %}
+        <div class="collapse show" id="collapseInfo">
+            {% else %}
+            <div class="collapse" id="collapseInfo">
+                {% endif %}    
+        <form action="{% url 'detail' pk %}" method="post" id="kundeinfoform">
+            {% csrf_token %}
+            <textarea rows="4" cols="50" name="kundeinfo">{{customer.kundeinformasjon}}</textarea><br>  
+            <button class="btn btn-info btn-sm" type="submit">Oppdater info</button>
+        </form>
+        </div>
+        
+        
+        </div>
+
         <!-- Knapperad på toppen -->
         <div class="just-padding">
             <table>
@@ -65,7 +80,7 @@ Ja, Toast<br>
                 </tr>
             </table>
         </div>
-
+        
         {% include 'forms_modal.html' %}
         {% block nyobject %}
         {% endblock nyobject %}

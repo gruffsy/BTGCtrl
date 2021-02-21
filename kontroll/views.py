@@ -78,6 +78,7 @@ def detail(request, pk):
     book = request.GET.get('book')
     objtrid = request.GET.get('objtrid')
     action = request.GET.get('action')
+    kundeinfo = request.POST.get('kundeinfo')
 
     if nyobject:
         toast = 'nyobject'
@@ -95,6 +96,11 @@ def detail(request, pk):
         if obj is not None:
             obj = Object.objects.filter(pk=int(obj))[0]
         custpk = customer.pk
+
+
+    if kundeinfo:
+        customer.kundeinformasjon = kundeinfo
+        customer.save()
 
     dager = 150
     time_threshold = timezone.now() - timedelta(days=dager)
@@ -240,6 +246,7 @@ def detail(request, pk):
         'utsett': utsett,
         'nyobject': nyobject,
         'bookings': bookings,
+        'kundeinfo': kundeinfo,
     }
     return render(request, "detail.html", context)
 
