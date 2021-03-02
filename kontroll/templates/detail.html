@@ -1,28 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <!--
-Avvik:
-{% for a in avvik %}
-{{a}}
-{{a.slokketype_set}}
-{% endfor %} <br>
-custpk = {{custpk}} <br>
-toast = {{toast}} <br>
-obj = {{obj}} <br>
 
-utsett service til år: {{utsett}} <br>
-nyobject: {{nyobject}} <br>
-bookings: {{bookings.count}}<br>
-Avviks: {{avviks}} <br>
-
-<br>
-Objects eller toast:
-{% if objects %}
-Ja, objects<br>
-{% if toast %}
-Ja, Toast<br>
-{% endif %}
-{% endif %}
 -->
 
 <!-- sjekke for Kontroll -->
@@ -84,11 +63,23 @@ Ja, Toast<br>
         {% include 'forms_modal.html' %}
         {% block nyobject %}
         {% endblock nyobject %}
+        {% include 'extra_modal.html' %}
+        {% block extra %}
+        {% endblock extra %}
 
         {% if nyobject == 'False' %}
         <script type="text/javascript">
     $(document).ready(function(){
         $('#nyobject').modal('show');
+    });
+
+        </script>
+        {% endif %}
+
+        {% if extra == 'False' %}
+        <script type="text/javascript">
+    $(document).ready(function(){
+        $('#extra').modal('show');
     });
 
         </script>
@@ -110,11 +101,16 @@ Ja, Toast<br>
             Totalt å kontrollere: {{tot_ant_obj}}<br>
             Gjennstående å kontrollere: {{ant_obj}}<br>
         </div>
-        <div class="just-padding">
+        <div class="just-padding row">
             <a class="btn btn-white btn-sm"
                data-target="#nyobject"
                data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg
                 til nytt objekt</a>
+
+
+                <a class="btn btn-white btn-sm"
+                   data-target="#extra"
+                   data-toggle="modal"><i class="fa fa-plus fa-xs"></i>&nbsp;Legg til deler/timearbeid</a>
         </div>
         <!-- Liste-meny Nivå 1  Etg-->
         <div class="lead list-group list-group-root well text-dark">

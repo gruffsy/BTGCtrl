@@ -1,4 +1,4 @@
-from .models import Object, ObjTr, Avvik, Customer, Month, Slokketype, Extinguishant
+from .models import Object, ObjTr, Avvik, Customer, Month, Slokketype, Extinguishant, Extra
 from django.db.models import Q
 from django.views.generic import View
 from django.utils import timezone
@@ -10,7 +10,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .forms import NyObjectForm, AvvikForm
+from .forms import NyObjectForm, AvvikForm, ExtraForm
 from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -70,7 +70,9 @@ def detail(request, pk):
     avvik = request.POST.get('avvik')
     detalj = request.POST.get('detalj')
     utsett = request.POST.get('utsett')
-    
+    beskrivelse = request.POST.get('beskrivelse')
+    antall = request.POST.get('antall')
+    kommentar = request.POST.get('kommentar')
     aktiv = request.GET.get('aktiv')
     liste = request.GET.get('liste')
     today = int(timezone.now().year)
@@ -83,6 +85,8 @@ def detail(request, pk):
     if nyobject:
         toast = 'nyobject'
 
+    if beskrivelse:
+        beskrivelse = Extra.objects.get(pk=beskrivelse)
     if avvik is None and toast == 'avvik':
         toast = 'kontroll'
 
@@ -154,7 +158,7 @@ def detail(request, pk):
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
-
+# FIXME: Sørge for at man kan slette bookings fra Extra
     if book == "yes":
         ObjTr.objects.filter(pk=objtrid).update(status=1)
     elif book == "no":
@@ -202,6 +206,12 @@ def detail(request, pk):
                          'prodyear': int(timezone.now().year)} )
         else:
             nyform = NyObjectForm(request.POST or None)
+            extraform = ExtraForm(request.POST or None)
+            if extraform.is_valid:
+                objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
+                objtr.save()
+
+            
             avvikform = AvvikForm()
             if nyform.is_valid():
                 objform = nyform.save(commit=False)
@@ -216,6 +226,7 @@ def detail(request, pk):
                 toast = 'nyobject'
 
     else:
+        extraform = ExtraForm()
         nyform = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
                      'prodyear': int(timezone.now().year)})
@@ -224,7 +235,7 @@ def detail(request, pk):
             avvikform.fields["avvik"].queryset = Avvik.objects.filter(slokketype=obj.extinguishant.slokketype).order_by(
                 'id')
 
-
+    
 
     context = {
         "customer": customer,
@@ -233,6 +244,7 @@ def detail(request, pk):
         "objects": objects,
         'nyform': nyform,
         'avvikform': avvikform,
+        'extraform': extraform,
         'custpk': custpk,
         'pk': pk,
         'aktiv': aktiv,
@@ -247,6 +259,9 @@ def detail(request, pk):
         'nyobject': nyobject,
         'bookings': bookings,
         'kundeinfo': kundeinfo,
+        'beskrivelse': beskrivelse,
+        'antall': antall,
+        'kommentar': kommentar
     }
     return render(request, "detail.html", context)
 

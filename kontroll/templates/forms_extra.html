@@ -1,0 +1,43 @@
+{% load widget_tweaks %}
+
+{% block body %}
+
+<div class="just-padding">
+    <h2>Legg til deler</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% for hidden in extraform.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+
+        {% for field in extraform.visible_fields %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
+            {% for error in field.errors %}
+            <span class="help-block">{{ error}}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <div class="form-group">
+            <label for="id_antall">Antall</label>
+            <input type="number" class="form-control" id="id_antall" name="antall">
+          </div>
+          <div class="form-group">
+            <label for="id_kommentar">Kommentar</label>
+            <textarea id="id_kommentar" name="kommentar" rows="4" cols="50" ></textarea>
+          </div>
+
+
+    <div class="modal-footer bg-light">
+
+        <div class="form-group">
+            <button class="btn btn-success" type="submit">
+                <span class="fa fa-ok"></span> Legg til del
+            </button>
+            <a class="btn btn-danger" data-dismiss="modal" href="">Avbryt</a>
+        </div>
+    </div> </form>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Month, Customer, Slokketype, Extinguishant, Object, ObjTr, Avvik
+from .models import Month, Customer, Slokketype, Extinguishant, Object, ObjTr, Avvik, Extra
 
 
 class AvvikAdmin(ImportExportModelAdmin):
@@ -25,7 +25,8 @@ class SlokketypeAdmin(ImportExportModelAdmin):
 class ObjTrAdmin(ImportExportModelAdmin):
     pass
 
-
+class ExtraAdmin(ImportExportModelAdmin):
+    pass
 # Register your models here.
 
 admin.site.register(Month),
@@ -33,5 +34,6 @@ admin.site.register(Customer, CustomerAdmin),
 admin.site.register(Slokketype, SlokketypeAdmin),
 admin.site.register(Extinguishant, ExtinguishantAdmin),
 admin.site.register(Object, ObjectAdmin),
-admin.site.register(ObjTr, ObjTrAdmin)
+admin.site.register(ObjTr, ObjTrAdmin),
 admin.site.register(Avvik, AvvikAdmin),
+admin.site.register(Extra, ExtraAdmin),

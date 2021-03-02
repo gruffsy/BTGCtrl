@@ -114,9 +114,19 @@ class Avvik(models.Model):
     def __str__(self):
         return str(self.avvik)
 
+class Extra(models.Model):
+    beskrivelse = models.CharField(null=False, max_length=255)
+
+    def __str__(self):
+        return self.beskrivelse
+
+
 class ObjTr(models.Model):
-    object = models.ForeignKey(Object, on_delete=models.CASCADE)
+    object = models.ForeignKey(Object, on_delete=models.CASCADE, blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    extra_beskrivelse = models.ForeignKey(Extra, related_name='extra_beskrivelse_extra', on_delete=models.CASCADE, blank=True, null=True)
+    extra_antall = models.IntegerField(null=True, blank=True)
+    extra_kommentar = models.TextField(null=True, blank=True)
     kontrolldato = models.DateField(null=True, blank=True)
     servicedato = models.DateField(null=True, blank=True)
     avvik = models.ManyToManyField(Avvik, blank=True)
@@ -139,4 +149,4 @@ class ObjTr(models.Model):
         return super(ObjTr, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.object.extinguishant.fabrikat + ' | ' + self.customer.kunde
+        return self.customer.kunde
