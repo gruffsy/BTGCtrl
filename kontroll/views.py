@@ -176,7 +176,8 @@ def detail(request, pk):
             objtrbooking.object.aktiv = False
         if action == 'deleted':
             objtrbooking.object.aktiv = True
-        objtrbooking.object.save()
+        if action:
+            objtrbooking.object.save()
         objtrbooking.delete()
     elif book == 'all':
         ob = ObjTr.objects.filter(customer=customer, status=2)
@@ -207,9 +208,10 @@ def detail(request, pk):
         else:
             nyform = NyObjectForm(request.POST or None)
             extraform = ExtraForm(request.POST or None)
-            if extraform.is_valid:
-                objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
-                objtr.save()
+            if beskrivelse:
+                if extraform.is_valid:
+                    objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
+                    objtr.save()
 
             
             avvikform = AvvikForm()
