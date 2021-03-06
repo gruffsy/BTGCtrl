@@ -110,6 +110,7 @@ def detail(request, pk):
     time_threshold = timezone.now() - timedelta(days=dager)
     objects = Object.objects.filter(customer=customer, aktiv=True).order_by("etg", "lokasjon", "plassering")
     bookings = ObjTr.objects.filter(customer=customer, status=2).order_by('-pk')
+    extra_bookings = bookings.filter(extra_beskrivelse__isnull = False)
     tot_ant_obj = objects.count()
     ant_obj = tot_ant_obj
     # Usikker på hva avviks brukes til, kan kanskje slettes
@@ -158,7 +159,7 @@ def detail(request, pk):
         obj.nestekontroll = date(timezone.now().year + 1, timezone.now().month, timezone.now().day)
         obj.save()
 
-# FIXME: Sørge for at man kan slette bookings fra Extra
+
     if book == "yes":
         ObjTr.objects.filter(pk=objtrid).update(status=1)
     elif book == "no":
@@ -260,6 +261,7 @@ def detail(request, pk):
         'utsett': utsett,
         'nyobject': nyobject,
         'bookings': bookings,
+        'extra_bookings': extra_bookings,
         'kundeinfo': kundeinfo,
         'beskrivelse': beskrivelse,
         'antall': antall,
@@ -346,10 +348,14 @@ class Pdf(View):
     def get(self, request, pk):
         status = request.GET.get("status")
         year = request.GET.get("year")
+        kontroller = request.GET.get("kontroller")
+        ekstra = request.GET.get("extra")
         customer = Customer.objects.get(pk=pk)
-        objs = ObjTr.objects.filter(customer=customer, status=status)
+        objs = ObjTr.objects.filter(customer=customer, status=status, extra_beskrivelse__isnull=True)
+        extras = ObjTr.objects.filter(customer=customer, status=status, extra_beskrivelse__isnull=False)
         if year is not None:
             objs = objs.filter(modified__year=year)
+            extras = extras.filter(modified__year=year)
         objs = objs.order_by('object_id')
         services = objs.exclude(servicedato=None)
         kontr = objs.filter(servicedato=None, utbedret_avvik=None)
@@ -364,7 +370,10 @@ class Pdf(View):
         context = {
             "status": status,
             "customer": customer,
+            "ekstra": ekstra,
+            "extras": extras,
             "objs": objs,
+            "kontroller": kontroller,
             "year": year,
             "services": services,
             "kontrs": kontrs,

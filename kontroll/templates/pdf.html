@@ -74,6 +74,7 @@ kontrslokkere: {{kontrslokkere}}<br>
 kontrbrannposter: {{kontrbrannposter}}<br>
 avviks: {{avviks}}
 -->
+
 <div id="page-header">
 
     <table>
@@ -182,6 +183,7 @@ avviks: {{avviks}}
     </tr>{% endif %}
 </table>
 <hr>
+{% if kontroller %}
 <table>
     <tr>
         <td>Antall 1-års kontroller uten avvik:</td>
@@ -252,9 +254,42 @@ avviks: {{avviks}}
         </td>
     </tr>
 </table>
-
 <pdf:nextpage/>
+{% endif %}
+{% if ekstra %}
+<h2>Extra</h2>
+    <table class="table">
+        <tr>
+            
+            <th>Beskrivelse</th>
+            <th>Antall</th>
+            <th>Kommentar</th>
+         </tr>
 
+         {% for extra in extras %}
+
+
+        <tr>
+            <td>{{extra.extra_beskrivelse}}</td>
+            <!-- Gå igjennom alle de ulike typene i ObjTr -->
+            <td>
+                
+                {{extra.extra_antall}}
+                
+
+            </td>
+            <td>
+                
+                {{extra.extra_kommentar}}
+                
+
+            </td>
+            
+        </tr>
+   {% endfor %}
+    </table>
+{% endif %}
+{% if kontroller %}
 <table ref="1 år" repeat="3">
     <tr>
         <td colspan="10"><i>Kunde: {{customer.kunde}} </i></td>
@@ -586,7 +621,7 @@ avviks: {{avviks}}
 
     {% endif %}
 </table>
-
+{% endif %}
 
 <footer>
     <div id="requiredText"><i>Service/vedlikehold utføres i henhold til NS-EN 671-3 og/eller NS 3910, tillegg B eller C</i></div>

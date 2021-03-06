@@ -3,21 +3,25 @@
 {% if bookings %}
 
 <!-- 
-    FIXME: Sørge for å vise bookingene med beskrivelse
+
     TODO: Få bookingen på Kontrollrapporten
 
 -->
 <div class="just-padding">
     <h4>Se igjennom kontrollrapporten før godkjenning</h4>
-    <a class="btn btn-info" href="{% url 'pdf' customer.id %}?status=2" target="_blank">Se igjennom</a><br>
+    <a class="btn btn-info" href="{% url 'pdf' customer.id %}?status=2&kontroller=true" target="_blank">Se igjennom kontroller</a>
+    {% if extra_bookings %}
+    <a class="btn btn-info" href="{% url 'pdf' customer.id %}?status=2&extra=true" target="_blank">Se igjennom ekstra</a><br>
+    {% endif %}
+    <br>
     <br>
     <h4>Følgende handlinger har blitt utført</h4>
     <p>Gå igjennom punkt for punkt eller godta alle</p>
-    <a class="btn btn-success" href="?liste=bookings&book=all">Godkjenn alle</a>
-    <br><br>
+    
+    <br>
     
     
-
+<h2>Kontroller</h2>
     <table class="table">
         <tr>
             <th>Id</th>
@@ -89,6 +93,8 @@
     </table>
 
     <br>
+    {% if extra_bookings %}
+    <h2>Extra</h2>
     <table class="table">
         <tr>
             
@@ -130,8 +136,9 @@
         {% endif %}
         {% endfor %}
     </table>
-
-      
+    {% endif %}
+    <br>
+    <a class="btn btn-success" href="?liste=bookings&book=all">Godkjenn alle</a>      
 </div>
 {% else %}
 <div class="just-padding">

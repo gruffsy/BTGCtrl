@@ -86,9 +86,18 @@
         <div aria-labelledby="heading{{ forloop.counter }}" class="collapse"
              data-parent="#accordion"
              id="collapse{{ forloop.counter }}">
-            <div class="just-padding"><a class="btn btn-info"
-                                         href="{% url 'pdf' customer.id %}?status=1&year={{year.grouper}}" target="_blank">Skriv
-                rapport(PDF)</a><br>
+            <div class="just-padding">
+                <a class="btn btn-info"
+                href="{% url 'pdf' customer.id %}?status=1&year={{year.grouper}}&kontroller=true" 
+                target="_blank">
+                Skriv ut kontrollrapport(PDF)</a>
+                
+                <a class="btn btn-info"
+                href="{% url 'pdf' customer.id %}?status=1&year={{year.grouper}}&extra=true" 
+                target="_blank">
+                Skriv ut rapport på ekstra(PDF)</a>
+                
+                <br>
 
             </div>
         </div>
