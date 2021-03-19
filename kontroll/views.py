@@ -208,11 +208,11 @@ def detail(request, pk):
                          'prodyear': int(timezone.now().year)} )
         else:
             nyform = NyObjectForm(request.POST or None)
-            extraform = ExtraForm(request.POST or None)
-            if beskrivelse:
-                if extraform.is_valid:
-                    objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
-                    objtr.save()
+            # extraform = ExtraForm(request.POST or None)
+            # if beskrivelse:
+            #     if extraform.is_valid:
+            #         objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
+            #         objtr.save()
 
             
             avvikform = AvvikForm()
@@ -247,7 +247,7 @@ def detail(request, pk):
         "objects": objects,
         'nyform': nyform,
         'avvikform': avvikform,
-        'extraform': extraform,
+        # 'extraform': extraform,
         'custpk': custpk,
         'pk': pk,
         'aktiv': aktiv,
