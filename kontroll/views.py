@@ -229,7 +229,8 @@ def detail(request, pk):
                 toast = 'nyobject'
 
     else:
-        extraform = ExtraForm()
+        if avvik is not None:
+            extraform = ExtraForm()
         nyform = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
                      'prodyear': int(timezone.now().year)})
