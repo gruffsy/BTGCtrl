@@ -67,10 +67,10 @@ def detail(request, pk):
     custpk = request.POST.get("custpk")
     # Henter custpk fra endringer gjort med objekt. Ingen endringer. Custpk=pk fra url
     toast = request.POST.get("toast")
-    avvik = request.POST.get('avvik')
+    avvik = request.POST.get('avvik', None)
     detalj = request.POST.get('detalj')
     utsett = request.POST.get('utsett')
-    beskrivelse = request.POST.get('beskrivelse')
+    beskrivelse = request.POST.get('beskrivelse', None)
     antall = request.POST.get('antall')
     kommentar = request.POST.get('kommentar')
     aktiv = request.GET.get('aktiv')
@@ -203,16 +203,17 @@ def detail(request, pk):
             obj.avvik = True
             obj.save()
             avvikform.save_m2m()
+            extraform = ExtraForm()
             nyform = NyObjectForm(
                 initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
                          'prodyear': int(timezone.now().year)} )
         else:
             nyform = NyObjectForm(request.POST or None)
-            # extraform = ExtraForm(request.POST or None)
-            # if beskrivelse:
-            #     if extraform.is_valid:
-            #         objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
-            #         objtr.save()
+            extraform = ExtraForm(request.POST or None)
+            if beskrivelse:
+                if extraform.is_valid:
+                    objtr = ObjTr(customer=customer, extra_beskrivelse=beskrivelse, extra_antall=antall, extra_kommentar=kommentar, user=request.user, status=2)
+                    objtr.save()
 
             
             avvikform = AvvikForm()
@@ -229,7 +230,7 @@ def detail(request, pk):
                 toast = 'nyobject'
 
     else:
-        # extraform = ExtraForm()
+        extraform = ExtraForm()
         nyform = NyObjectForm(
             initial={'lokasjon': lokasjon, 'etg': etg, 'plassering': plassering, 'nesteservice': nesteservice, 'sisteservice':sisteservice,
                      'prodyear': int(timezone.now().year)})
@@ -247,7 +248,7 @@ def detail(request, pk):
         "objects": objects,
         'nyform': nyform,
         'avvikform': avvikform,
-        # 'extraform': extraform,
+        'extraform': extraform,
         'custpk': custpk,
         'pk': pk,
         'aktiv': aktiv,
