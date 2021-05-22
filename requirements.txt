@@ -16,7 +16,7 @@ Pillow==8.1.1
 psycopg2==2.8.4
 PyPDF2==1.26.0
 pytz==2019.3
-PyYAML==5.2
+PyYAML==5.4
 reportlab==3.5.32
 six==1.13.0
 sqlparse==0.3.0
